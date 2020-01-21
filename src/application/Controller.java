@@ -39,15 +39,17 @@ public class Controller implements Initializable {
 		txtLetterResponse.textProperty().addListener((observable) -> {
 			lblResponse.setText(" "); 
 			btnResponseInput.setText("Enter");
-			txtLetterResponse.setEditable(true);
+			txtLetterResponse.setEditable(true); //might remove
+			btnResponseInput.setDisable(false);
 
-		}); //resets the response label after a change to txtLetterResponse
+		}); //reset after a change to txtLetterResponse
 		
-		btnResponseInput.setStyle("-fx-font: 18 arial; -fx-base: #023618; ");
+		btnResponseInput.setStyle(
+			"-fx-font: 18 arial; -fx-base: #0000ff; -fx-font-weight: bold; ");
 		lblTitle.setStyle(
 			"-fx-font: 24 arial; -fx-font-weight: bold; -fx-text-fill: #000000;"
 			+ " -letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
-		); //style for btnResponseInput
+		);
 		
 		if (txtLetterResponse.getText().equals("asd")){
 			txtLetterResponse.setEditable(false);
@@ -55,21 +57,20 @@ public class Controller implements Initializable {
 			btnResponseInput.setText("Next");
 		} //if time runs out
 		
-		//btnTryAgain.setVisible(false);
+		btnTryAgain.setVisible(false); //used for timer
 		
 	}
 	@FXML
 	public void btnResponseInput_Click(ActionEvent event) {
-	if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
-		lblResponse.setText("Incorrect. Try again!");
-	} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
-		txtLetterResponse.setText(" ");
-		
-		lblResponse.setText("Correct!");
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
-	}
-		
-		
+		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
+			lblResponse.setText("Incorrect. Try again!");
+			btnResponseInput.setDisable(true);
+		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
+			//txtLetterResponse.setText(" ");
+			lblResponse.setText("Correct!");
+			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+			this.startTimer(5000);
+		}	
 	}
 	
 	@FXML
@@ -78,23 +79,24 @@ public class Controller implements Initializable {
 	}//can remove if unused
 	public void startTimer(int seconds) {
 		Timer timer = new Timer();
-		TimerTask task = new TimerTask() {
-
+		TimerTask task = new TimerTask(){
 			@Override
 			public void run() {
-				txtLetterResponse.set
+				btnTryAgain.setVisible(true);
+				btnResponseInput.setDisable(true);
+				//clear text txtfield
+				//change lblresponse
+				//implement again btn
 			}
-			
-		}
-		timer.schedule(task, delay);
-		
-		timer.schedule(new RemindTask(), seconds*1000)
+		};
+		timer.schedule(task, seconds);
 		
 		
-		long time = System.currentTimeMillis();
+		
+		/*long time = System.currentTimeMillis();
 		if (time > time + 2000) {
 			lblResponse.setText(null);
-		} 
+		} */
 	}
 	
 	

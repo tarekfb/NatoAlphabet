@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="225.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="369.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <top>
       <Label fx:id="lblTitle" prefHeight="41.0" prefWidth="286.0" text="NATO Alphabet: The Game" BorderPane.alignment="CENTER">
          <font>
@@ -20,7 +20,7 @@
       </Label>
    </top>
    <center>
-      <AnchorPane prefHeight="169.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="169.0" prefWidth="347.0" BorderPane.alignment="CENTER">
          <children>
             <GridPane layoutX="53.0" layoutY="31.0">
               <columnConstraints>
@@ -72,6 +72,7 @@
                   </Label>
                </children>
             </GridPane>
+            <Button fx:id="btnTryAgain" layoutX="159.0" layoutY="173.0" mnemonicParsing="false" onAction="#btnTryAgain_Click" text="Try again" />
          </children>
       </AnchorPane>
    </center>
