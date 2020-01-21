@@ -39,6 +39,7 @@ public class Controller implements Initializable {
 	private Label lblResponse;
 	@FXML
 	private Label lblTitle;
+	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(2000)));
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -74,6 +75,13 @@ public class Controller implements Initializable {
 			+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
 		);
 		
+		timeLine.play(); 
+		timeLine.pause();
+		timeLine.setOnFinished(event -> {
+			lblResponse.setText("Time ran out. Try again");
+        	btnResponseInput.setText("Next");
+			stringProperty.set("");
+		}); 
 	}
 	
 	@FXML
@@ -88,56 +96,8 @@ public class Controller implements Initializable {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 			stringProperty.set("");
 
-			/*
-			Timeline timeLine;
-			timeLine = new Timeline((new KeyFrame(
-			        Duration.millis(4500), ae -> {
-			        	lblResponse.setText("Time ran out. Try again");
-			        	btnResponseInput.setText("Next");
-						stringProperty.set("");
-			        })));
-			timeLine.play(); */
-			/*
-			new Timeline(new KeyFrame(
-			        Duration.millis(2500), ae -> {
-			        	lblResponse.setText("Time ran out. Try again");
-			        	btnResponseInput.setText("Next");
-						stringProperty.set("");
-			        }))
-			.play();*/
-			
-			this.timeLineManager("start");
-		}
-		
-	}
-	public void timeLineManager(String command) {
-		
-		new Timeline(new KeyFrame(
-		        Duration.millis(2500), ae -> {
-		        	lblResponse.setText("Time ran out. Try again");
-		        	btnResponseInput.setText("Next");
-					stringProperty.set("");
-		        }))
-		.play();
-		
-		
-		Timeline timeLine;
-		timeLine = new Timeline((new KeyFrame(
-		        Duration.millis(500), ae -> {
-		     //maybe nothing needs to happen here, just init?
-		        	lblResponse.setText("Time ran out. Try again");
-		        	btnResponseInput.setText("Next");
-					stringProperty.set("");
-		        })));
-		timeLine.play();
-		//timeLine.pause();
-		timeLine.play();
-		
-		if (command.equals("stop")) {
 			timeLine.stop();
-		} else if (command.equals("start")) {
 			timeLine.play();
-			//timeLine.start
 		}
 		
 	}
