@@ -19,6 +19,8 @@ public class Controller implements Initializable {
 	@FXML
 	private Button btnResponseInput;
 	@FXML
+	private Button btnTryAgain;
+	@FXML
 	private TextField txtLetterResponse;
 	@FXML
 	private Label lblRandomLetter;
@@ -32,12 +34,12 @@ public class Controller implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		
-		lblResponse.setText(" ");
 		txtLetterResponse.textProperty().addListener((observable) -> {
-			 if (!lblResponse.getText().equals(" ")) {
-				lblResponse.setText(" "); 
-			}
-		}); //FIX SO CORRECT WORKS
+			lblResponse.setText(" "); 
+			btnResponseInput.setText("Enter");
+			txtLetterResponse.setEditable(true);
+
+		});
 		
 		btnResponseInput.setStyle("-fx-font: 18 arial; -fx-base: #023618; ");
 		lblTitle.setStyle(
@@ -45,24 +47,34 @@ public class Controller implements Initializable {
 			+ " -letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
 		);
 		
+		if (txtLetterResponse.getText().equals("asd")){
+			txtLetterResponse.setEditable(false);
+
+			btnResponseInput.setText("Next");
+		}
+		
 	}
-	
-	
 	@FXML
 	public void btnResponseInput_Click(ActionEvent event) {
 	if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
 		lblResponse.setText("Incorrect. Try again!");
 	} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
-			lblResponse.setText("Correct!");
-			txtLetterResponse.setText(" ");
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+		txtLetterResponse.setText(" ");
+		
+		lblResponse.setText("Correct!");
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 	}
 		
 		/*long time = System.currentTimeMillis();
 		if (time > time + 2000) {
 			lblResponse.setText(null);
 		}*/
-	} //asd
+	}
+	
+	@FXML
+	public void btnTryAgain_Click(ActionEvent event) {
+		
+	}
 	
 	
 }
