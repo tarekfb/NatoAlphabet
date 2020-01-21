@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="369.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <top>
-      <Label fx:id="lblTitle" prefHeight="41.0" prefWidth="286.0" text="NATO Alphabet: The Game" BorderPane.alignment="CENTER">
+      <Label fx:id="lblTitle" prefHeight="41.0" prefWidth="321.0" text="NATO Alphabet: The Game" BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
@@ -44,12 +44,12 @@
                   </Label>
                   <Label fx:id="lblRandomLetter" contentDisplay="CENTER" prefHeight="18.0" prefWidth="286.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="1">
                      <font>
-                        <Font size="25.0" />
+                        <Font size="15.0" />
                      </font></Label>
-                  <TextField fx:id="txtLetterResponse" GridPane.columnIndex="1" GridPane.rowIndex="1" />   
+                  <TextField fx:id="txtLetterResponse" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />   
                </children>
             </GridPane>
-            <GridPane layoutX="32.0" layoutY="106.0" prefHeight="30.0" prefWidth="250.0">
+            <GridPane layoutX="34.0" layoutY="104.0" prefHeight="30.0" prefWidth="250.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="85.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="10.0" prefWidth="165.0" />
@@ -58,11 +58,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btnResponseInput" defaultButton="true" mnemonicParsing="false" onAction="#btnResponseInput_Click" prefHeight="26.0" prefWidth="139.0" text="Enter">
+                  <Button fx:id="btnResponseInput" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#btnResponseInput_Click" prefHeight="26.0" prefWidth="89.0" text="Enter">
+                    <font>
+                        <Font size="15.0" />
+                     </font>
                      <padding>
                         <Insets right="5.0" />
                      </padding></Button>
-                  <Label fx:id="lblResponse" alignment="CENTER" prefHeight="21.0" prefWidth="322.0" GridPane.columnIndex="1">
+                  <Label fx:id="lblResponse" alignment="CENTER" prefHeight="22.0" prefWidth="166.0" GridPane.columnIndex="1">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -72,7 +75,6 @@
                   </Label>
                </children>
             </GridPane>
-            <Button fx:id="btnTryAgain" layoutX="159.0" layoutY="173.0" mnemonicParsing="false" onAction="#btnTryAgain_Click" text="Try again" />
          </children>
       </AnchorPane>
    </center>
