@@ -46,7 +46,7 @@
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <TextField fx:id="txtLetterResponse" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />   
+                  <TextField fx:id="txtLetterResponse" GridPane.columnIndex="1" GridPane.rowIndex="1" />   
                </children>
             </GridPane>
             <GridPane layoutX="34.0" layoutY="104.0" prefHeight="30.0" prefWidth="250.0">

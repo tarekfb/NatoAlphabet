@@ -32,8 +32,7 @@ public class Controller implements Initializable {
 	private Button btnResponseInput;
 	@FXML
 	private TextField txtLetterResponse;
-	final StringProperty stringProperty = new SimpleStringProperty(txtLetterResponse.getText()); //used for changelistener 
-	//final or not?
+	private StringProperty stringProperty = new SimpleStringProperty(); //used for ChangeListener
 	@FXML
 	private Label lblRandomLetter;
 	@FXML 
@@ -43,7 +42,8 @@ public class Controller implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//txtLetterResponse.setText(" ");
+				
+		stringProperty = new SimpleStringProperty(txtLetterResponse.getText()); //used for ChangeListener 
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		
 		stringProperty.addListener(new ChangeListener<String>() {
@@ -57,19 +57,14 @@ public class Controller implements Initializable {
 		    @Override
 		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
 		        if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
-		            // perform whatever action you need...
-
-		            // update the text property so the two remain equal:
+		        	lblResponse.setText("");
+					btnResponseInput.setText("Enter");
+					btnResponseInput.setDisable(false);
+					
 		        	stringProperty.set(newValue);
 		        }
 		    }
 		});
-		
-		/*txtLetterResponse.textProperty().addListener((observable) -> {
-			lblResponse.setText(" "); //is this needed?
-			btnResponseInput.setText("Enter"); //is this needed?
-			btnResponseInput.setDisable(false); //this is needed
-		}); //reset after a change to txtLetterResponse */
 		
 		btnResponseInput.setStyle(
 			"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -80,53 +75,71 @@ public class Controller implements Initializable {
 		);
 		
 	}
+	
 	@FXML
 	public void btnResponseInput_Click(ActionEvent event) {
 		this.btnResponseInput.setText("Enter");
-		//this.startTimer(2000);
-
+		
 		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
 			lblResponse.setText("Incorrect. Try again!");
 			btnResponseInput.setDisable(true);
 		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
 			lblResponse.setText("Correct!");
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
-		 //txtLetterResponse.clear(); //this seems to trigger listener
-			 stringProperty.set("asd");
+			stringProperty.set("");
 
-			
+			/*
+			Timeline timeLine;
+			timeLine = new Timeline((new KeyFrame(
+			        Duration.millis(4500), ae -> {
+			        	lblResponse.setText("Time ran out. Try again");
+			        	btnResponseInput.setText("Next");
+						stringProperty.set("");
+			        })));
+			timeLine.play(); */
+			/*
 			new Timeline(new KeyFrame(
 			        Duration.millis(2500), ae -> {
 			        	lblResponse.setText("Time ran out. Try again");
 			        	btnResponseInput.setText("Next");
-			        	//txtLetterResponse.clear();
+						stringProperty.set("");
 			        }))
-			    .play();
-		}	
+			.play();*/
+			
+			this.timeLineManager("start");
+		}
 		
 	}
-	
-	/*public void startTimer(int seconds) {
-		Timer timer = new Timer();
+	public void timeLineManager(String command) {
 		
-		Platform.runLater(new Runnable() {
-		    public void run() {
-		        //textField.requestFocus();
-		    }
-		});
-		TimerTask task = new TimerTask(){
-			@Override
-			public void run() {
-				//txtLetterResponse.setText("false");
-
-				//btnResponseInput.setText("Next");	
-			//	lblResponse.setText("Time ran out. Try again!");
+		new Timeline(new KeyFrame(
+		        Duration.millis(2500), ae -> {
+		        	lblResponse.setText("Time ran out. Try again");
+		        	btnResponseInput.setText("Next");
+					stringProperty.set("");
+		        }))
+		.play();
 		
-			}
-		};
-		timer.schedule(task, seconds);
-	//	timer.schedule
 		
-	}*/
+		Timeline timeLine;
+		timeLine = new Timeline((new KeyFrame(
+		        Duration.millis(500), ae -> {
+		     //maybe nothing needs to happen here, just init?
+		        	lblResponse.setText("Time ran out. Try again");
+		        	btnResponseInput.setText("Next");
+					stringProperty.set("");
+		        })));
+		timeLine.play();
+		//timeLine.pause();
+		timeLine.play();
+		
+		if (command.equals("stop")) {
+			timeLine.stop();
+		} else if (command.equals("start")) {
+			timeLine.play();
+			//timeLine.start
+		}
+		
+	}
 
 }

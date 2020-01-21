@@ -42,6 +42,6 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 		}
 		return false;
 	
-	}//not working, it doesnt check what is currently being displayed
+	}//not working, it doesnt check what is currently displayed
 
 }
