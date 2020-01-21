@@ -1,12 +1,15 @@
 package application;
 
 import javafx.scene.control.Button;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,7 +32,6 @@ public class Controller implements Initializable {
 	@FXML
 	private Label lblTitle;
 	
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
@@ -39,19 +41,21 @@ public class Controller implements Initializable {
 			btnResponseInput.setText("Enter");
 			txtLetterResponse.setEditable(true);
 
-		});
+		}); //resets the response label after a change to txtLetterResponse
 		
 		btnResponseInput.setStyle("-fx-font: 18 arial; -fx-base: #023618; ");
 		lblTitle.setStyle(
 			"-fx-font: 24 arial; -fx-font-weight: bold; -fx-text-fill: #000000;"
 			+ " -letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
-		);
+		); //style for btnResponseInput
 		
 		if (txtLetterResponse.getText().equals("asd")){
 			txtLetterResponse.setEditable(false);
 
 			btnResponseInput.setText("Next");
-		}
+		} //if time runs out
+		
+		//btnTryAgain.setVisible(false);
 		
 	}
 	@FXML
@@ -65,15 +69,32 @@ public class Controller implements Initializable {
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 	}
 		
-		/*long time = System.currentTimeMillis();
-		if (time > time + 2000) {
-			lblResponse.setText(null);
-		}*/
+		
 	}
 	
 	@FXML
 	public void btnTryAgain_Click(ActionEvent event) {
 		
+	}//can remove if unused
+	public void startTimer(int seconds) {
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+
+			@Override
+			public void run() {
+				txtLetterResponse.set
+			}
+			
+		}
+		timer.schedule(task, delay);
+		
+		timer.schedule(new RemindTask(), seconds*1000)
+		
+		
+		long time = System.currentTimeMillis();
+		if (time > time + 2000) {
+			lblResponse.setText(null);
+		} 
 	}
 	
 	
