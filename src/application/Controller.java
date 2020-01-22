@@ -39,13 +39,14 @@ public class Controller implements Initializable {
 	private Label lblResponse;
 	@FXML
 	private Label lblTitle;
-	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(2000)));
+	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(3500)));
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 				
 		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener 
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
+		this.rndLetterGenerator();
 		
 		stringProperty.addListener(new ChangeListener<String>() {
 		    @Override
@@ -78,17 +79,24 @@ public class Controller implements Initializable {
 		timeLine.play(); 
 		timeLine.pause();
 		timeLine.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again");
+			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
 		}); 
 	}
+	public void rndLetterGenerator() {
+		char c = lblRandomLetter.getText().charAt(0); //will this throw npe if null? at start of app?
+		do {
+			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+		} while (c == lblRandomLetter.getText().charAt(0));
+	
+	}//ensures coincidental repetition of getRandomChar never occurs
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
 		if (btnUserInput.getText().equals("Next")) {
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
 			txtUserInput.clear();
 			txtUserInput.requestFocus();
@@ -101,26 +109,26 @@ public class Controller implements Initializable {
 			timeLine.play();
 		} else if (btnUserInput.getText().equals("Enter")) {
 					
-		/*(!natoAlphabet.equalCheck(txtLetterResponse.getText(),
-				lblRandomLetter.getText().charAt(0))){
-			
-		}*/
-		
-		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+		if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 			lblResponse.setText("Incorrect. Try again!");
-			btnUserInput.setDisable(true);
-		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+			//btnUserInput.setDisable(true);
+        	btnUserInput.setText("Next");
+        	stringProperty.set("");
+			txtUserInput.setEditable(false);
+
+			timeLine.stop();
+		} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 			lblResponse.setText("Correct!");
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+			this.rndLetterGenerator();
 			stringProperty.set("");
 
 			timeLine.stop();
 			timeLine.play();
-		}
+		} 
+		
 			
 			
 		}
-		natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0));
 	}
 
 }
