@@ -29,6 +29,8 @@ public class Controller implements Initializable {
 	@FXML
 	private Button btnUserInput;
 	@FXML
+	private Button btnStart;
+	@FXML
 	private TextField txtUserInput;
 	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
@@ -40,7 +42,6 @@ public class Controller implements Initializable {
 	@FXML
 	private Label lblTimer;
 	Timeline timeLine = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
-	private StringProperty timerValueProperty;
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
 	
@@ -49,7 +50,7 @@ public class Controller implements Initializable {
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
 		lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		lblTimer.setText("20");
+		this.timer("start", 5);
 		
 		btnUserInput.setStyle(
 				"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -88,10 +89,7 @@ public class Controller implements Initializable {
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
 		}); */
-		
-		
-		this.timer("start", 5);
-		
+
 		
 	}
 	public void rndLetterGenerator() {
@@ -131,25 +129,22 @@ public class Controller implements Initializable {
 		});
 		
 		if (string.equals("start")) {
-			lblTimer.setText("2.0s");
+			lblTimer.setText("2.0s"); //should use int i here, in future
 			timeLine.getKeyFrames().add(new KeyFrame(
 					 Duration.millis(100),
 				        event -> {
 				        	this.countDown();
-				    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
-				    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-				    		//lblTimer.textProperty().bind(timerValueProperty);
 				        }
 				    ));
+			timeLine.playFromStart();
+		} else if (string.equals("stop")) {
+			 timeLine.stop();
+		} else if (string.equals("pause")) {
+			timeLine.pause();
+		} else if (string.equals("play")) {
+			timeLine.play();
 		}
-		
 	
-
-		
-		
-		
-		timeLine.play();
-		
 		/*timeLine.getKeyFrames().add(new KeyFrame(Duration.millis(0), 
 			        event -> {
 			        	new KeyFrame(Duration.millis(100), 
@@ -236,10 +231,11 @@ public class Controller implements Initializable {
 			timeLine.stop();
 			timeLine.play();
 		} 
-		
-			
-			
+	
 		}
+	}
+	public void btnStart_Click(ActionEvent event) {
+		//start pgoram
 	}
 
 }
