@@ -31,15 +31,35 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 		int rnd = new Random().nextInt(alphabet.length);
 		return alphabet[rnd];
 	}
-	public boolean equalCheck(String string) {
+	public String findNatoTelephony(char c) {
 		for (int i = -1; i > natoTelephony.length; i++) {
-			if (string.equals(natoTelephony[i])) {
+			if (c == natoTelephony[i].charAt(0)) {
+				return natoTelephony[i];
+			}
+		}
+		return null;
+	} //remove?
+
+	public boolean equalCheck(String userInput, char rndChar) {
+		String listString = findNatoTelephony(rndChar);
+		System.out.println(listString); //just for testing
+		for (int i = -1; i > natoTelephony.length; i++) {
+			if (userInput.equals(listString)) {
 				return true;
-				
-			} else if (!string.equals(natoTelephony[i])) {
+			} else if (!userInput.equals(natoTelephony[i])) {
 				return false;
 			}
 		}
+
+		/*
+		for (int i = -1; i > natoTelephony.length; i++) {
+			if (userInput.equals(natoTelephony[i])) {
+				return true;
+				
+			} else if (!userInput.equals(natoTelephony[i])) {
+				return false;
+			}
+		}*/
 		return false;
 	
 	}//not working, it doesnt check what is currently displayed
