@@ -90,7 +90,7 @@ public class Controller implements Initializable {
 		}); */
 		
 		
-		this.timer("string");
+		this.timer("start", 5);
 		
 		
 	}
@@ -102,7 +102,10 @@ public class Controller implements Initializable {
 	
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
 	public void countDown() {
-		
+
+		s = Integer.valueOf(lblTimer.getText().substring(0, 1));
+		ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
+
 		if (s == 2 && ms == 0) {
 			s--;
 			ms = 9;
@@ -114,13 +117,55 @@ public class Controller implements Initializable {
 		} else if (s == 0 && ms != 0) {
 			ms--;
 		}
-		lblTimer.setText(s + ms + "s");
+		lblTimer.setText(s + "." + ms + "s");
 	
 	}
-	public void timer(String string) {
+	public void timer(String string, int i) {//i should be used to select time [TO-DO]
 		
-		//ny counter med 0, som direkt öppnar en counter med 100ms x 20c (som kallar på countdown), samt en counter 2000ms x 1c (som gör vanliga event-reset-grejerna)
-		timeLine.getKeyFrames().add(new KeyFrame(
+		timeLine.setCycleCount(20);
+		timeLine.setOnFinished(event -> {
+			lblResponse.setText("Time ran out. Try again!");
+        	btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+		});
+		
+		if (string.equals("start")) {
+			lblTimer.setText("2.0s");
+			timeLine.getKeyFrames().add(new KeyFrame(
+					 Duration.millis(100),
+				        event -> {
+				        	this.countDown();
+				    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
+				    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+				    		//lblTimer.textProperty().bind(timerValueProperty);
+				        }
+				    ));
+		}
+		
+	
+
+		
+		
+		
+		timeLine.play();
+		
+		/*timeLine.getKeyFrames().add(new KeyFrame(Duration.millis(0), 
+			        event -> {
+			        	new KeyFrame(Duration.millis(100), 
+				        event -> {
+				        	this.countDown();
+				        });
+			        	timeLine.setCycleCount(20);
+			        	timeLine.play();
+			    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
+			    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+			    		//lblTimer.textProperty().bind(timerValueProperty);
+			        }
+			    ));*/
+		
+		
+		/*timeLine.getKeyFrames().add(new KeyFrame(
 				 Duration.millis(100),
 			        event -> {
 			        	this.countDown();
@@ -128,16 +173,9 @@ public class Controller implements Initializable {
 			    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
 			    		//lblTimer.textProperty().bind(timerValueProperty);
 			        }
-			    ));
+			    ));*/
 		
-		timeLine.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again!");
-        	btnUserInput.setText("Next");
-			stringProperty.set("");
-			txtUserInput.setEditable(false);
-		});
-		timeLine.setCycleCount(20);
-		timeLine.play();
+		
 		
 		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
 		//lblTimer.textProperty().bind(timerValueProperty);
