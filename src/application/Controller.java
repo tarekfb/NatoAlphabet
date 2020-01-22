@@ -93,19 +93,20 @@ public class Controller implements Initializable {
 			txtUserInput.clear();
 			txtUserInput.requestFocus();
 			stringProperty.set("");
+			lblResponse.setText("");
+			btnUserInput.setText("Enter");
+			//make method for this if calling many times?
 			
 			timeLine.stop();
 			timeLine.play();
 		} else if (btnUserInput.getText().equals("Enter")) {
-			
-		
-		//this.btnUserInput.setText("Enter");
-		
-		/*if (!natoAlphabet.equalCheck(txtLetterResponse.getText(), lblRandomLetter.getText().charAt(0))){
+					
+		/*(!natoAlphabet.equalCheck(txtLetterResponse.getText(),
+				lblRandomLetter.getText().charAt(0))){
 			
 		}*/
 		
-		/*if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
 			lblResponse.setText("Incorrect. Try again!");
 			btnUserInput.setDisable(true);
 		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
@@ -115,12 +116,11 @@ public class Controller implements Initializable {
 
 			timeLine.stop();
 			timeLine.play();
-		}*/
-			
-			timeLine.stop();
-			timeLine.play();
 		}
-		
+			
+			
+		}
+		natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0));
 	}
 
 }

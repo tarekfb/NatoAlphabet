@@ -40,8 +40,9 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 		return null;
 	} //remove?
 
-	public boolean equalCheck(String userInput, char c) {
-		String listString = findNatoTelephony(c);
+	public boolean equalCheck(String userInput, char rndChar) {
+		String listString = findNatoTelephony(rndChar);
+		System.out.println(listString); //just for testing
 		for (int i = -1; i > natoTelephony.length; i++) {
 			if (userInput.equals(listString)) {
 				return true;
