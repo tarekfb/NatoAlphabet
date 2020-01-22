@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwand.com/sv/Bokstavering
@@ -32,24 +33,27 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 		return alphabet[rnd];
 	}
 	public String findNatoTelephony(char c) {
-		for (int i = -1; i > natoTelephony.length; i++) {
+		for (int i = 0; i < natoTelephony.length; i++) { // 0 or -1?
 			if (c == natoTelephony[i].charAt(0)) {
 				return natoTelephony[i];
 			}
 		}
 		return null;
-	} //remove?
+	}
 
 	public boolean equalCheck(String userInput, char rndChar) {
 		String listString = findNatoTelephony(rndChar);
 		System.out.println(listString); //just for testing
-		for (int i = -1; i > natoTelephony.length; i++) {
+		if (listString.equals(userInput)) {
+			return true;
+		}
+		/*for (int i = -1; i > natoTelephony.length; i++) {
 			if (userInput.equals(listString)) {
 				return true;
 			} else if (!userInput.equals(natoTelephony[i])) {
 				return false;
 			}
-		}
+		}*/
 
 		/*
 		for (int i = -1; i > natoTelephony.length; i++) {

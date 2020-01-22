@@ -78,7 +78,7 @@ public class Controller implements Initializable {
 		timeLine.play(); 
 		timeLine.pause();
 		timeLine.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again");
+			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
@@ -101,26 +101,31 @@ public class Controller implements Initializable {
 			timeLine.play();
 		} else if (btnUserInput.getText().equals("Enter")) {
 					
-		/*(!natoAlphabet.equalCheck(txtLetterResponse.getText(),
-				lblRandomLetter.getText().charAt(0))){
-			
-		}*/
-		
-		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+		if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 			lblResponse.setText("Incorrect. Try again!");
-			btnUserInput.setDisable(true);
-		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+			//btnUserInput.setDisable(true);
+        	btnUserInput.setText("Next");
+        	stringProperty.set("");
+			txtUserInput.setEditable(false);
+
+			timeLine.stop();
+		} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 			lblResponse.setText("Correct!");
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 			stringProperty.set("");
 
 			timeLine.stop();
 			timeLine.play();
-		}
+		} 
+		/*if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+			
+
+		lse if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+			
+		}*/A
 			
 			
 		}
-		natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0));
 	}
 
 }
