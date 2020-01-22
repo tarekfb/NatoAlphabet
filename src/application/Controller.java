@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 public class Controller implements Initializable {
 	
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	TimerManager timerClass = new TimerManager();
 
 	@FXML
 	private Button btnUserInput;
@@ -38,13 +39,17 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(3500)));
+	Timeline timeLine = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	private StringProperty timerValueProperty;
+	private int s = 0; //mvc?
+	private int ms = 0; //mcv?
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {		
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
 		lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+		lblTimer.setText("20");
 		
 		btnUserInput.setStyle(
 				"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -75,14 +80,19 @@ public class Controller implements Initializable {
 		    }
 		});
 
-		timeLine.play(); 
-		timeLine.pause();
-		timeLine.setOnFinished(event -> {
+		//timeLine.play(); 
+		//timeLine.pause();
+		/*timeLine.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
-		}); 
+		}); */
+		
+		
+		this.timer("string");
+		
+		
 	}
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0); //will this throw npe if null? at start of app?
@@ -90,7 +100,71 @@ public class Controller implements Initializable {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		} while (c == lblRandomLetter.getText().charAt(0));
 	
-	}//ensures coincidental repetition of getRandomChar never occurs
+	}//ensures coincidental labelling repetition using getRandomChar never occurs
+	public void countDown() {
+		
+		if (s == 2 && ms == 0) {
+			s--;
+			ms = 9;
+		} else if (s == 1 && ms == 0){
+			s--;
+			ms = 9;
+		} else if (s == 1){
+			ms--;
+		} else if (s == 0 && ms != 0) {
+			ms--;
+		}
+		lblTimer.setText(s + ms + "s");
+	
+	}
+	public void timer(String string) {
+		
+		//ny counter med 0, som direkt öppnar en counter med 100ms x 20c (som kallar på countdown), samt en counter 2000ms x 1c (som gör vanliga event-reset-grejerna)
+		timeLine.getKeyFrames().add(new KeyFrame(
+				 Duration.millis(100),
+			        event -> {
+			        	this.countDown();
+			    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
+			    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+			    		//lblTimer.textProperty().bind(timerValueProperty);
+			        }
+			    ));
+		
+		timeLine.setOnFinished(event -> {
+			lblResponse.setText("Time ran out. Try again!");
+        	btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+		});
+		timeLine.setCycleCount(20);
+		timeLine.play();
+		
+		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+		//lblTimer.textProperty().bind(timerValueProperty);
+		
+		/*
+		timeLine.getKeyFrames().add(new KeyFrame(
+				 Duration.millis( 1500 ),
+			        event -> {
+			    		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			    		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			    		timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+			    		lblTimer.textProperty().bind(timerValueProperty);
+			        }
+			    ));*/
+		
+		/*
+		timeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+                event -> timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()))), 
+                new KeyFrame(Duration.millis( 1500 ),
+			        event -> {
+			    		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			    		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			        }
+			    ));
+		
+		timeLine.play(); */
+	}
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
