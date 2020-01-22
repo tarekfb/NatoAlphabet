@@ -1,17 +1,14 @@
 package application;
 
 import javafx.scene.control.Button;
-
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
-
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -39,15 +36,25 @@ public class Controller implements Initializable {
 	private Label lblResponse;
 	@FXML
 	private Label lblTitle;
+	@FXML
+	private Label lblTimer;
 	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(3500)));
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-				
-		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener 
+	public void initialize(URL arg0, ResourceBundle arg1) {		
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
+		lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
 		
+		btnUserInput.setStyle(
+				"-fx-base: #0000ff; -fx-font-weight: bold;");
+			lblTitle.setStyle(
+				"-fx-font: 24 arial; -fx-font-weight:"
+				+ "bold; -fx-text-fill: #000000;"
+				+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
+			);
+		
+		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
 		stringProperty.addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
@@ -67,15 +74,7 @@ public class Controller implements Initializable {
 		        }
 		    }
 		});
-		
-		btnUserInput.setStyle(
-			"-fx-base: #0000ff; -fx-font-weight: bold;");
-		lblTitle.setStyle(
-			"-fx-font: 24 arial; -fx-font-weight:"
-			+ "bold; -fx-text-fill: #000000;"
-			+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
-		);
-		
+
 		timeLine.play(); 
 		timeLine.pause();
 		timeLine.setOnFinished(event -> {
