@@ -32,7 +32,7 @@ public class Controller implements Initializable {
 	private Button btnUserInput;
 	@FXML
 	private TextField txtUserInput;
-	private StringProperty stringProperty = new SimpleStringProperty(); //used for ChangeListener
+	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
 	private Label lblRandomLetter;
 	@FXML 
@@ -81,19 +81,31 @@ public class Controller implements Initializable {
 			lblResponse.setText("Time ran out. Try again");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
-			//txtResponseEnter.
+			txtUserInput.setEditable(false);
 		}); 
 	}
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
-		this.btnUserInput.setText("Enter");
+		if (btnUserInput.getText().equals("Next")) {
+			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+			txtUserInput.setEditable(true);
+			txtUserInput.clear();
+			txtUserInput.requestFocus();
+			stringProperty.set("");
+			
+			timeLine.stop();
+			timeLine.play();
+		} else if (btnUserInput.getText().equals("Enter")) {
+			
+		
+		//this.btnUserInput.setText("Enter");
 		
 		/*if (!natoAlphabet.equalCheck(txtLetterResponse.getText(), lblRandomLetter.getText().charAt(0))){
 			
 		}*/
 		
-		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
+		/*if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
 			lblResponse.setText("Incorrect. Try again!");
 			btnUserInput.setDisable(true);
 		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
@@ -101,6 +113,10 @@ public class Controller implements Initializable {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 			stringProperty.set("");
 
+			timeLine.stop();
+			timeLine.play();
+		}*/
+			
 			timeLine.stop();
 			timeLine.play();
 		}
