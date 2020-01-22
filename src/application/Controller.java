@@ -29,9 +29,9 @@ public class Controller implements Initializable {
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
 
 	@FXML
-	private Button btnResponseInput;
+	private Button btnUserInput;
 	@FXML
-	private TextField txtLetterResponse;
+	private TextField txtUserInput;
 	private StringProperty stringProperty = new SimpleStringProperty(); //used for ChangeListener
 	@FXML
 	private Label lblRandomLetter;
@@ -44,30 +44,30 @@ public class Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 				
-		stringProperty = new SimpleStringProperty(txtLetterResponse.getText()); //used for ChangeListener 
+		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener 
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		
 		stringProperty.addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-		    	txtLetterResponse.setText(newValue);
+		    	txtUserInput.setText(newValue);
 		    }
 		});
 		
-		txtLetterResponse.textProperty().addListener(new ChangeListener<String>() {
+		txtUserInput.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
 		        if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
 		        	lblResponse.setText("");
-					btnResponseInput.setText("Enter");
-					btnResponseInput.setDisable(false);
+					btnUserInput.setText("Enter");
+					btnUserInput.setDisable(false);
 					
 		        	stringProperty.set(newValue);
 		        }
 		    }
 		});
 		
-		btnResponseInput.setStyle(
+		btnUserInput.setStyle(
 			"-fx-base: #0000ff; -fx-font-weight: bold;");
 		lblTitle.setStyle(
 			"-fx-font: 24 arial; -fx-font-weight:"
@@ -79,19 +79,24 @@ public class Controller implements Initializable {
 		timeLine.pause();
 		timeLine.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again");
-        	btnResponseInput.setText("Next");
+        	btnUserInput.setText("Next");
 			stringProperty.set("");
+			//txtResponseEnter.
 		}); 
 	}
 	
 	@FXML
-	public void btnResponseInput_Click(ActionEvent event) {
-		this.btnResponseInput.setText("Enter");
+	public void btnUserInput_Click(ActionEvent event) {
+		this.btnUserInput.setText("Enter");
 		
-		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
+		/*if (!natoAlphabet.equalCheck(txtLetterResponse.getText(), lblRandomLetter.getText().charAt(0))){
+			
+		}*/
+		
+		if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
 			lblResponse.setText("Incorrect. Try again!");
-			btnResponseInput.setDisable(true);
-		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtLetterResponse.getText())) {
+			btnUserInput.setDisable(true);
+		} else if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
 			lblResponse.setText("Correct!");
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 			stringProperty.set("");
