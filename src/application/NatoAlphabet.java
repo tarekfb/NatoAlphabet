@@ -43,29 +43,10 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 
 	public boolean equalCheck(String userInput, char rndChar) {
 		String listString = findNatoTelephony(rndChar);
-		System.out.println(listString); //just for testing
 		if (listString.equals(userInput)) {
 			return true;
 		}
-		/*for (int i = -1; i > natoTelephony.length; i++) {
-			if (userInput.equals(listString)) {
-				return true;
-			} else if (!userInput.equals(natoTelephony[i])) {
-				return false;
-			}
-		}*/
-
-		/*
-		for (int i = -1; i > natoTelephony.length; i++) {
-			if (userInput.equals(natoTelephony[i])) {
-				return true;
-				
-			} else if (!userInput.equals(natoTelephony[i])) {
-				return false;
-			}
-		}*/
 		return false;
-	
-	}//not working, it doesnt check what is currently displayed
+	}
 
 }

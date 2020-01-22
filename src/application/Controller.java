@@ -39,13 +39,14 @@ public class Controller implements Initializable {
 	private Label lblResponse;
 	@FXML
 	private Label lblTitle;
-	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(2000)));
+	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(3500)));
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 				
 		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener 
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
+		this.rndLetterGenerator();
 		
 		stringProperty.addListener(new ChangeListener<String>() {
 		    @Override
@@ -84,11 +85,18 @@ public class Controller implements Initializable {
 			txtUserInput.setEditable(false);
 		}); 
 	}
+	public void rndLetterGenerator() {
+		char c = lblRandomLetter.getText().charAt(0); //will this throw npe if null? at start of app?
+		do {
+			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+		} while (c == lblRandomLetter.getText().charAt(0));
+	
+	}//ensures coincidental repetition of getRandomChar never occurs
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
 		if (btnUserInput.getText().equals("Next")) {
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
 			txtUserInput.clear();
 			txtUserInput.requestFocus();
@@ -111,18 +119,13 @@ public class Controller implements Initializable {
 			timeLine.stop();
 		} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 			lblResponse.setText("Correct!");
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+			this.rndLetterGenerator();
 			stringProperty.set("");
 
 			timeLine.stop();
 			timeLine.play();
 		} 
-		/*if (!Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
-			
-
-		lse if (Arrays.asList(natoAlphabet.getNatoTelephony()).contains(txtUserInput.getText())) {
-			
-		}*/A
+		
 			
 			
 		}
