@@ -50,7 +50,7 @@ public class Controller implements Initializable {
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
 		lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		this.timer("start", 5);
+		//this.timer("start", 0);
 		
 		btnUserInput.setStyle(
 				"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -103,7 +103,7 @@ public class Controller implements Initializable {
 
 		s = Integer.valueOf(lblTimer.getText().substring(0, 1));
 		ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
-
+		
 		if (s == 2 && ms == 0) {
 			s--;
 			ms = 9;
@@ -116,6 +116,11 @@ public class Controller implements Initializable {
 			ms--;
 		}
 		lblTimer.setText(s + "." + ms + "s");
+		System.out.println(s + "." + ms + "s"); 
+		// doesn't work because its doing the calculations faster than 100ms
+		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
+		//nvm, it prints 80 times (60 zeros?)
+		
 	
 	}
 	public void timer(String string, int i) {//i should be used to select time [TO-DO]
@@ -211,30 +216,33 @@ public class Controller implements Initializable {
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
 			
-			timeLine.stop();
-			timeLine.play();
-		} else if (btnUserInput.getText().equals("Enter")) {
-					
-		if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
-			lblResponse.setText("Incorrect. Try again!");
-			//btnUserInput.setDisable(true);
-        	btnUserInput.setText("Next");
-        	stringProperty.set("");
-			txtUserInput.setEditable(false);
+			//timeLine.stop();
+			//timeLine.play();
+			this.timer("stop", 2);
+			this.timer("start", 2);
+		} else if (btnUserInput.getText().equals("Enter")) {		
+			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
+				lblResponse.setText("Incorrect. Try again!");
+				//btnUserInput.setDisable(true);
+				btnUserInput.setText("Next");
+				stringProperty.set("");
+				txtUserInput.setEditable(false);
 
-			timeLine.stop();
-		} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
-			lblResponse.setText("Correct!");
-			this.rndLetterGenerator();
-			stringProperty.set("");
-
-			timeLine.stop();
-			timeLine.play();
-		} 
+				//timeLine.stop();
+				timer("stop", 2);
+			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
+				lblResponse.setText("Correct!");
+				this.rndLetterGenerator();
+				stringProperty.set("");
+				
+				this.timer("stop", 2);
+				this.timer("start", 2);
+			} 
 	
 		}
 	}
 	public void btnStart_Click(ActionEvent event) {
+		this.timer("start", 2);
 		//start pgoram
 	}
 

@@ -70,9 +70,9 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="btnStart" layoutX="21.0" layoutY="160.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="59.0" prefWidth="87.0" text="Start">
+            <Button fx:id="btnStart" layoutX="14.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="35.0" prefWidth="55.0" text="Start">
                <font>
-                  <Font size="21.0" />
+                  <Font size="14.0" />
                </font>
             </Button>
          </children>
