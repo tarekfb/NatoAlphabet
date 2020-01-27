@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -35,6 +36,8 @@ public class Controller implements Initializable {
 	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
 	private Label lblRandomLetter;
+	@FXML
+	private Label lblProgressCounter;
 	@FXML 
 	private Label lblResponse;
 	@FXML
@@ -227,11 +230,13 @@ public class Controller implements Initializable {
 				btnUserInput.setText("Next");
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
+				lblProgressCounter.setText("Score: "+ String.valueOf(progressCounter(false)) + "/" + String.valueOf());
 
-				//timeLine.stop();
 				timer("stop", 2);
 			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 				lblResponse.setText("Correct!");
+				this.progressCounter(true);
+				lblProgressCounter.setText("Score: " + String.valueOf(progressCounter(true)) + "/" );
 				this.rndLetterGenerator();
 				stringProperty.set("");
 				
@@ -243,7 +248,18 @@ public class Controller implements Initializable {
 	}
 	public void btnStart_Click(ActionEvent event) {
 		this.timer("start", 2);
-		//start pgoram
+		//start program
 	}
+	public int progressCounter(boolean b){
+		natoAlphabet.setTotalCount(natoAlphabet.getTotalCount() + 1);
+		if (b) {
+			natoAlphabet.setProgressCount(natoAlphabet.getProgressCount() + 1);
+		} else if (!b) {
+			lblProgressCounter.setText("test");
+		}
+		return natoAlphabet.getProgressCount();
+		
+	}
+
 
 }

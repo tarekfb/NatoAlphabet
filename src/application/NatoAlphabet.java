@@ -1,6 +1,5 @@
 package application;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwand.com/sv/Bokstavering
@@ -11,6 +10,8 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 			"Victor", "Whiskey", "X-ray", "Yankee", "Zulu",
 	};
 	private char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+	private int progressCount = 0;
+	private int totalCounter = 0;
 
 	public String[] getNatoTelephony() {
 		return natoTelephony;
@@ -47,6 +48,18 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 			return true;
 		}
 		return false;
+	}
+	public int getProgressCount() {
+		return progressCount;
+	}
+	public void setProgressCount(int progressCount) {
+		this.progressCount = progressCount;
+	}
+	public int getTotalCount() {
+		return totalCounter;
+	}
+	public void setTotalCount(int totalCount) {
+		this.totalCounter = totalCount;
 	}
 
 }
