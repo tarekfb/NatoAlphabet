@@ -44,18 +44,28 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	Timeline timeline; //= new Timeline(); //(new KeyFrame(Duration.millis(3500)));
-	KeyFrame kf = new KeyFrame(
-					 Duration.millis(100),
-				        event -> {
-				        	this.countDown();
-				        }
-				    );
+	Timeline timeline = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	KeyFrame keyframe = new KeyFrame(
+			 Duration.millis(100),
+		        event -> {
+		        	this.countDown();
+		        }
+		    );
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {		
+	public void initialize(URL arg0, ResourceBundle arg1) {	
+		//maybe remove later
+		timeline.getKeyFrames().add(keyframe);
+		timeline.setCycleCount(20);
+		timeline.setOnFinished(event -> {
+			lblResponse.setText("Time ran out. Try again!");
+        	btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+		});
+		
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
 		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
@@ -92,7 +102,7 @@ public class Controller implements Initializable {
 
 	}
 	public void rndLetterGenerator() {
-		char c = lblRandomLetter.getText().charAt(0); //will this throw npe if null? at start of app?
+		char c = lblRandomLetter.getText().charAt(0);
 		do {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		} while (c == lblRandomLetter.getText().charAt(0));
@@ -122,22 +132,27 @@ public class Controller implements Initializable {
 	
 	}
 	public void timer(String string, int i) {//i should be used to select time [TO-DO]
-		timeline = new Timeline();
-		timeline.pause();
+		//Timeline timeline = new Timeline();
+		//timeline.pause();
 
-		timeline.setCycleCount(20);
+		/*timeline.setCycleCount(20);
 		timeline.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
-		});
+		});*/
 		
 		if (string.equals("start")) {
 			
 			timeline.stop();
-			lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
-			timeline.getKeyFrames().add(kf);
+			lblTimer.setText("2.0s"); //should use int i here, in future, and then update displaycounter to work with any number
+			/*timeline.getKeyFrames().add(new KeyFrame(
+					 Duration.millis(100),
+				        event -> {
+				        	this.countDown();
+				        }
+				    ));*/
 			timeline.playFromStart();
 		} else if (string.equals("stop")) {
 			 timeline.stop();
