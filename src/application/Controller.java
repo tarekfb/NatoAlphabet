@@ -3,6 +3,8 @@ package application;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ public class Controller implements Initializable {
 	private TextField txtUserInput;
 	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
+	private TextField txtMaxQuestions;
+	private int maxQuestions = 50; //change back to 0
+	@FXML
 	private Label lblRandomLetter;
 	@FXML
 	private Label lblProgressCounter;
@@ -44,16 +49,31 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	//Timeline timeLine;// = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	Timeline timeline = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	KeyFrame keyframe = new KeyFrame(
+			 Duration.millis(100),
+		        event -> {
+		        	this.countDown();
+		        }
+		    );
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {		
+	public void initialize(URL arg0, ResourceBundle arg1) {	
+		timeline.getKeyFrames().add(keyframe);
+		timeline.setCycleCount(20);
+		timeline.setOnFinished(event -> {
+			lblResponse.setText("Time ran out. Try again!");
+        	btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+		});
+		
+		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit"));
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
-		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		lblTimer.setText("0s");
+		lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
 		
 		btnUserInput.setStyle(
 				"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -86,7 +106,7 @@ public class Controller implements Initializable {
 
 	}
 	public void rndLetterGenerator() {
-		char c = lblRandomLetter.getText().charAt(0); //will this throw npe if null? at start of app?
+		char c = lblRandomLetter.getText().charAt(0);
 		do {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		} while (c == lblRandomLetter.getText().charAt(0));
@@ -109,35 +129,34 @@ public class Controller implements Initializable {
 			ms--;
 		}
 		lblTimer.setText(s + "." + ms + "s");
-		System.out.println(s + "." + ms + "s"); 
-		// doesn't work because its doing the calculations faster than 100ms
+		//doesn't work because its doing the calculations faster than 100ms
 		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
 		//nvm, it prints 80 times (60 zeros?)
-		
+		//SOLVED: by instansiating keyframe in initialize()
 	
 	}
 	public void timer(String string, int i) {//i should be used to select time [TO-DO]
-		Timeline timeline = new Timeline();
-		timeline.pause();
+		//Timeline timeline = new Timeline();
+		//timeline.pause();
 
-		timeline.setCycleCount(20);
+		/*timeline.setCycleCount(20);
 		timeline.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
-		});
+		});*/
 		
 		if (string.equals("start")) {
 			
 			timeline.stop();
-			lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
-			timeline.getKeyFrames().add(new KeyFrame(
+			lblTimer.setText("2.0s"); //should use int i here, in future, and then update displaycounter to work with any number
+			/*timeline.getKeyFrames().add(new KeyFrame(
 					 Duration.millis(100),
 				        event -> {
 				        	this.countDown();
 				        }
-				    ));
+				    ));*/
 			timeline.playFromStart();
 		} else if (string.equals("stop")) {
 			 timeline.stop();
@@ -147,12 +166,27 @@ public class Controller implements Initializable {
 			timeline.play();
 		}
 	
+		/*if (string.equals("start")) {
 		
+		timeline.stop();
+		lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
+		timeline.getKeyFrames().add(new KeyFrame(
+				 Duration.millis(100),
+			        event -> {
+			        	this.countDown();
+			        }
+			    ));
+		timeline.playFromStart();*/
 	}
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
-		if (btnUserInput.getText().equals("Next")) {
+		//if (maxQuestions != 0) { //redesign
+			if (maxQuestions == natoAlphabet.getTotalCounter()){
+				btnUserInput.setDisable(true);
+				String score = this.lblProgressCounter.getText();
+				lblResponse.setText("Game over!\n" + score);
+			} else if (btnUserInput.getText().equals("Next")) {
 			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
 			txtUserInput.clear();
@@ -187,8 +221,11 @@ public class Controller implements Initializable {
 		}
 	}
 	public void btnStart_Click(ActionEvent event) {
+		if (!txtMaxQuestions.getText().isBlank()) {
+			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
+		}
 		this.timer("start", 2);
-		//start program
+		
 	}
 	public void scoreCounter(boolean b){
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);

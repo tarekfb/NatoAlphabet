@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="369.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <top>
       <Label fx:id="lblTitle" prefHeight="41.0" prefWidth="321.0" text="NATO Alphabet: The Game" BorderPane.alignment="CENTER">
          <font>
@@ -49,7 +49,7 @@
                   <TextField fx:id="txtUserInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />   
                </children>
             </GridPane>
-            <Label fx:id="lblResponse" alignment="CENTER" layoutX="84.0" layoutY="160.0" prefHeight="22.0" prefWidth="166.0">
+            <Label fx:id="lblResponse" alignment="CENTER" layoutX="107.0" layoutY="160.0" prefHeight="82.0" prefWidth="166.0" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>
@@ -70,14 +70,20 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="btnStart" layoutX="14.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="35.0" prefWidth="55.0" text="Start">
+            <Button fx:id="btnStart" layoutX="286.0" layoutY="264.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="35.0" prefWidth="55.0" text="Start">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Label fx:id="lblProgressCounter" layoutX="278.0" layoutY="201.0" text="Score: 0/10" wrapText="true">
+            <Label fx:id="lblProgressCounter" layoutX="372.0" layoutY="272.0" text="Score: 0/10" wrapText="true">
                <font>
                   <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtMaxQuestions" layoutX="178.0" layoutY="268.0" prefHeight="26.0" prefWidth="49.0" />
+            <Label layoutX="21.0" layoutY="270.0" text="How many questions?">
+               <font>
+                  <Font size="15.0" />
                </font>
             </Label>
          </children>
