@@ -219,8 +219,6 @@ public class Controller implements Initializable {
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
 			
-			//timeLine.stop();
-			//timeLine.play();
 			this.timer("stop", 2);
 			this.timer("start", 2);
 		} else if (btnUserInput.getText().equals("Enter")) {		
