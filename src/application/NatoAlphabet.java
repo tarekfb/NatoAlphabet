@@ -49,16 +49,16 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 		}
 		return false;
 	}
-	public int getProgressCount() {
+	public int getProgressCounter() {
 		return progressCount;
 	}
-	public void setProgressCount(int progressCount) {
+	public void setProgressCounter(int progressCount) {
 		this.progressCount = progressCount;
 	}
-	public int getTotalCount() {
+	public int getTotalCounter() {
 		return totalCounter;
 	}
-	public void setTotalCount(int totalCount) {
+	public void setTotalCounter(int totalCount) {
 		this.totalCounter = totalCount;
 	}
 
