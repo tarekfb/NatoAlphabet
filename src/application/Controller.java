@@ -44,7 +44,13 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	//Timeline timeLine;// = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	Timeline timeline; //= new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	KeyFrame kf = new KeyFrame(
+					 Duration.millis(100),
+				        event -> {
+				        	this.countDown();
+				        }
+				    );
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
 	
@@ -110,14 +116,13 @@ public class Controller implements Initializable {
 		}
 		lblTimer.setText(s + "." + ms + "s");
 		System.out.println(s + "." + ms + "s"); 
-		// doesn't work because its doing the calculations faster than 100ms
+		//doesn't work because its doing the calculations faster than 100ms
 		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
 		//nvm, it prints 80 times (60 zeros?)
-		
 	
 	}
 	public void timer(String string, int i) {//i should be used to select time [TO-DO]
-		Timeline timeline = new Timeline();
+		timeline = new Timeline();
 		timeline.pause();
 
 		timeline.setCycleCount(20);
@@ -132,12 +137,7 @@ public class Controller implements Initializable {
 			
 			timeline.stop();
 			lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
-			timeline.getKeyFrames().add(new KeyFrame(
-					 Duration.millis(100),
-				        event -> {
-				        	this.countDown();
-				        }
-				    ));
+			timeline.getKeyFrames().add(kf);
 			timeline.playFromStart();
 		} else if (string.equals("stop")) {
 			 timeline.stop();
@@ -147,7 +147,17 @@ public class Controller implements Initializable {
 			timeline.play();
 		}
 	
+		/*if (string.equals("start")) {
 		
+		timeline.stop();
+		lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
+		timeline.getKeyFrames().add(new KeyFrame(
+				 Duration.millis(100),
+			        event -> {
+			        	this.countDown();
+			        }
+			    ));
+		timeline.playFromStart();*/
 	}
 	
 	@FXML
