@@ -38,7 +38,7 @@ public class Controller implements Initializable {
 	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
 	private TextField txtMaxQuestions;
-	private int maxQuestions;
+	private int maxQuestions = 50; //change back to 0
 	@FXML
 	private Label lblRandomLetter;
 	@FXML
@@ -181,14 +181,12 @@ public class Controller implements Initializable {
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
-		if (maxQuestions != 0) {
+		//if (maxQuestions != 0) { //redesign
 			if (maxQuestions == natoAlphabet.getTotalCounter()){
 				btnUserInput.setDisable(true);
 				String score = this.lblProgressCounter.getText();
-				lblResponse.setText("Game over. Your score is: " + score);
-			}
-		}
-		else if (btnUserInput.getText().equals("Next")) {
+				lblResponse.setText("Game over!\n" + score);
+			} else if (btnUserInput.getText().equals("Next")) {
 			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
 			txtUserInput.clear();
@@ -223,7 +221,7 @@ public class Controller implements Initializable {
 		}
 	}
 	public void btnStart_Click(ActionEvent event) {
-		if (txtMaxQuestions.getText() != null) {
+		if (!txtMaxQuestions.getText().isBlank()) {
 			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
 		}
 		this.timer("start", 2);
