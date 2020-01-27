@@ -220,12 +220,51 @@ public class Controller implements Initializable {
 	
 		}
 	}
+	
 	public void btnStart_Click(ActionEvent event) {
 		if (!txtMaxQuestions.getText().isBlank()) {
 			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
 		}
-		this.timer("start", 2);
+		//this.timer("start", 2);
+		txtMaxQuestions.clear();
+		btnStart.setDisable(true);
+		txtMaxQuestions.setEditable(false);
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				//btnUserInput.setText("test");
+				lblResponse.setText("test");
+			}
+		}, 5, 5);
+		https://stackoverflow.com/questions/9413656/how-to-use-timer-class-to-call-a-method-do-something-reset-timer-repeat
+		https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ScheduledExecutorService.html
+		Do you specifically want a Timer? If not you're probably better off with a ScheduledExecutorService and calling scheduleAtFixedRate or scheduleWithFixedDelay; quoting the Javadocs:
 		
+		
+		/*
+		KeyFrame keyframe = new KeyFrame(Duration.s(1), null, null);
+		KeyFrame keyframe = new KeyFrame(
+				 Duration.millis(100),
+			        event -> {
+			        	this.countDown();
+		KeyFrame kf = new KeyFrame(
+				 Duration.millis(100),
+			        event -> {
+						lblResponse.setText("test");
+			        });
+		Timeline startTimer = new Timeline(new KeyFrame(
+				Duration.seconds(1),
+					event -> {
+						lblResponse.setText("test");
+					}
+
+		Timeline timeline = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+		KeyFrame keyframe = new KeyFrame(
+				 Duration.millis(100),
+			        event -> {
+			        	this.countDown();
+			        	*/
 	}
 	public void scoreCounter(boolean b){
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
@@ -233,6 +272,7 @@ public class Controller implements Initializable {
 			natoAlphabet.setProgressCounter(natoAlphabet.getProgressCounter() + 1);
 		}
 		lblProgressCounter.setText("Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/" + String.valueOf(natoAlphabet.getTotalCounter()) );
+		
 
 	}
 	
