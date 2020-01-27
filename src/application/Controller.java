@@ -3,6 +3,8 @@ package application;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ public class Controller implements Initializable {
 	private TextField txtUserInput;
 	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
+	private TextField txtMaxQuestions;
+	private int maxQuestions;
+	@FXML
 	private Label lblRandomLetter;
 	@FXML
 	private Label lblProgressCounter;
@@ -56,7 +61,6 @@ public class Controller implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {	
-		//maybe remove later
 		timeline.getKeyFrames().add(keyframe);
 		timeline.setCycleCount(20);
 		timeline.setOnFinished(event -> {
@@ -66,10 +70,10 @@ public class Controller implements Initializable {
 			txtUserInput.setEditable(false);
 		});
 		
+		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit"));
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
-		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		lblTimer.setText("0s");
+		lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
 		
 		btnUserInput.setStyle(
 				"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -125,10 +129,10 @@ public class Controller implements Initializable {
 			ms--;
 		}
 		lblTimer.setText(s + "." + ms + "s");
-		System.out.println(s + "." + ms + "s"); 
 		//doesn't work because its doing the calculations faster than 100ms
 		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
 		//nvm, it prints 80 times (60 zeros?)
+		//SOLVED: by instansiating keyframe in initialize()
 	
 	}
 	public void timer(String string, int i) {//i should be used to select time [TO-DO]
@@ -177,7 +181,14 @@ public class Controller implements Initializable {
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
-		if (btnUserInput.getText().equals("Next")) {
+		if (maxQuestions != 0) {
+			if (maxQuestions == natoAlphabet.getTotalCounter()){
+				btnUserInput.setDisable(true);
+				String score = this.lblProgressCounter.getText();
+				lblResponse.setText("Game over. Your score is: " + score);
+			}
+		}
+		else if (btnUserInput.getText().equals("Next")) {
 			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
 			txtUserInput.clear();
@@ -212,8 +223,11 @@ public class Controller implements Initializable {
 		}
 	}
 	public void btnStart_Click(ActionEvent event) {
+		if (txtMaxQuestions.getText() != null) {
+			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
+		}
 		this.timer("start", 2);
-		//start program
+		
 	}
 	public void scoreCounter(boolean b){
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
