@@ -44,7 +44,7 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	Timeline timeLine; // = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	//Timeline timeLine;// = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
 	
@@ -84,16 +84,6 @@ public class Controller implements Initializable {
 		    }
 		});
 
-		//timeLine.play(); 
-		//timeLine.pause();
-		/*timeLine.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again!");
-        	btnUserInput.setText("Next");
-			stringProperty.set("");
-			txtUserInput.setEditable(false);
-		}); */
-
-		
 	}
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0); //will this throw npe if null? at start of app?
@@ -127,10 +117,11 @@ public class Controller implements Initializable {
 	
 	}
 	public void timer(String string, int i) {//i should be used to select time [TO-DO]
-		
-		timeLine = new Timeline();
-		timeLine.setCycleCount(20);
-		timeLine.setOnFinished(event -> {
+		Timeline timeline = new Timeline();
+		timeline.pause();
+
+		timeline.setCycleCount(20);
+		timeline.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
@@ -138,75 +129,25 @@ public class Controller implements Initializable {
 		});
 		
 		if (string.equals("start")) {
-			timeLine.stop();
+			
+			timeline.stop();
 			lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
-			timeLine.getKeyFrames().add(new KeyFrame(
+			timeline.getKeyFrames().add(new KeyFrame(
 					 Duration.millis(100),
 				        event -> {
 				        	this.countDown();
 				        }
 				    ));
-			timeLine.playFromStart();
+			timeline.playFromStart();
 		} else if (string.equals("stop")) {
-			 timeLine.stop();
+			 timeline.stop();
 		} else if (string.equals("pause")) {
-			timeLine.pause();
+			timeline.pause();
 		} else if (string.equals("play")) {
-			timeLine.play();
+			timeline.play();
 		}
 	
-		/*timeLine.getKeyFrames().add(new KeyFrame(Duration.millis(0), 
-			        event -> {
-			        	new KeyFrame(Duration.millis(100), 
-				        event -> {
-				        	this.countDown();
-				        });
-			        	timeLine.setCycleCount(20);
-			        	timeLine.play();
-			    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
-			    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-			    		//lblTimer.textProperty().bind(timerValueProperty);
-			        }
-			    ));*/
 		
-		
-		/*timeLine.getKeyFrames().add(new KeyFrame(
-				 Duration.millis(100),
-			        event -> {
-			        	this.countDown();
-			    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
-			    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-			    		//lblTimer.textProperty().bind(timerValueProperty);
-			        }
-			    ));*/
-		
-		
-		
-		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-		//lblTimer.textProperty().bind(timerValueProperty);
-		
-		/*
-		timeLine.getKeyFrames().add(new KeyFrame(
-				 Duration.millis( 1500 ),
-			        event -> {
-			    		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-			    		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-			    		timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-			    		lblTimer.textProperty().bind(timerValueProperty);
-			        }
-			    ));*/
-		
-		/*
-		timeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-                event -> timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()))), 
-                new KeyFrame(Duration.millis( 1500 ),
-			        event -> {
-			    		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-			    		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-			        }
-			    ));
-		
-		timeLine.play(); */
 	}
 	
 	@FXML
@@ -221,7 +162,8 @@ public class Controller implements Initializable {
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
 			
-			this.timer("stop", 2);
+			this.timer("stop", 2); //seems as if stop here doesn't stop the current active thread. 
+			// Does it have no effect because its invoking the method, creating a new timeline, rendering 'stop' useless?
 			this.timer("start", 2);
 		} else if (btnUserInput.getText().equals("Enter")) {		
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
@@ -254,9 +196,61 @@ public class Controller implements Initializable {
 			natoAlphabet.setProgressCounter(natoAlphabet.getProgressCounter() + 1);
 		}
 		lblProgressCounter.setText("Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/" + String.valueOf(natoAlphabet.getTotalCounter()) );
-		
-		
-	}
 
+	}
+	
+	//a bunch of notes from timeline experiments
+	/*timeLine.getKeyFrames().add(new KeyFrame(Duration.millis(0), 
+    event -> {
+    	new KeyFrame(Duration.millis(100), 
+        event -> {
+        	this.countDown();
+        });
+    	timeLine.setCycleCount(20);
+    	timeLine.play();
+		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
+		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+		//lblTimer.textProperty().bind(timerValueProperty);
+    }
+));*/
+
+
+/*timeLine.getKeyFrames().add(new KeyFrame(
+ Duration.millis(100),
+    event -> {
+    	this.countDown();
+		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
+		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+		//lblTimer.textProperty().bind(timerValueProperty);
+    }
+));*/
+
+
+
+//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+//lblTimer.textProperty().bind(timerValueProperty);
+
+/*
+timeLine.getKeyFrames().add(new KeyFrame(
+ Duration.millis( 1500 ),
+    event -> {
+		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+		timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+		lblTimer.textProperty().bind(timerValueProperty);
+    }
+));*/
+
+/*
+timeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+event -> timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()))), 
+new KeyFrame(Duration.millis( 1500 ),
+    event -> {
+		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+    }
+));
+
+timeLine.play(); */
 
 }
