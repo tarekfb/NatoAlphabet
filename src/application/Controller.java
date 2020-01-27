@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -24,27 +25,35 @@ import javafx.fxml.Initializable;
 public class Controller implements Initializable {
 	
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	TimerManager timerClass = new TimerManager();
 
 	@FXML
 	private Button btnUserInput;
+	@FXML
+	private Button btnStart;
 	@FXML
 	private TextField txtUserInput;
 	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
 	private Label lblRandomLetter;
+	@FXML
+	private Label lblProgressCounter;
 	@FXML 
 	private Label lblResponse;
 	@FXML
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	Timeline timeLine = new Timeline(new KeyFrame(Duration.millis(3500)));
+	Timeline timeLine = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	private int s = 0; //mvc?
+	private int ms = 0; //mcv?
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {		
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
 		lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+		//this.timer("start", 0);
 		
 		btnUserInput.setStyle(
 				"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -75,14 +84,16 @@ public class Controller implements Initializable {
 		    }
 		});
 
-		timeLine.play(); 
-		timeLine.pause();
-		timeLine.setOnFinished(event -> {
+		//timeLine.play(); 
+		//timeLine.pause();
+		/*timeLine.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
-		}); 
+		}); */
+
+		
 	}
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0); //will this throw npe if null? at start of app?
@@ -90,7 +101,111 @@ public class Controller implements Initializable {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		} while (c == lblRandomLetter.getText().charAt(0));
 	
-	}//ensures coincidental repetition of getRandomChar never occurs
+	}//ensures coincidental labelling repetition using getRandomChar never occurs
+	public void countDown() {
+
+		s = Integer.valueOf(lblTimer.getText().substring(0, 1));
+		ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
+		
+		if (s == 2 && ms == 0) {
+			s--;
+			ms = 9;
+		} else if (s == 1 && ms == 0){
+			s--;
+			ms = 9;
+		} else if (s == 1){
+			ms--;
+		} else if (s == 0 && ms != 0) {
+			ms--;
+		}
+		lblTimer.setText(s + "." + ms + "s");
+		System.out.println(s + "." + ms + "s"); 
+		// doesn't work because its doing the calculations faster than 100ms
+		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
+		//nvm, it prints 80 times (60 zeros?)
+		
+	
+	}
+	public void timer(String string, int i) {//i should be used to select time [TO-DO]
+		
+		timeLine.setCycleCount(20);
+		timeLine.setOnFinished(event -> {
+			lblResponse.setText("Time ran out. Try again!");
+        	btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+		});
+		
+		if (string.equals("start")) {
+			lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
+			timeLine.getKeyFrames().add(new KeyFrame(
+					 Duration.millis(100),
+				        event -> {
+				        	this.countDown();
+				        }
+				    ));
+			timeLine.playFromStart();
+		} else if (string.equals("stop")) {
+			 timeLine.stop();
+		} else if (string.equals("pause")) {
+			timeLine.pause();
+		} else if (string.equals("play")) {
+			timeLine.play();
+		}
+	
+		/*timeLine.getKeyFrames().add(new KeyFrame(Duration.millis(0), 
+			        event -> {
+			        	new KeyFrame(Duration.millis(100), 
+				        event -> {
+				        	this.countDown();
+				        });
+			        	timeLine.setCycleCount(20);
+			        	timeLine.play();
+			    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
+			    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+			    		//lblTimer.textProperty().bind(timerValueProperty);
+			        }
+			    ));*/
+		
+		
+		/*timeLine.getKeyFrames().add(new KeyFrame(
+				 Duration.millis(100),
+			        event -> {
+			        	this.countDown();
+			    		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
+			    		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+			    		//lblTimer.textProperty().bind(timerValueProperty);
+			        }
+			    ));*/
+		
+		
+		
+		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+		//lblTimer.textProperty().bind(timerValueProperty);
+		
+		/*
+		timeLine.getKeyFrames().add(new KeyFrame(
+				 Duration.millis( 1500 ),
+			        event -> {
+			    		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			    		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			    		timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
+			    		lblTimer.textProperty().bind(timerValueProperty);
+			        }
+			    ));*/
+		
+		/*
+		timeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+                event -> timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()))), 
+                new KeyFrame(Duration.millis( 1500 ),
+			        event -> {
+			    		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			    		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+			        }
+			    ));
+		
+		timeLine.play(); */
+	}
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
@@ -104,30 +219,42 @@ public class Controller implements Initializable {
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
 			
-			timeLine.stop();
-			timeLine.play();
-		} else if (btnUserInput.getText().equals("Enter")) {
-					
-		if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
-			lblResponse.setText("Incorrect. Try again!");
-			//btnUserInput.setDisable(true);
-        	btnUserInput.setText("Next");
-        	stringProperty.set("");
-			txtUserInput.setEditable(false);
-
-			timeLine.stop();
-		} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
-			lblResponse.setText("Correct!");
-			this.rndLetterGenerator();
-			stringProperty.set("");
-
-			timeLine.stop();
-			timeLine.play();
-		} 
-		
-			
-			
+			this.timer("stop", 2);
+			this.timer("start", 2);
+		} else if (btnUserInput.getText().equals("Enter")) {		
+			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
+				lblResponse.setText("Incorrect. Try again!");
+				//btnUserInput.setDisable(true);
+				btnUserInput.setText("Next");
+				stringProperty.set("");
+				txtUserInput.setEditable(false);
+				this.scoreCounter(false);
+				timer("stop", 2);
+			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
+				lblResponse.setText("Correct!");
+				this.scoreCounter(true);
+				this.rndLetterGenerator();
+				stringProperty.set("");
+				
+				this.timer("stop", 2);
+				this.timer("start", 2);
+			} 
+	
 		}
 	}
+	public void btnStart_Click(ActionEvent event) {
+		this.timer("start", 2);
+		//start program
+	}
+	public void scoreCounter(boolean b){
+		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
+		if (b) {
+			natoAlphabet.setProgressCounter(natoAlphabet.getProgressCounter() + 1);
+		}
+		lblProgressCounter.setText("Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/" + String.valueOf(natoAlphabet.getTotalCounter()) );
+		
+		
+	}
+
 
 }
