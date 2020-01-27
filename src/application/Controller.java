@@ -240,7 +240,7 @@ public class Controller implements Initializable {
 		https://stackoverflow.com/questions/9413656/how-to-use-timer-class-to-call-a-method-do-something-reset-timer-repeat
 		https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ScheduledExecutorService.html
 		Do you specifically want a Timer? If not you're probably better off with a ScheduledExecutorService and calling scheduleAtFixedRate or scheduleWithFixedDelay; quoting the Javadocs:
-		
+		Verkar som att de finns bättre lösningar än timeline
 		
 		/*
 		KeyFrame keyframe = new KeyFrame(Duration.s(1), null, null);
