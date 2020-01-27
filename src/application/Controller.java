@@ -44,7 +44,7 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	Timeline timeLine = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	Timeline timeLine; // = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
 	
@@ -52,8 +52,8 @@ public class Controller implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {		
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
-		lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		//this.timer("start", 0);
+		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
+		lblTimer.setText("0s");
 		
 		btnUserInput.setStyle(
 				"-fx-base: #0000ff; -fx-font-weight: bold;");
@@ -128,6 +128,7 @@ public class Controller implements Initializable {
 	}
 	public void timer(String string, int i) {//i should be used to select time [TO-DO]
 		
+		timeLine = new Timeline();
 		timeLine.setCycleCount(20);
 		timeLine.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again!");
@@ -137,6 +138,7 @@ public class Controller implements Initializable {
 		});
 		
 		if (string.equals("start")) {
+			timeLine.stop();
 			lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
 			timeLine.getKeyFrames().add(new KeyFrame(
 					 Duration.millis(100),
