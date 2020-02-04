@@ -38,7 +38,10 @@ public class Controller implements Initializable {
 	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
 	@FXML
 	private TextField txtMaxQuestions;
-	private int maxQuestions = 50; //change back to 0
+	private int maxQuestions = 5; //change back to 0 and do 0-check
+	@FXML
+	private TextField txtTimeLimit;
+	private int timeLimit = 3;
 	@FXML
 	private Label lblRandomLetter;
 	@FXML
@@ -60,28 +63,21 @@ public class Controller implements Initializable {
 	private int ms = 0; //mcv?
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {	
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.setStyle();
+		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
+		this.rndLetterGenerator();
+		lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
+		
 		timeline.getKeyFrames().add(keyframe);
-		timeline.setCycleCount(20);
+		timeline.setCycleCount(timeLimit * 10);
 		timeline.setOnFinished(event -> {
 			lblResponse.setText("Time ran out. Try again!");
         	btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
 		});
-		
-		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit"));
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
-		this.rndLetterGenerator();
-		lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
-		
-		btnUserInput.setStyle(
-				"-fx-base: #0000ff; -fx-font-weight: bold;");
-			lblTitle.setStyle(
-				"-fx-font: 24 arial; -fx-font-weight:"
-				+ "bold; -fx-text-fill: #000000;"
-				+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
-			);
 		
 		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
 		stringProperty.addListener(new ChangeListener<String>() {
@@ -113,10 +109,18 @@ public class Controller implements Initializable {
 	
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
 	public void countDown() {
-
 		s = Integer.valueOf(lblTimer.getText().substring(0, 1));
 		ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
 		
+		if (s != 0 && ms == 0) {
+			s--;
+			ms = 9;
+		} else if (ms != 0) {
+			ms--;
+		}
+		
+		//else if (ms )
+		/*
 		if (s == 2 && ms == 0) {
 			s--;
 			ms = 9;
@@ -128,6 +132,8 @@ public class Controller implements Initializable {
 		} else if (s == 0 && ms != 0) {
 			ms--;
 		}
+		*/
+		
 		lblTimer.setText(s + "." + ms + "s");
 		//doesn't work because its doing the calculations faster than 100ms
 		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
@@ -135,7 +141,7 @@ public class Controller implements Initializable {
 		//SOLVED: by instansiating keyframe in initialize()
 	
 	}
-	public void timer(String string, int i) {//i should be used to select time [TO-DO]
+	public void timer(String string) {
 		//Timeline timeline = new Timeline();
 		//timeline.pause();
 
@@ -148,9 +154,8 @@ public class Controller implements Initializable {
 		});*/
 		
 		if (string.equals("start")) {
-			
 			timeline.stop();
-			lblTimer.setText("2.0s"); //should use int i here, in future, and then update displaycounter to work with any number
+			lblTimer.setText(String.valueOf(timeLimit) + ".0s"); //should use int i here, in future, and then update displaycounter to work with any number
 			/*timeline.getKeyFrames().add(new KeyFrame(
 					 Duration.millis(100),
 				        event -> {
@@ -181,12 +186,8 @@ public class Controller implements Initializable {
 	
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
-		//if (maxQuestions != 0) { //redesign
-			if (maxQuestions == natoAlphabet.getTotalCounter()){
-				btnUserInput.setDisable(true);
-				String score = this.lblProgressCounter.getText();
-				lblResponse.setText("Game over!\n" + score);
-			} else if (btnUserInput.getText().equals("Next")) {
+		if (this.gameOverCheckExe());
+		else if (btnUserInput.getText().equals("Next")) {
 			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
 			txtUserInput.clear();
@@ -196,9 +197,9 @@ public class Controller implements Initializable {
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
 			
-			this.timer("stop", 2); //seems as if stop here doesn't stop the current active thread. 
+			this.timer("stop"); //seems as if stop here doesn't stop the current active thread. 
 			// Does it have no effect because its invoking the method, creating a new timeline, rendering 'stop' useless?
-			this.timer("start", 2);
+			this.timer("start");
 		} else if (btnUserInput.getText().equals("Enter")) {		
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 				lblResponse.setText("Incorrect. Try again!");
@@ -207,127 +208,79 @@ public class Controller implements Initializable {
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
 				this.scoreCounter(false);
-				timer("stop", 2);
+				timer("stop");
 			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 				lblResponse.setText("Correct!");
 				this.scoreCounter(true);
 				this.rndLetterGenerator();
 				stringProperty.set("");
 				
-				this.timer("stop", 2);
-				this.timer("start", 2);
+				this.timer("stop");
+				this.timer("start");
 			} 
 	
 		}
 	}
 	
 	public void btnStart_Click(ActionEvent event) {
+		if (!txtTimeLimit.getText().isBlank()) {
+			timeLimit = Integer.valueOf(txtTimeLimit.getText());
+			timeline.setCycleCount(timeLimit * 10); //init sets cyclecount, ie need to upate cyclecount here
+		}
 		if (!txtMaxQuestions.getText().isBlank()) {
 			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
 		}
-		//this.timer("start", 2);
-		txtMaxQuestions.clear();
+		this.timer("start");
+		//txtMaxQuestions.clear();
+		//txtTimeLimit.clear();
 		btnStart.setDisable(true);
 		txtMaxQuestions.setEditable(false);
-		Timer timer = new Timer();
+		txtTimeLimit.setEditable(false);
+		
+		btnUserInput.requestFocus();
+		/*Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				//btnUserInput.setText("test");
-				lblResponse.setText("test");
+				//lblResponse.setText("test");
 			}
-		}, 5, 5);
+		}, 5, 5);*/
+		
+		/*
 		https://stackoverflow.com/questions/9413656/how-to-use-timer-class-to-call-a-method-do-something-reset-timer-repeat
 		https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ScheduledExecutorService.html
 		Do you specifically want a Timer? If not you're probably better off with a ScheduledExecutorService and calling scheduleAtFixedRate or scheduleWithFixedDelay; quoting the Javadocs:
 		Verkar som att de finns bättre lösningar än timeline
-		
-		/*
-		KeyFrame keyframe = new KeyFrame(Duration.s(1), null, null);
-		KeyFrame keyframe = new KeyFrame(
-				 Duration.millis(100),
-			        event -> {
-			        	this.countDown();
-		KeyFrame kf = new KeyFrame(
-				 Duration.millis(100),
-			        event -> {
-						lblResponse.setText("test");
-			        });
-		Timeline startTimer = new Timeline(new KeyFrame(
-				Duration.seconds(1),
-					event -> {
-						lblResponse.setText("test");
-					}
-
-		Timeline timeline = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
-		KeyFrame keyframe = new KeyFrame(
-				 Duration.millis(100),
-			        event -> {
-			        	this.countDown();
-			        	*/
+		*/
 	}
 	public void scoreCounter(boolean b){
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
 		if (b) {
 			natoAlphabet.setProgressCounter(natoAlphabet.getProgressCounter() + 1);
 		}
-		lblProgressCounter.setText("Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/" + String.valueOf(natoAlphabet.getTotalCounter()) );
-		
-
+		lblProgressCounter.setText(
+				"Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/" + String.valueOf(natoAlphabet.getTotalCounter())
+		);
 	}
-	
-	//a bunch of notes from timeline experiments
-	/*timeLine.getKeyFrames().add(new KeyFrame(Duration.millis(0), 
-    event -> {
-    	new KeyFrame(Duration.millis(100), 
-        event -> {
-        	this.countDown();
-        });
-    	timeLine.setCycleCount(20);
-    	timeLine.play();
-		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
-		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-		//lblTimer.textProperty().bind(timerValueProperty);
-    }
-));*/
-
-
-/*timeLine.getKeyFrames().add(new KeyFrame(
- Duration.millis(100),
-    event -> {
-    	this.countDown();
-		//lblTimer.setText(String.valueOf(timeLine.getCurrentTime().toSeconds()) + "s");
-		//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-		//lblTimer.textProperty().bind(timerValueProperty);
-    }
-));*/
-
-
-
-//timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-//lblTimer.textProperty().bind(timerValueProperty);
-
-/*
-timeLine.getKeyFrames().add(new KeyFrame(
- Duration.millis( 1500 ),
-    event -> {
-		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()));
-		lblTimer.textProperty().bind(timerValueProperty);
-    }
-));*/
-
-/*
-timeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-event -> timerValueProperty = new SimpleStringProperty(String.valueOf(timeLine.getCurrentTime()))), 
-new KeyFrame(Duration.millis( 1500 ),
-    event -> {
-		//lblTimer.setText(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-		System.out.println(String.valueOf(timeLine.getTotalDuration().toSeconds()) + "s");
-    }
-));
-
-timeLine.play(); */
+	public boolean gameOverCheckExe() {
+		//if (maxQuestions != 0) { //redesign //remove if everything is fine with gameover
+		if (maxQuestions == natoAlphabet.getTotalCounter()){
+			btnUserInput.setDisable(true);
+			String score = this.lblProgressCounter.getText();
+			lblResponse.setText("Game over!\n" + score);
+			return true;
+		}
+		return false;
+	}
+	public void setStyle() {
+		btnUserInput.setStyle(
+			"-fx-base: #0000ff; -fx-font-weight: bold;");
+		lblTitle.setStyle(
+			"-fx-font: 24 arial; -fx-font-weight:"
+			+ "bold; -fx-text-fill: #000000;"
+			+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
+		);
+	}
 
 }

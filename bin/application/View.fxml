@@ -65,9 +65,9 @@
                   <Insets right="5.0" />
                </padding>
             </Button>
-            <Label fx:id="lblTimer" layoutX="237.0" layoutY="14.0" prefHeight="71.0" prefWidth="118.0" textAlignment="CENTER">
+            <Label fx:id="lblTimer" layoutX="267.0" layoutY="14.0" prefHeight="101.0" prefWidth="174.0" textAlignment="CENTER">
                <font>
-                  <Font size="18.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
             <Button fx:id="btnStart" layoutX="286.0" layoutY="264.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="35.0" prefWidth="55.0" text="Start">
@@ -82,6 +82,12 @@
             </Label>
             <TextField fx:id="txtMaxQuestions" layoutX="178.0" layoutY="268.0" prefHeight="26.0" prefWidth="49.0" />
             <Label layoutX="21.0" layoutY="270.0" text="How many questions?">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtTimeLimit" layoutX="178.0" layoutY="237.0" prefHeight="26.0" prefWidth="49.0" />
+            <Label layoutX="21.0" layoutY="239.0" text="Time limit?">
                <font>
                   <Font size="15.0" />
                </font>
