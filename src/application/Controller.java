@@ -4,23 +4,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -54,11 +47,11 @@ public class Controller implements Initializable {
 	private Label lblTimer;
 	Timeline timeline = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
 	KeyFrame keyframe = new KeyFrame(
-			 Duration.millis(100),
+			Duration.millis(100),
 		        event -> {
 		        	this.countDown();
 		        }
-		    );
+			);
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
 	
@@ -217,8 +210,7 @@ public class Controller implements Initializable {
 				
 				this.timer("stop");
 				this.timer("start");
-			} 
-	
+			}
 		}
 	}
 	
