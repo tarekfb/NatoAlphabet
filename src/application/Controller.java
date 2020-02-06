@@ -1,9 +1,13 @@
 package application;
 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,6 +19,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable {
@@ -28,10 +33,10 @@ public class Controller implements Initializable {
 	private Button btnStart;
 	@FXML
 	private TextField txtUserInput;
-	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
+	private StringProperty stringProperty; //used for ChangeListener
 	@FXML
 	private TextField txtMaxQuestions;
-	private int maxQuestions = 5; //change back to 0 and do 0-check
+	private int maxQuestions = 5; //change to 0 and do 0-check: if (maxquestions = 0){no time limit}
 	@FXML
 	private TextField txtTimeLimit;
 	private int timeLimit = 3;
@@ -45,7 +50,7 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	Timeline timeline = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	Timeline timeline = new Timeline();
 	KeyFrame keyframe = new KeyFrame(
 			Duration.millis(100),
 		        event -> {
@@ -111,22 +116,7 @@ public class Controller implements Initializable {
 		} else if (ms != 0) {
 			ms--;
 		}
-		
-		//else if (ms )
-		/*
-		if (s == 2 && ms == 0) {
-			s--;
-			ms = 9;
-		} else if (s == 1 && ms == 0){
-			s--;
-			ms = 9;
-		} else if (s == 1){
-			ms--;
-		} else if (s == 0 && ms != 0) {
-			ms--;
-		}
-		*/
-		
+	
 		lblTimer.setText(s + "." + ms + "s");
 		//doesn't work because its doing the calculations faster than 100ms
 		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
@@ -135,26 +125,12 @@ public class Controller implements Initializable {
 	
 	}
 	public void timer(String string) {
-		//Timeline timeline = new Timeline();
-		//timeline.pause();
-
-		/*timeline.setCycleCount(20);
-		timeline.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again!");
-        	btnUserInput.setText("Next");
-			stringProperty.set("");
-			txtUserInput.setEditable(false);
-		});*/
+		
 		
 		if (string.equals("start")) {
 			timeline.stop();
-			lblTimer.setText(String.valueOf(timeLimit) + ".0s"); //should use int i here, in future, and then update displaycounter to work with any number
-			/*timeline.getKeyFrames().add(new KeyFrame(
-					 Duration.millis(100),
-				        event -> {
-				        	this.countDown();
-				        }
-				    ));*/
+			lblTimer.setText(String.valueOf(timeLimit) + ".0s");
+			
 			timeline.playFromStart();
 		} else if (string.equals("stop")) {
 			 timeline.stop();
@@ -164,17 +140,6 @@ public class Controller implements Initializable {
 			timeline.play();
 		}
 	
-		/*if (string.equals("start")) {
-		
-		timeline.stop();
-		lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
-		timeline.getKeyFrames().add(new KeyFrame(
-				 Duration.millis(100),
-			        event -> {
-			        	this.countDown();
-			        }
-			    ));
-		timeline.playFromStart();*/
 	}
 	
 	@FXML
@@ -223,8 +188,6 @@ public class Controller implements Initializable {
 			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
 		}
 		this.timer("start");
-		//txtMaxQuestions.clear();
-		//txtTimeLimit.clear();
 		btnStart.setDisable(true);
 		txtMaxQuestions.setEditable(false);
 		txtTimeLimit.setEditable(false);
@@ -256,7 +219,6 @@ public class Controller implements Initializable {
 		);
 	}
 	public boolean gameOverCheckExe() {
-		//if (maxQuestions != 0) { //redesign //remove if everything is fine with gameover
 		if (maxQuestions == natoAlphabet.getTotalCounter()){
 			btnUserInput.setDisable(true);
 			String score = this.lblProgressCounter.getText();
