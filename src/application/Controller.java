@@ -59,45 +59,94 @@ public class Controller implements Initializable {
 			);
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
+	Main main = new Main();
+
+	@FXML
+    private void btnStart_Click (ActionEvent event) {
+		if (!txtTimeLimit.getText().isBlank()) {
+			timeLimit = Integer.valueOf(txtTimeLimit.getText());
+			timeline.setCycleCount(timeLimit * 10); //init sets cyclecount, meaning I need to update cyclecount here
+		}
+		if (!txtMaxQuestions.getText().isBlank()) {
+			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
+		}
+		
+        try {
+		Stage stage = null;
+        Parent root = null;
+       
+        if (event.getSource()==btnStart){
+            stage = (Stage) btnStart.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("View.fxml"));           
+        }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
+      //  this.mainSceneInitialize();
+    }
+	
+	//REMOVE LATER TESTSTUFF
+	@FXML
+	private Button testBtn;
+	@FXML
+	public void testBtn_Click(ActionEvent event) {
+		this.mainSceneInitialize();
+		lblResponse.setText("asd");
+	}
+	/////
+	
+	public void mainSceneInitialize() {
+		lblResponse.setText("asd");
+		
+		this.setStyle();
+		
+		txtMaxQuestions.getText();
+		/*	txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
+			this.rndLetterGenerator();
+			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
+			
+			timeline.getKeyFrames().add(keyframe);
+			timeline.setCycleCount(timeLimit * 10);
+			timeline.setOnFinished(event -> {
+				lblResponse.setText("Time ran out. Try again!");
+	        	btnUserInput.setText("Next");
+				stringProperty.set("");
+				txtUserInput.setEditable(false);
+			});
+			
+			stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener //getTEXT WON't WORK
+			stringProperty.addListener(new ChangeListener<String>() {
+			    @Override
+			    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
+			    	txtUserInput.setText(newValue);
+			    }
+			});
+			
+			txtUserInput.textProperty().addListener(new ChangeListener<String>() {
+			    @Override
+			    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
+			        if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
+			        	lblResponse.setText("");
+						btnUserInput.setText("Enter");
+						btnUserInput.setDisable(false);
+						
+			        	stringProperty.set(newValue);
+			        }
+			    }
+			});
+			
+			this.timer("start");*/
+
+	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.setStyle();
-		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
-		this.rndLetterGenerator();
-		lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
 		
-		timeline.getKeyFrames().add(keyframe);
-		timeline.setCycleCount(timeLimit * 10);
-		timeline.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again!");
-        	btnUserInput.setText("Next");
-			stringProperty.set("");
-			txtUserInput.setEditable(false);
-		});
-		
-		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
-		stringProperty.addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-		    	txtUserInput.setText(newValue);
-		    }
-		});
-		
-		txtUserInput.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-		        if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
-		        	lblResponse.setText("");
-					btnUserInput.setText("Enter");
-					btnUserInput.setDisable(false);
-					
-		        	stringProperty.set(newValue);
-		        }
-		    }
-		});
-
 	}
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0);
@@ -125,8 +174,6 @@ public class Controller implements Initializable {
 	
 	}
 	public void timer(String string) {
-		
-		
 		if (string.equals("start")) {
 			timeline.stop();
 			lblTimer.setText(String.valueOf(timeLimit) + ".0s");
@@ -179,36 +226,30 @@ public class Controller implements Initializable {
 		}
 	}
 	
+	/*
 	public void btnStart_Click(ActionEvent event) {
-		if (!txtTimeLimit.getText().isBlank()) {
-			timeLimit = Integer.valueOf(txtTimeLimit.getText());
-			timeline.setCycleCount(timeLimit * 10); //init sets cyclecount, ie need to upate cyclecount here
-		}
-		if (!txtMaxQuestions.getText().isBlank()) {
-			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
-		}
-		this.timer("start");
 		btnStart.setDisable(true);
 		txtMaxQuestions.setEditable(false);
 		txtTimeLimit.setEditable(false);
 		
 		btnUserInput.requestFocus();
-		/*Timer timer = new Timer();
+		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				//btnUserInput.setText("test");
 				//lblResponse.setText("test");
 			}
-		}, 5, 5);*/
+		}, 5, 5);
 		
-		/*
+		
 		https://stackoverflow.com/questions/9413656/how-to-use-timer-class-to-call-a-method-do-something-reset-timer-repeat
 		https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ScheduledExecutorService.html
 		Do you specifically want a Timer? If not you're probably better off with a ScheduledExecutorService and calling scheduleAtFixedRate or scheduleWithFixedDelay; quoting the Javadocs:
 		Verkar som att de finns bättre lösningar än timeline
-		*/
-	}
+		
+	}*/
+
 	public void scoreCounter(boolean b){
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
 		if (b) {
@@ -235,6 +276,7 @@ public class Controller implements Initializable {
 			+ "bold; -fx-text-fill: #000000;"
 			+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
 		);
+		
 	}
 
 }

@@ -9,8 +9,8 @@ import javafx.scene.Scene;
 
 public class Main extends Application {
 	
-	Stage window;
-	Scene startScene, mainScene;
+	//Stage window;
+	//Scene startScene, mainScene;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -30,7 +30,6 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	/*@Override
 	public void start(Stage primaryStage) throws Exception{
