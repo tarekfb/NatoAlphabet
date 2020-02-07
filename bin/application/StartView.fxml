@@ -7,6 +7,6 @@
 <AnchorPane prefHeight="317.0" prefWidth="562.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartController">
    <children>
       <Label layoutX="288.0" layoutY="150.0" text="test" />
-      <Button fx:id="btnSwitch" layoutX="187.0" layoutY="113.0" mnemonicParsing="false" onAction="#btnSwitch_Click" text="switch" />
+      <Button fx:id="btnSwitch" layoutX="187.0" layoutY="113.0" mnemonicParsing="false" onAction="#sceneSwitch" text="switch" />
    </children>
 </AnchorPane>

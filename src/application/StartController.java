@@ -10,6 +10,19 @@ import javafx.stage.Stage;
 
 public class StartController {
 	
+	@FXML
+    private void sceneSwitch (ActionEvent event) throws Exception {
+        Stage stage = null;
+        Parent root = null;
+       
+        if (event.getSource()==btnSwitch){
+            stage = (Stage) btnSwitch.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("View.fxml"));           
+        }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 	Main main = new Main();
 
 	@FXML
