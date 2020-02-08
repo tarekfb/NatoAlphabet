@@ -70,28 +70,12 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button fx:id="btnStart" layoutX="286.0" layoutY="264.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="35.0" prefWidth="55.0" text="Start">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
             <Label fx:id="lblProgressCounter" layoutX="372.0" layoutY="272.0" text="Score: 0/0" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="txtMaxQuestions" layoutX="178.0" layoutY="268.0" prefHeight="26.0" prefWidth="49.0" />
-            <Label layoutX="21.0" layoutY="270.0" text="How many questions?">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtTimeLimit" layoutX="178.0" layoutY="237.0" prefHeight="26.0" prefWidth="49.0" />
-            <Label layoutX="21.0" layoutY="239.0" text="Time limit?">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
+            <Button fx:id="testBtn" layoutX="216.0" layoutY="217.0" mnemonicParsing="false" onAction="#testBtn_Click" text="Button" />
          </children>
       </AnchorPane>
    </center>

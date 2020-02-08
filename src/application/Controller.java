@@ -1,12 +1,20 @@
 package application;
 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
+
+import java.awt.List;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,6 +23,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 public class Controller implements Initializable {
@@ -28,10 +37,10 @@ public class Controller implements Initializable {
 	private Button btnStart;
 	@FXML
 	private TextField txtUserInput;
-	private StringProperty stringProperty; /*= new SimpleStringProperty();*/ //used for ChangeListener
+	private StringProperty stringProperty; //used for ChangeListener
 	@FXML
 	private TextField txtMaxQuestions;
-	private int maxQuestions = 5; //change back to 0 and do 0-check
+	private int maxQuestions = 5; //change to 0 and do 0-check: if (maxquestions = 0){no time limit}
 	@FXML
 	private TextField txtTimeLimit;
 	private int timeLimit = 3;
@@ -45,7 +54,7 @@ public class Controller implements Initializable {
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
-	Timeline timeline = new Timeline(); //(new KeyFrame(Duration.millis(3500)));
+	Timeline timeline = new Timeline();
 	KeyFrame keyframe = new KeyFrame(
 			Duration.millis(100),
 		        event -> {
@@ -54,44 +63,103 @@ public class Controller implements Initializable {
 			);
 	private int s = 0; //mvc?
 	private int ms = 0; //mcv?
+	Main main = new Main();
+
+	@FXML
+    private void btnStart_Click (ActionEvent event) {
+		if (!txtTimeLimit.getText().isBlank()) {
+			timeLimit = Integer.valueOf(txtTimeLimit.getText());
+			timeline.setCycleCount(timeLimit * 10); //init sets cycle count, meaning I need to update cycle count here
+		}
+		if (!txtMaxQuestions.getText().isBlank()) {
+			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
+		}
+		
+        try {
+		Stage stage = null;
+        Parent root = null;
+       
+        if (event.getSource()==btnStart){
+            stage = (Stage) btnStart.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("View.fxml"));           
+        }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        
+      //  this.mainSceneInitialize();
+    }
 	
+	//REMOVE LATER TESTSTUFF
+	@FXML
+	private Button testBtn;
+	@FXML
+	public void testBtn_Click(ActionEvent event) {
+		this.mainSceneInitialize();
+	}
+	int sceneSwitchInt = 0;
+	/////
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		if (sceneSwitchInt == 0) {
+		//Tooltip t = new Tooltip("test");
+		//txtMaxQuestions.setTooltip(t);
+			txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
+		sceneSwitchInt = 1;
+		}
+		
+		else if (sceneSwitchInt == 1) {
+		}
+		/*
+		 * does init run on every scene launch?
+		 * need to try this using sceneSwitchInt
+		 * if YES, can do if check on current stage and then only perform the ifblock for the relevant scene 
+		 * meaning it no NPE on scene switch
+		 */
+	}
+	public void mainSceneInitialize() {		
 		this.setStyle();
-		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
-		lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
-		
-		timeline.getKeyFrames().add(keyframe);
-		timeline.setCycleCount(timeLimit * 10);
-		timeline.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again!");
-        	btnUserInput.setText("Next");
-			stringProperty.set("");
-			txtUserInput.setEditable(false);
-		});
-		
-		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
-		stringProperty.addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-		    	txtUserInput.setText(newValue);
-		    }
-		});
-		
-		txtUserInput.textProperty().addListener(new ChangeListener<String>() {
-		    @Override
-		    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-		        if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
-		        	lblResponse.setText("");
-					btnUserInput.setText("Enter");
-					btnUserInput.setDisable(false);
-					
-		        	stringProperty.set(newValue);
-		        }
-		    }
-		});
+		//lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
+
+		/*
+			
+			timeline.getKeyFrames().add(keyframe);
+			timeline.setCycleCount(timeLimit * 10);
+			timeline.setOnFinished(event -> {
+				lblResponse.setText("Time ran out. Try again!");
+	        	btnUserInput.setText("Next");
+				stringProperty.set("");
+				txtUserInput.setEditable(false);
+			});
+			
+			stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener //getTEXT WON't WORK
+			stringProperty.addListener(new ChangeListener<String>() {
+			    @Override
+			    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
+			    	txtUserInput.setText(newValue);
+			    }
+			});
+			
+			txtUserInput.textProperty().addListener(new ChangeListener<String>() {
+			    @Override
+			    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
+			        if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
+			        	lblResponse.setText("");
+						btnUserInput.setText("Enter");
+						btnUserInput.setDisable(false);
+						
+			        	stringProperty.set(newValue);
+			        }
+			    }
+			});
+			
+			this.timer("start");*/
 
 	}
 	public void rndLetterGenerator() {
@@ -111,22 +179,7 @@ public class Controller implements Initializable {
 		} else if (ms != 0) {
 			ms--;
 		}
-		
-		//else if (ms )
-		/*
-		if (s == 2 && ms == 0) {
-			s--;
-			ms = 9;
-		} else if (s == 1 && ms == 0){
-			s--;
-			ms = 9;
-		} else if (s == 1){
-			ms--;
-		} else if (s == 0 && ms != 0) {
-			ms--;
-		}
-		*/
-		
+	
 		lblTimer.setText(s + "." + ms + "s");
 		//doesn't work because its doing the calculations faster than 100ms
 		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
@@ -135,26 +188,10 @@ public class Controller implements Initializable {
 	
 	}
 	public void timer(String string) {
-		//Timeline timeline = new Timeline();
-		//timeline.pause();
-
-		/*timeline.setCycleCount(20);
-		timeline.setOnFinished(event -> {
-			lblResponse.setText("Time ran out. Try again!");
-        	btnUserInput.setText("Next");
-			stringProperty.set("");
-			txtUserInput.setEditable(false);
-		});*/
-		
 		if (string.equals("start")) {
 			timeline.stop();
-			lblTimer.setText(String.valueOf(timeLimit) + ".0s"); //should use int i here, in future, and then update displaycounter to work with any number
-			/*timeline.getKeyFrames().add(new KeyFrame(
-					 Duration.millis(100),
-				        event -> {
-				        	this.countDown();
-				        }
-				    ));*/
+			lblTimer.setText(String.valueOf(timeLimit) + ".0s");
+			
 			timeline.playFromStart();
 		} else if (string.equals("stop")) {
 			 timeline.stop();
@@ -164,17 +201,6 @@ public class Controller implements Initializable {
 			timeline.play();
 		}
 	
-		/*if (string.equals("start")) {
-		
-		timeline.stop();
-		lblTimer.setText("2.0s"); //should use int i here, in future, and then adapt displaycounter
-		timeline.getKeyFrames().add(new KeyFrame(
-				 Duration.millis(100),
-			        event -> {
-			        	this.countDown();
-			        }
-			    ));
-		timeline.playFromStart();*/
 	}
 	
 	@FXML
@@ -214,38 +240,30 @@ public class Controller implements Initializable {
 		}
 	}
 	
+	/*
 	public void btnStart_Click(ActionEvent event) {
-		if (!txtTimeLimit.getText().isBlank()) {
-			timeLimit = Integer.valueOf(txtTimeLimit.getText());
-			timeline.setCycleCount(timeLimit * 10); //init sets cyclecount, ie need to upate cyclecount here
-		}
-		if (!txtMaxQuestions.getText().isBlank()) {
-			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
-		}
-		this.timer("start");
-		//txtMaxQuestions.clear();
-		//txtTimeLimit.clear();
 		btnStart.setDisable(true);
 		txtMaxQuestions.setEditable(false);
 		txtTimeLimit.setEditable(false);
 		
 		btnUserInput.requestFocus();
-		/*Timer timer = new Timer();
+		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				//btnUserInput.setText("test");
 				//lblResponse.setText("test");
 			}
-		}, 5, 5);*/
+		}, 5, 5);
 		
-		/*
+		
 		https://stackoverflow.com/questions/9413656/how-to-use-timer-class-to-call-a-method-do-something-reset-timer-repeat
 		https://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ScheduledExecutorService.html
 		Do you specifically want a Timer? If not you're probably better off with a ScheduledExecutorService and calling scheduleAtFixedRate or scheduleWithFixedDelay; quoting the Javadocs:
 		Verkar som att de finns bättre lösningar än timeline
-		*/
-	}
+		
+	}*/
+
 	public void scoreCounter(boolean b){
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
 		if (b) {
@@ -256,7 +274,6 @@ public class Controller implements Initializable {
 		);
 	}
 	public boolean gameOverCheckExe() {
-		//if (maxQuestions != 0) { //redesign //remove if everything is fine with gameover
 		if (maxQuestions == natoAlphabet.getTotalCounter()){
 			btnUserInput.setDisable(true);
 			String score = this.lblProgressCounter.getText();
@@ -273,6 +290,7 @@ public class Controller implements Initializable {
 			+ "bold; -fx-text-fill: #000000;"
 			+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
 		);
+		
 	}
 
 }
