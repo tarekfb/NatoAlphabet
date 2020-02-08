@@ -8,9 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
+
+import java.awt.List;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -65,7 +69,7 @@ public class Controller implements Initializable {
     private void btnStart_Click (ActionEvent event) {
 		if (!txtTimeLimit.getText().isBlank()) {
 			timeLimit = Integer.valueOf(txtTimeLimit.getText());
-			timeline.setCycleCount(timeLimit * 10); //init sets cyclecount, meaning I need to update cyclecount here
+			timeline.setCycleCount(timeLimit * 10); //init sets cycle count, meaning I need to update cycle count here
 		}
 		if (!txtMaxQuestions.getText().isBlank()) {
 			maxQuestions = Integer.valueOf(txtMaxQuestions.getText());
@@ -95,20 +99,35 @@ public class Controller implements Initializable {
 	@FXML
 	public void testBtn_Click(ActionEvent event) {
 		this.mainSceneInitialize();
-		lblResponse.setText("asd");
 	}
+	int sceneSwitchInt = 0;
 	/////
-	
-	public void mainSceneInitialize() {
-		lblResponse.setText("asd");
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		if (sceneSwitchInt == 0) {
+		//Tooltip t = new Tooltip("test");
+		//txtMaxQuestions.setTooltip(t);
+			txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
+		sceneSwitchInt = 1;
+		}
 		
+		else if (sceneSwitchInt == 1) {
+		}
+		/*
+		 * does init run on every scene launch?
+		 * need to try this using sceneSwitchInt
+		 * if YES, can do if check on current stage and then only perform the ifblock for the relevant scene 
+		 * meaning it no NPE on scene switch
+		 */
+	}
+	public void mainSceneInitialize() {		
 		this.setStyle();
-		
-		txtMaxQuestions.getText();
-		/*	txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
-			this.rndLetterGenerator();
-			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
+		this.rndLetterGenerator();
+		//lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
+
+		/*
 			
 			timeline.getKeyFrames().add(keyframe);
 			timeline.setCycleCount(timeLimit * 10);
@@ -142,11 +161,6 @@ public class Controller implements Initializable {
 			
 			this.timer("start");*/
 
-	}
-	
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		
 	}
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0);
