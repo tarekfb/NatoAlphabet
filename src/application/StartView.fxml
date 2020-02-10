@@ -16,14 +16,14 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <TextField fx:id="txtMaxQuestions" layoutX="190.0" layoutY="197.0" prefHeight="26.0" prefWidth="49.0" />
-            <Label layoutY="189.0" text="How many questions?">
+            <TextField fx:id="txtMaxQuestions" layoutX="315.0" layoutY="153.0" prefHeight="26.0" prefWidth="49.0" />
+            <Label layoutX="154.0" layoutY="153.0" text="How many questions?">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
             <TextField fx:id="txtTimeLimit" layoutX="315.0" layoutY="108.0" prefHeight="26.0" prefWidth="49.0" />
-            <Label layoutX="215.0" layoutY="111.0" text="Time limit?">
+            <Label layoutX="154.0" layoutY="110.0" text="Time limit?">
                <font>
                   <Font size="15.0" />
                </font>

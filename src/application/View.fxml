@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainViewController">
    <top>
       <Label fx:id="lblTitle" prefHeight="41.0" prefWidth="321.0" text="NATO Alphabet: The Game" BorderPane.alignment="CENTER">
          <font>
@@ -75,7 +75,6 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="testBtn" layoutX="216.0" layoutY="217.0" mnemonicParsing="false" onAction="#testBtn_Click" text="Button" />
          </children>
       </AnchorPane>
    </center>
