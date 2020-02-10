@@ -10,8 +10,11 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 			"Victor", "Whiskey", "X-ray", "Yankee", "Zulu",
 	};
 	private char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-	private int progressCount = 0;
+	private static int progressCount = 0;
 	private int totalCounter = 0;
+	private static int timeLimit = 0;
+	private static int maxQuestions = 0; //change to 0 and do 0-check: if (maxquestions = 0){no time limit}
+	private static int highscore = 0;
 
 	public String[] getNatoTelephony() {
 		return natoTelephony;
@@ -60,6 +63,24 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 	}
 	public void setTotalCounter(int totalCount) {
 		this.totalCounter = totalCount;
+	}
+	public int getTimeLimit() {
+		return timeLimit;
+	}
+	public void setTimeLimit(int timeLimit) {
+		this.timeLimit = timeLimit;
+	}
+	public int getMaxQuestions() {
+		return maxQuestions;
+	}
+	public void setMaxQuestions(int maxQuestions) {
+		this.maxQuestions = maxQuestions;
+	}
+	public static int getHighscore() {
+		return highscore;
+	}
+	public static void setHighscore(int highscore) {
+		NatoAlphabet.highscore = highscore;
 	}
 
 }
