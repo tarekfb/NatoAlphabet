@@ -14,7 +14,7 @@
    <center>
       <AnchorPane prefHeight="310.0" prefWidth="920.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnStart" layoutX="191.0" layoutY="228.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="31.0" prefWidth="65.0" text="Start">
+            <Button fx:id="btnStart" layoutX="191.0" layoutY="242.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="31.0" prefWidth="65.0" text="Start">
                <font>
                   <Font size="18.0" />
                </font>
