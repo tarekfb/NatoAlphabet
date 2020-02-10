@@ -2,6 +2,8 @@ package application;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -36,13 +38,14 @@ public class StartViewController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
 		lblHighscore.setText("HIGH SCORE: " + NatoAlphabet.getHighscore());
-		lblInfo.setText("Welcome Back! This game helps you memorize the Nato Alphabet."
+		lblInfo.setText("Welcome back! This game helps you memorize the Nato Alphabet."
 				+ "\nLeave the fields blank for unlimited time and questions."
 				+ "\nHigh score is only kept track of if time and maximum score is entered."
 				+ "\nPress start if you're ready - the timer, if selected, will start right away."
 				+ "\n"
 				+ "\nGood luck!"
 				);
+		
 		if (natoAlphabet.getTimeLimit() != 0) {
 			txtTimeLimit.setText(String.valueOf(natoAlphabet.getTimeLimit()));
 		}
@@ -55,29 +58,40 @@ public class StartViewController implements Initializable {
 	
 	@FXML
     private void btnStart_Click (ActionEvent event) {
-		if (txtTimeLimit.getText().isBlank()) {
-			natoAlphabet.setTimeLimit(0); 
-		} else if (!txtTimeLimit.getText().isBlank()) {
-			natoAlphabet.setTimeLimit(Integer.valueOf(txtTimeLimit.getText())); 
+		boolean nfeCheck = false;
+		try {
+			if (txtTimeLimit.getText().isBlank()) {
+				natoAlphabet.setTimeLimit(0); 
+			} else if (!txtTimeLimit.getText().isBlank()) {
+				natoAlphabet.setTimeLimit(Integer.valueOf(txtTimeLimit.getText())); 
+			}
+			if (txtMaxQuestions.getText().isBlank()) {
+				natoAlphabet.setMaxQuestions(0);
+			}
+			else if (!txtMaxQuestions.getText().isBlank()) {
+				natoAlphabet.setMaxQuestions(Integer.valueOf(txtMaxQuestions.getText()));
+			}
+		} catch (NumberFormatException nfe) {
+			Alert alert = new Alert(AlertType.WARNING);
+			nfeCheck = true;
+			alert.setTitle("Invalid input");
+			alert.setHeaderText("Invalid input");
+			alert.setContentText("The fields can only take numerical values consisting of a single-digit number. Please enter a number.");
+
+			alert.showAndWait();
 		}
-		if (txtMaxQuestions.getText().isBlank()) {
-			natoAlphabet.setMaxQuestions(0);
-		}
-		else if (!txtMaxQuestions.getText().isBlank()) {
-			natoAlphabet.setMaxQuestions(Integer.valueOf(txtMaxQuestions.getText()));
-		}
-		
         try {
-        	Stage stage = null;
-        	Parent root = null;
-       
-        	if (event.getSource()==btnStart){
-        		stage = (Stage) btnStart.getScene().getWindow();
-        		root = FXMLLoader.load(getClass().getResource("MainView.fxml"));           
+        	if (nfeCheck == false) {
+        		Stage stage = null;
+        		Parent root = null;
+        		if (event.getSource()==btnStart){
+        			stage = (Stage) btnStart.getScene().getWindow();
+        			root = FXMLLoader.load(getClass().getResource("MainView.fxml"));           
+        		}
+        		Scene scene = new Scene(root);
+        		stage.setScene(scene);
+        		stage.show();
         	}
-        	Scene scene = new Scene(root);
-        	stage.setScene(scene);
-        	stage.show();
         } catch (Exception e) {
         	e.printStackTrace();
         }

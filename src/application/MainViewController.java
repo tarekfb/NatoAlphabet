@@ -2,13 +2,20 @@ package application;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.locks.Condition;
+
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -123,11 +130,12 @@ public class MainViewController implements Initializable {
 	
 	}
 	public void timer(String string) {
+
 		if (natoAlphabet.getTimeLimit() != 0){
 			if (string.equals("start")) {
 				timeline.stop();
-				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s");
-			
+				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s"); //is this nececssary?
+		
 				timeline.playFromStart();
 			} else if (string.equals("stop")) {
 				timeline.stop();
@@ -135,6 +143,19 @@ public class MainViewController implements Initializable {
 				timeline.pause();
 			} else if (string.equals("play")) {
 				timeline.play();
+			} else if (string.substring(0, 4).equals("wait")) {
+				try {
+					synchronized(timeline) {
+						timeline.wait(Integer.valueOf(string.substring(4)));
+						this.timer("play");
+					}
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	
@@ -222,20 +243,54 @@ public class MainViewController implements Initializable {
         }
 	}
 	public void btnQuit_Click(ActionEvent event) {
-		try {
-        	Stage stage = null;
-        	Parent root = null;
-       
-        	if (event.getSource()==btnQuit){
-        		stage = (Stage) btnRestart.getScene().getWindow();
-        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
-        	}
-        	Scene scene = new Scene(root);
-        	stage.setScene(scene);
-        	stage.show();
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
+		timer("pause");
+		lblRandomLetter.setVisible(false);
+		
+		if (natoAlphabet.getTimeLimit() != 0 || natoAlphabet.getMaxQuestions() != 0) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Quit without saving progress?");
+			alert.setHeaderText("Score will not be recorded");
+			alert.setContentText("If you quit now your score will not be recorded. Do you wish to proceed?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				try {
+					Stage stage = null;
+		        	Parent root = null;
+		       
+		        	if (event.getSource()==btnQuit){
+		        		stage = (Stage) btnRestart.getScene().getWindow();
+		        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+		        	}
+		        	timer("stop");
+		        	Scene scene = new Scene(root);
+		        	stage.setScene(scene);
+		        	stage.show();
+		        } catch (Exception e) {
+		        	e.printStackTrace();
+		        }	
+			} else if (result.get() == ButtonType.CANCEL || result.get() == ButtonType.NO || result.get() == ButtonType.CLOSE) {
+				timer("wait1000");
+				lblRandomLetter.setVisible(true);
+			}
+		} else if (natoAlphabet.getTimeLimit() == 0 || natoAlphabet.getMaxQuestions() == 0){
+			try {
+				Stage stage = null;
+	        	Parent root = null;
+	       
+	        	if (event.getSource()==btnQuit){
+	        		stage = (Stage) btnRestart.getScene().getWindow();
+	        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+	        	}
+	        	timer("stop");
+	        	Scene scene = new Scene(root);
+	        	stage.setScene(scene);
+	        	stage.show();
+	        } catch (Exception e) {
+	        	e.printStackTrace();
+	        }	
+		}
+        	
 	}
 	public void setStyle() {
 		/*btnUserInput.setStyle(
