@@ -5,16 +5,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
-
-import java.awt.List;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -29,12 +23,15 @@ import javafx.fxml.Initializable;
 public class MainViewController implements Initializable {
 	
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
-	//TimerManager timerClass = new TimerManager(); if timer works delete this
 
 	@FXML
 	private Button btnUserInput;
 	@FXML
 	private Button btnStart;
+	@FXML
+	private Button btnRestart;
+	@FXML
+	private Button btnQuit;
 	@FXML
 	private TextField txtUserInput;
 	private StringProperty stringProperty; //used for ChangeListener
@@ -56,59 +53,53 @@ public class MainViewController implements Initializable {
 		        }
 			);
 	private int s = 0; //mvc?
-	private int ms = 0; //mcv?	
+	private int ms = 0; //mcv?
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.setStyle();
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
 		this.rndLetterGenerator();
-		lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
-		//timeline.setCycleCount(natoAlphabet.getTimeLimit() * 10); //init sets cycle count, meaning I need to update cycle count here //can prob remove
+		btnRestart.setManaged(false);
+		natoAlphabet.setTotalCounter(0);
+		natoAlphabet.setProgressCounter(0);
+		if (natoAlphabet.getTimeLimit() != 0) {
+			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
+		}
 
-		
-			
+		if (natoAlphabet.getTimeLimit() != 0) {
 			timeline.getKeyFrames().add(keyframe);
 			timeline.setCycleCount(natoAlphabet.getTimeLimit() * 10);
 			timeline.setOnFinished(event -> {
 				lblResponse.setText("Time ran out. Try again!");
-	        	btnUserInput.setText("Next");
+				btnUserInput.setText("Next");
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
 			});
+		}
 			
-			stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener //getTEXT WON't WORK
-			stringProperty.addListener(new ChangeListener<String>() {
-			    @Override
-			    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-			    	txtUserInput.setText(newValue);
+		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
+		stringProperty.addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
+				txtUserInput.setText(newValue);
+			}
+		});
+			
+		txtUserInput.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
+				if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
+			        lblResponse.setText("");
+					btnUserInput.setText("Enter");
+					btnUserInput.setDisable(false);
+					
+			        stringProperty.set(newValue);
 			    }
-			});
-			
-			txtUserInput.textProperty().addListener(new ChangeListener<String>() {
-			    @Override
-			    public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-			        if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
-			        	lblResponse.setText("");
-						btnUserInput.setText("Enter");
-						btnUserInput.setDisable(false);
-						
-			        	stringProperty.set(newValue);
-			        }
-			    }
-			});
-			
-			this.timer("start");
-		
-		
-
-	
-		/*
-		 * does init run on every scene launch?
-		 * need to try this using sceneSwitchInt
-		 * if YES, can do if check on current stage and then only perform the ifblock for the relevant scene 
-		 * meaning it no NPE on scene switch
-		 */
+			}
+		});
+		this.timer("start");
 	}
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0);
@@ -129,24 +120,22 @@ public class MainViewController implements Initializable {
 		}
 	
 		lblTimer.setText(s + "." + ms + "s");
-		//doesn't work because its doing the calculations faster than 100ms
-		//meaning after completing the calc's it displays 0.0s for the rest of the cycles
-		//nvm, it prints 80 times (60 zeros?)
-		//SOLVED: by instansiating keyframe in initialize()
 	
 	}
 	public void timer(String string) {
-		if (string.equals("start")) {
-			timeline.stop();
-			lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s");
+		if (natoAlphabet.getTimeLimit() != 0){
+			if (string.equals("start")) {
+				timeline.stop();
+				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s");
 			
-			timeline.playFromStart();
-		} else if (string.equals("stop")) {
-			 timeline.stop();
-		} else if (string.equals("pause")) {
-			timeline.pause();
-		} else if (string.equals("play")) {
-			timeline.play();
+				timeline.playFromStart();
+			} else if (string.equals("stop")) {
+				timeline.stop();
+			} else if (string.equals("pause")) {
+				timeline.pause();
+			} else if (string.equals("play")) {
+				timeline.play();
+			}
 		}
 	
 	}
@@ -186,6 +175,7 @@ public class MainViewController implements Initializable {
 				this.timer("start");
 			}
 		}
+		this.gameOverCheckExe();
 	}
 	public void scoreCounter(boolean b){
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
@@ -197,22 +187,64 @@ public class MainViewController implements Initializable {
 		);
 	}
 	public boolean gameOverCheckExe() {
+		if (natoAlphabet.getMaxQuestions() == 0) {
+			return false;
+		}
 		if (natoAlphabet.getMaxQuestions() == natoAlphabet.getTotalCounter()){
 			btnUserInput.setDisable(true);
 			String score = this.lblProgressCounter.getText();
 			lblResponse.setText("Game over!\n" + score);
+			btnRestart.setManaged(true);
+			btnRestart.requestFocus();
+			this.timer("stop");
+
 			return true;
 		}
 		return false;
 	}
+	public void btnRestart_Click(ActionEvent event) {
+		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter()) {
+			NatoAlphabet.setHighscore(natoAlphabet.getProgressCounter());
+		}
+		try {
+        	Stage stage = null;
+        	Parent root = null;
+       
+        	if (event.getSource()==btnRestart){
+        		stage = (Stage) btnRestart.getScene().getWindow();
+        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+        	}
+        	Scene scene = new Scene(root);
+        	stage.setScene(scene);
+        	stage.show();
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+	}
+	public void btnQuit_Click(ActionEvent event) {
+		try {
+        	Stage stage = null;
+        	Parent root = null;
+       
+        	if (event.getSource()==btnQuit){
+        		stage = (Stage) btnRestart.getScene().getWindow();
+        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+        	}
+        	Scene scene = new Scene(root);
+        	stage.setScene(scene);
+        	stage.show();
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+	}
 	public void setStyle() {
-		btnUserInput.setStyle(
+		/*btnUserInput.setStyle(
 			"-fx-base: #0000ff; -fx-font-weight: bold;");
 		lblTitle.setStyle(
 			"-fx-font: 24 arial; -fx-font-weight:"
 			+ "bold; -fx-text-fill: #000000;"
 			+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
-		);
+		);*/
 	}
 
 }
