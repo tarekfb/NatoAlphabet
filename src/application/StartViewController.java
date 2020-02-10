@@ -41,7 +41,7 @@ public class StartViewController implements Initializable {
 		lblInfo.setText("Welcome back! This game helps you memorize the Nato Alphabet."
 				+ "\nLeave the fields blank for unlimited time and questions."
 				+ "\nHigh score is only kept track of if time and maximum score is entered."
-				+ "\nPress start if you're ready - the timer, if selected, will start right away."
+				+ "\nPress start if you're ready - the timer, if enabled, will start right away."
 				+ "\n"
 				+ "\nGood luck!"
 				);
