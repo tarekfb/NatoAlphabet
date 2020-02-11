@@ -224,7 +224,7 @@ public class MainViewController implements Initializable {
 		return false;
 	}
 	public void btnRestart_Click(ActionEvent event) {
-		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter()) {
+		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
 			NatoAlphabet.setHighscore(natoAlphabet.getProgressCounter());
 		}
 		try {
