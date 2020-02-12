@@ -126,15 +126,17 @@ public class MainViewController implements Initializable {
 			ms = Integer.valueOf(lblTimer.getText().substring(3, 4));
 		}
 		
-		if (ms != 0){ //is the subparanthesis necessary?
-			
+		if (ms != 0){ //20.5 --> 20.4, 21.5 --> 21.4, 9.5 --> 9.4
 			ms--;
-		} else if ((twoDigitSecond != 0 && twoDigitSecond != 1) && oneDigitSecond == 0 && ms == 0) {
+		} else if ((twoDigitSecond != 0 && twoDigitSecond != 1) && oneDigitSecond != 0 && ms == 0) { //21.0 --> 20.9, 99.0 --> 08.9, !20.0 --> 19.9
+			oneDigitSecond--;
+			ms = 9;
+		} else if (twoDigitSecond != 0 && oneDigitSecond != 0 && ms == 0){ //33.0 --> 32.9, 15.0 --> 14.9
+			oneDigitSecond--;
+			ms = 9;
+		} else if (oneDigitSecond == 0 && ms == 0) { // 30.0 --> 29.9, 10.0 --> 9.9 --> 
 			twoDigitSecond--;
 			oneDigitSecond = 9;
-			ms = 9;
-		} else if (twoDigitSecond != 0 && oneDigitSecond != 0 && ms == 0){ //33.0, 15.0
-			oneDigitSecond--;
 			ms = 9;
 		} else if (twoDigitSecond == 0) { //copy-pasted the entire countdown if lblTimer.length == 5
 			if (oneDigitSecond != 0 && ms == 0) {
@@ -144,11 +146,16 @@ public class MainViewController implements Initializable {
 				ms--;
 			}
 		}
+		
 		if (lblTimer.getText().length() == 4) {
 			lblTimer.setText(oneDigitSecond + "." + ms + "s");
-		} else if (lblTimer.getText().length() == 5) {
+			System.out.println("hej från 1st if-check");
+		} else if (twoDigitSecond != 0) {
 			lblTimer.setText(twoDigitSecond + oneDigitSecond + "." + ms + "s");
-		}
+		} else if (twoDigitSecond == 0) {
+			lblTimer.setText(oneDigitSecond + "." + ms + "s");
+			System.out.println("hej från 3rd if-check");
+		}//this might be the same as initial if-check
 
 			/*
 		if (lblTimer.getText().length() == 4) {
