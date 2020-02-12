@@ -22,34 +22,24 @@
    <center>
       <AnchorPane prefWidth="445.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane layoutX="73.0" layoutY="69.0">
+            <GridPane layoutX="77.0" layoutY="121.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Letter:">
+                  <Label text="Telephony:">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label text="Telephony:" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lblRandomLetter" contentDisplay="CENTER" prefHeight="18.0" prefWidth="286.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="1">
-                     <font>
-                        <Font size="15.0" />
-                     </font></Label>
-                  <TextField fx:id="txtUserInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />   
+                  <TextField fx:id="txtUserInput" GridPane.columnIndex="1" />   
                </children>
             </GridPane>
-            <Label fx:id="lblResponse" alignment="CENTER" layoutX="138.0" layoutY="190.0" prefHeight="82.0" prefWidth="166.0" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="lblResponse" alignment="CENTER" layoutX="146.0" layoutY="197.0" prefHeight="67.0" prefWidth="156.0" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>
@@ -57,7 +47,7 @@
                   <Insets left="5.0" />
                </padding>
             </Label>
-            <Button fx:id="btnUserInput" alignment="CENTER" defaultButton="true" layoutX="185.0" layoutY="144.0" mnemonicParsing="false" onAction="#btnUserInput_Click" prefHeight="26.0" prefWidth="73.0" text="Enter">
+            <Button fx:id="btnUserInput" alignment="CENTER" defaultButton="true" layoutX="189.0" layoutY="164.0" mnemonicParsing="false" onAction="#btnUserInput_Click" prefHeight="26.0" prefWidth="73.0" text="Enter">
               <font>
                   <Font size="15.0" />
                </font>
@@ -70,13 +60,18 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label fx:id="lblProgressCounter" layoutX="353.0" layoutY="271.0" text="Score: 0/0" wrapText="true">
+            <Label fx:id="lblProgressCounter" layoutX="350.0" layoutY="271.0" text="Score: 0/0" wrapText="true">
                <font>
                   <Font size="19.0" />
                </font>
             </Label>
             <Button fx:id="btnRestart" layoutX="195.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart" />
             <Button fx:id="btnQuit" layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnQuit_Click" text="Quit" />
+            <Label fx:id="lblRandomLetter" alignment="CENTER" contentDisplay="CENTER" layoutX="177.0" layoutY="14.0" prefHeight="82.0" prefWidth="88.0" textOverrun="CLIP">
+               <font>
+                  <Font size="58.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>

@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -59,7 +60,8 @@ public class MainViewController implements Initializable {
 		        	this.countDown();
 		        }
 			);
-	private int s = 0; //mvc?
+	private int oneDigitSecond = 0; //mvc?
+	private int twoDigitSecond = 0; //mvc?
 	private int ms = 0; //mcv?
 
 
@@ -71,9 +73,6 @@ public class MainViewController implements Initializable {
 		btnRestart.setManaged(false);
 		natoAlphabet.setTotalCounter(0);
 		natoAlphabet.setProgressCounter(0);
-		if (natoAlphabet.getTimeLimit() != 0) {
-			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
-		}
 
 		if (natoAlphabet.getTimeLimit() != 0) {
 			timeline.getKeyFrames().add(keyframe);
@@ -84,6 +83,10 @@ public class MainViewController implements Initializable {
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
 			});
+		}
+		
+		if (natoAlphabet.getTimeLimit() != 0) {
+			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
 		}
 			
 		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
@@ -106,36 +109,55 @@ public class MainViewController implements Initializable {
 			    }
 			}
 		});
-		this.timer("start");
+		this.timerManager("start");
 	}
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0);
 		do {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		} while (c == lblRandomLetter.getText().charAt(0));
-	
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
 	public void countDown() {
-		s = Integer.valueOf(lblTimer.getText().substring(0, 1));
-		ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
 		
-		if (s != 0 && ms == 0) {
-			s--;
+		
+		if (lblTimer.getText().length() == 4) {
+			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
+			ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
+		} else if (lblTimer.getText().length() == 5) {
+			twoDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
+			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(1, 2));
+			ms = Integer.valueOf(lblTimer.getText().substring(3, 4));
+		}
+
+		
+		if (twoDigitSecond != 0 && oneDigitSecond == 0 && ms == 0) {
+			twoDigitSecond--;
+			oneDigitSecond = 9;
+			ms = 9;
+		}
+		else if (oneDigitSecond != 0 && ms == 0) {
+			oneDigitSecond--;
 			ms = 9;
 		} else if (ms != 0) {
 			ms--;
 		}
-	
-		lblTimer.setText(s + "." + ms + "s");
-	
+		
+		if (lblTimer.getText().length() == 4 || twoDigitSecond == 0) {// == 0 since: if 2 digit countdown: 15.0 -> 10.0 -> 09.9 -> 00.0
+			lblTimer.setText(oneDigitSecond + "." + ms + "s");
+		} else if (twoDigitSecond != 0) {
+			lblTimer.setText(twoDigitSecond + oneDigitSecond + "." + ms + "s");
+		}/* else if (twoDigitSecond == 0) {
+			lblTimer.setText(oneDigitSecond + "." + ms + "s");
+		}//this might be the same as initial if-check
+		*/
 	}
-	public void timer(String string) {
+	public void timerManager(String string) {
 
 		if (natoAlphabet.getTimeLimit() != 0){
 			if (string.equals("start")) {
 				timeline.stop();
 				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s"); //is this nececssary?
-		
+				
 				timeline.playFromStart();
 			} else if (string.equals("stop")) {
 				timeline.stop();
@@ -147,7 +169,7 @@ public class MainViewController implements Initializable {
 				try {
 					synchronized(timeline) {
 						timeline.wait(Integer.valueOf(string.substring(4)));
-						this.timer("play");
+						this.timerManager("play");
 					}
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
@@ -174,9 +196,9 @@ public class MainViewController implements Initializable {
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
 			
-			this.timer("stop"); //seems as if stop here doesn't stop the current active thread. 
+			this.timerManager("stop"); //seems as if stop here doesn't stop the current active thread. 
 			// Does it have no effect because its invoking the method, creating a new timeline, rendering 'stop' useless?
-			this.timer("start");
+			this.timerManager("start");
 		} else if (btnUserInput.getText().equals("Enter")) {		
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 				lblResponse.setText("Incorrect. Try again!");
@@ -185,15 +207,15 @@ public class MainViewController implements Initializable {
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
 				this.scoreCounter(false);
-				timer("stop");
+				timerManager("stop");
 			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 				lblResponse.setText("Correct!");
 				this.scoreCounter(true);
 				this.rndLetterGenerator();
 				stringProperty.set("");
 				
-				this.timer("stop");
-				this.timer("start");
+				this.timerManager("stop");
+				this.timerManager("start");
 			}
 		}
 		this.gameOverCheckExe();
@@ -217,14 +239,14 @@ public class MainViewController implements Initializable {
 			lblResponse.setText("Game over!\n" + score);
 			btnRestart.setManaged(true);
 			btnRestart.requestFocus();
-			this.timer("stop");
+			this.timerManager("stop");
 
 			return true;
 		}
 		return false;
 	}
 	public void btnRestart_Click(ActionEvent event) {
-		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter()) {
+		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
 			NatoAlphabet.setHighscore(natoAlphabet.getProgressCounter());
 		}
 		try {
@@ -243,14 +265,17 @@ public class MainViewController implements Initializable {
         }
 	}
 	public void btnQuit_Click(ActionEvent event) {
-		timer("pause");
+		timerManager("pause");
 		lblRandomLetter.setVisible(false);
 		
-		if (natoAlphabet.getTimeLimit() != 0 || natoAlphabet.getMaxQuestions() != 0) {
+		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Quit without saving progress?");
 			alert.setHeaderText("Score will not be recorded");
 			alert.setContentText("If you quit now your score will not be recorded. Do you wish to proceed?");
+			Label label = new Label("If you quit now your score will not be recorded. Do you wish to proceed?");
+			label.setWrapText(true);
+			alert.getDialogPane().setContent(label);
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
@@ -262,7 +287,7 @@ public class MainViewController implements Initializable {
 		        		stage = (Stage) btnRestart.getScene().getWindow();
 		        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
 		        	}
-		        	timer("stop");
+		        	timerManager("stop");
 		        	Scene scene = new Scene(root);
 		        	stage.setScene(scene);
 		        	stage.show();
@@ -270,7 +295,7 @@ public class MainViewController implements Initializable {
 		        	e.printStackTrace();
 		        }	
 			} else if (result.get() == ButtonType.CANCEL || result.get() == ButtonType.NO || result.get() == ButtonType.CLOSE) {
-				timer("wait1000");
+				timerManager("wait1000");
 				lblRandomLetter.setVisible(true);
 			}
 		} else if (natoAlphabet.getTimeLimit() == 0 || natoAlphabet.getMaxQuestions() == 0){
@@ -282,7 +307,7 @@ public class MainViewController implements Initializable {
 	        		stage = (Stage) btnRestart.getScene().getWindow();
 	        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
 	        	}
-	        	timer("stop");
+	        	timerManager("stop");
 	        	Scene scene = new Scene(root);
 	        	stage.setScene(scene);
 	        	stage.show();
