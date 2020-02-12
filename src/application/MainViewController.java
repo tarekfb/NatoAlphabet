@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -72,9 +73,6 @@ public class MainViewController implements Initializable {
 		btnRestart.setManaged(false);
 		natoAlphabet.setTotalCounter(0);
 		natoAlphabet.setProgressCounter(0);
-		if (natoAlphabet.getTimeLimit() != 0) {
-			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
-		}
 
 		if (natoAlphabet.getTimeLimit() != 0) {
 			timeline.getKeyFrames().add(keyframe);
@@ -85,6 +83,10 @@ public class MainViewController implements Initializable {
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
 			});
+		}
+		
+		if (natoAlphabet.getTimeLimit() != 0) {
+			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
 		}
 			
 		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
@@ -117,6 +119,7 @@ public class MainViewController implements Initializable {
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
 	public void countDown() {
 		
+		
 		if (lblTimer.getText().length() == 4) {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
 			ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
@@ -125,80 +128,28 @@ public class MainViewController implements Initializable {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(1, 2));
 			ms = Integer.valueOf(lblTimer.getText().substring(3, 4));
 		}
+
 		
-		if (ms != 0){ //20.5 --> 20.4, 21.5 --> 21.4, 9.5 --> 9.4
-			ms--;
-		} else if ((twoDigitSecond != 0 && twoDigitSecond != 1) && oneDigitSecond != 0 && ms == 0) { //21.0 --> 20.9, 99.0 --> 08.9, !20.0 --> 19.9
-			oneDigitSecond--;
-			ms = 9;
-		} else if (twoDigitSecond != 0 && oneDigitSecond != 0 && ms == 0){ //33.0 --> 32.9, 15.0 --> 14.9
-			oneDigitSecond--;
-			ms = 9;
-		} else if (oneDigitSecond == 0 && ms == 0) { // 30.0 --> 29.9, 10.0 --> 9.9 --> 
+		if (twoDigitSecond != 0 && oneDigitSecond == 0 && ms == 0) {
 			twoDigitSecond--;
 			oneDigitSecond = 9;
 			ms = 9;
-		} else if (twoDigitSecond == 0) { //copy-pasted the entire countdown if lblTimer.length == 5
-			if (oneDigitSecond != 0 && ms == 0) {
-				oneDigitSecond--;
-				ms = 9;
-			} else if (ms != 0) {
-				ms--;
-			}
+		}
+		else if (oneDigitSecond != 0 && ms == 0) {
+			oneDigitSecond--;
+			ms = 9;
+		} else if (ms != 0) {
+			ms--;
 		}
 		
-		if (lblTimer.getText().length() == 4) {
+		if (lblTimer.getText().length() == 4 || twoDigitSecond == 0) {// == 0 since: if 2 digit countdown: 15.0 -> 10.0 -> 09.9 -> 00.0
 			lblTimer.setText(oneDigitSecond + "." + ms + "s");
-			System.out.println("hej från 1st if-check");
 		} else if (twoDigitSecond != 0) {
 			lblTimer.setText(twoDigitSecond + oneDigitSecond + "." + ms + "s");
-		} else if (twoDigitSecond == 0) {
+		}/* else if (twoDigitSecond == 0) {
 			lblTimer.setText(oneDigitSecond + "." + ms + "s");
-			System.out.println("hej från 3rd if-check");
 		}//this might be the same as initial if-check
-
-			/*
-		if (lblTimer.getText().length() == 4) {
-			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
-			ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
-		
-			if (oneDigitSecond != 0 && ms == 0) {
-				oneDigitSecond--;
-				ms = 9;
-			} else if (ms != 0) {
-				ms--;
-			}
-			lblTimer.setText(oneDigitSecond + "." + ms + "s");
-			
-		} else if (lblTimer.getText().length() == 5) {
-			twoDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
-			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(1, 2));
-			ms = Integer.valueOf(lblTimer.getText().substring(3, 4));
-			System.out.println(twoDigitSecond + oneDigitSecond + ms);
-			
-			if ((twoDigitSecond != 0 && twoDigitSecond != 1) && oneDigitSecond == 0 && ms == 0) { //is the subparanthesis necessary?
-				twoDigitSecond--;
-				oneDigitSecond = 9;
-				ms = 9;
-			} else if (ms != 0) {
-				ms--;
-			} else if (twoDigitSecond != 0 && oneDigitSecond != 0 && ms == 0){ //33.0, 15.0
-				oneDigitSecond--;
-				ms = 9;
-			} else if (twoDigitSecond == 0) { //copy-pasted the entire countdown if lblTimer.length == 5
-				if (oneDigitSecond != 0 && ms == 0) {
-					oneDigitSecond--;
-					ms = 9;
-				} else if (ms != 0) {
-					ms--;
-				}
-				lblTimer.setText(oneDigitSecond + "." + ms + "s");
-			}
-			lblTimer.setText(twoDigitSecond + oneDigitSecond + "." + ms + "s");
-			
-
-		}*/
-	
+		*/
 	}
 	public void timerManager(String string) {
 
@@ -206,7 +157,7 @@ public class MainViewController implements Initializable {
 			if (string.equals("start")) {
 				timeline.stop();
 				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s"); //is this nececssary?
-		
+				
 				timeline.playFromStart();
 			} else if (string.equals("stop")) {
 				timeline.stop();
@@ -317,11 +268,14 @@ public class MainViewController implements Initializable {
 		timerManager("pause");
 		lblRandomLetter.setVisible(false);
 		
-		if (natoAlphabet.getTimeLimit() != 0 || natoAlphabet.getMaxQuestions() != 0) {
+		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Quit without saving progress?");
 			alert.setHeaderText("Score will not be recorded");
 			alert.setContentText("If you quit now your score will not be recorded. Do you wish to proceed?");
+			Label label = new Label("If you quit now your score will not be recorded. Do you wish to proceed?");
+			label.setWrapText(true);
+			alert.getDialogPane().setContent(label);
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
