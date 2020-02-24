@@ -8,7 +8,7 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 			"Hotel", "India", "Juliett", "Kilo", "Lima", "Mike", "November", 
 			"Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform",
 			"Victor", "Whiskey", "X-ray", "Yankee", "Zulu",
-	};
+	}; //dictionary hashmap
 	private char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 	private static int progressCount = 0;
 	private int totalCounter = 0;
@@ -35,6 +35,7 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 	public char getRandomChar() {
 		int rnd = new Random().nextInt(alphabet.length);
 		return alphabet[rnd];
+		//fix "more random" "spotify shuffle"
 	}
 	public String findNatoTelephony(char c) {
 		for (int i = 0; i < natoTelephony.length; i++) { // 0 or -1?

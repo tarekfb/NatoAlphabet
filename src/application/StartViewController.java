@@ -17,7 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 public class StartViewController implements Initializable {
-	
+
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
 	//TimerManager timerClass = new TimerManager(); if timer works delete this
 
@@ -45,7 +45,7 @@ public class StartViewController implements Initializable {
 				+ "\n"
 				+ "\nGood luck!"
 				);
-		
+
 		if (natoAlphabet.getTimeLimit() != 0) {
 			txtTimeLimit.setText(String.valueOf(natoAlphabet.getTimeLimit()));
 		}
@@ -54,55 +54,55 @@ public class StartViewController implements Initializable {
 		}
 	}
 	@FXML
-    private void btnStart_Click (ActionEvent event) {
+	private void btnStart_Click (ActionEvent event) {
 		boolean nfeCheck = false;
-	
-			if (txtTimeLimit.getText().length() > 1) {
+
+		if (txtTimeLimit.getText().length() > 1) {
+			Alert alert = new Alert(AlertType.WARNING);
+			nfeCheck = true;
+			alert.setTitle("Invalid input");
+			alert.setHeaderText("Invalid input");
+			alert.setContentText("The time limit field can only take numerical values consisting of a single-digit number. Please enter a single-digit number.");
+
+			alert.showAndWait();
+		} else {
+			try {
+				if (txtTimeLimit.getText().isBlank()) {
+					natoAlphabet.setTimeLimit(0); 
+				} else if (!txtTimeLimit.getText().isBlank()) {
+					natoAlphabet.setTimeLimit(Integer.valueOf(txtTimeLimit.getText())); 
+				}
+				if (txtMaxQuestions.getText().isBlank()) {
+					natoAlphabet.setMaxQuestions(0);
+				}
+				else if (!txtMaxQuestions.getText().isBlank()) {
+					natoAlphabet.setMaxQuestions(Integer.valueOf(txtMaxQuestions.getText()));
+				}
+			} catch (NumberFormatException nfe) {
 				Alert alert = new Alert(AlertType.WARNING);
 				nfeCheck = true;
 				alert.setTitle("Invalid input");
 				alert.setHeaderText("Invalid input");
-				alert.setContentText("The time limit field can only take numerical values consisting of a single-digit number. Please enter a single-digit number.");
+				alert.setContentText("The fields can only take numerical values consisting of a single-digit number. Please enter a number.");
 
 				alert.showAndWait();
-			} else {
-				try {
-					if (txtTimeLimit.getText().isBlank()) {
-						natoAlphabet.setTimeLimit(0); 
-					} else if (!txtTimeLimit.getText().isBlank()) {
-						natoAlphabet.setTimeLimit(Integer.valueOf(txtTimeLimit.getText())); 
+			}
+			try {
+				if (nfeCheck == false) {
+					Stage stage = null;
+					Parent root = null;
+					if (event.getSource()==btnStart){
+						stage = (Stage) btnStart.getScene().getWindow();
+						root = FXMLLoader.load(getClass().getResource("MainView.fxml"));           
 					}
-					if (txtMaxQuestions.getText().isBlank()) {
-						natoAlphabet.setMaxQuestions(0);
-					}
-					else if (!txtMaxQuestions.getText().isBlank()) {
-						natoAlphabet.setMaxQuestions(Integer.valueOf(txtMaxQuestions.getText()));
-					}
-				} catch (NumberFormatException nfe) {
-					Alert alert = new Alert(AlertType.WARNING);
-					nfeCheck = true;
-					alert.setTitle("Invalid input");
-					alert.setHeaderText("Invalid input");
-					alert.setContentText("The fields can only take numerical values consisting of a single-digit number. Please enter a number.");
-					
-					alert.showAndWait();
+					Scene scene = new Scene(root);
+					stage.setScene(scene);
+					stage.show();
 				}
-				try {
-					if (nfeCheck == false) {
-						Stage stage = null;
-						Parent root = null;
-						if (event.getSource()==btnStart){
-							stage = (Stage) btnStart.getScene().getWindow();
-							root = FXMLLoader.load(getClass().getResource("MainView.fxml"));           
-						}
-						Scene scene = new Scene(root);
-						stage.setScene(scene);
-						stage.show();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-	
+	}
+
 }
