@@ -60,15 +60,15 @@ public class MainViewController implements Initializable {
 				this.countDown();
 			}
 			);
-	private int oneDigitSecond = 0; //mvc?
-	private int twoDigitSecond = 0; //mvc?
-	private int ms = 0; //mcv?
+	private int oneDigitSecond = 0; 
+	private int twoDigitSecond = 0;
+	private int ms = 0;
 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.setStyle();
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //this avoids npe at init
 		this.rndLetterGenerator();
 		btnRestart.setManaged(false);
 		natoAlphabet.setTotalCounter(0);
@@ -129,7 +129,7 @@ public class MainViewController implements Initializable {
 			ms = Integer.valueOf(lblTimer.getText().substring(3, 4));
 		}
 
-		//to fix use breakpoints/debugger/step in step out osv
+		//TODO: to fix use breakpoints/debugger/step, in step out etc
 		if (twoDigitSecond != 0 && oneDigitSecond == 0 && ms == 0) {
 			twoDigitSecond--;
 			oneDigitSecond = 9;
@@ -196,13 +196,11 @@ public class MainViewController implements Initializable {
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
 
-			this.timerManager("stop"); //seems as if stop here doesn't stop the current active thread. 
-			// Does it have no effect because its invoking the method, creating a new timeline, rendering 'stop' useless?
+			this.timerManager("stop");
 			this.timerManager("start");
 		} else if (btnUserInput.getText().equals("Enter")) {		
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 				lblResponse.setText("Incorrect. Try again!");
-				//btnUserInput.setDisable(true);
 				btnUserInput.setText("Next");
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
