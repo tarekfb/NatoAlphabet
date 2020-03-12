@@ -315,6 +315,9 @@ public class MainViewController implements Initializable {
 		}
 
 	}
+	public void disregardCaseSensetivity() {
+		
+	}
 	public void setStyle() {
 		/*btnUserInput.setStyle(
 			"-fx-base: #0000ff; -fx-font-weight: bold;");
