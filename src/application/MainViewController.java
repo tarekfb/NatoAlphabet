@@ -29,7 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
 public class MainViewController implements Initializable {
-	
+
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
 
 	@FXML
@@ -56,19 +56,19 @@ public class MainViewController implements Initializable {
 	Timeline timeline = new Timeline();
 	KeyFrame keyframe = new KeyFrame(
 			Duration.millis(100),
-		        event -> {
-		        	this.countDown();
-		        }
+			event -> {
+				this.countDown();
+			}
 			);
-	private int oneDigitSecond = 0; //mvc?
-	private int twoDigitSecond = 0; //mvc?
-	private int ms = 0; //mcv?
+	private int oneDigitSecond = 0; 
+	private int twoDigitSecond = 0;
+	private int ms = 0;
 
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.setStyle();
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //just to avoid npe at init
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //this avoids npe at init
 		this.rndLetterGenerator();
 		btnRestart.setManaged(false);
 		natoAlphabet.setTotalCounter(0);
@@ -84,11 +84,11 @@ public class MainViewController implements Initializable {
 				txtUserInput.setEditable(false);
 			});
 		}
-		
+
 		if (natoAlphabet.getTimeLimit() != 0) {
 			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
 		}
-			
+
 		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
 		stringProperty.addListener(new ChangeListener<String>() {
 			@Override
@@ -96,17 +96,17 @@ public class MainViewController implements Initializable {
 				txtUserInput.setText(newValue);
 			}
 		});
-			
+
 		txtUserInput.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
 				if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
-			        lblResponse.setText("");
+					lblResponse.setText("");
 					btnUserInput.setText("Enter");
 					btnUserInput.setDisable(false);
-					
-			        stringProperty.set(newValue);
-			    }
+
+					stringProperty.set(newValue);
+				}
 			}
 		});
 		this.timerManager("start");
@@ -118,8 +118,8 @@ public class MainViewController implements Initializable {
 		} while (c == lblRandomLetter.getText().charAt(0));
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
 	public void countDown() {
-		
-		
+
+
 		if (lblTimer.getText().length() == 4) {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
 			ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
@@ -129,7 +129,7 @@ public class MainViewController implements Initializable {
 			ms = Integer.valueOf(lblTimer.getText().substring(3, 4));
 		}
 
-		
+		//TODO: to fix use breakpoints/debugger/step, in step out etc
 		if (twoDigitSecond != 0 && oneDigitSecond == 0 && ms == 0) {
 			twoDigitSecond--;
 			oneDigitSecond = 9;
@@ -141,7 +141,7 @@ public class MainViewController implements Initializable {
 		} else if (ms != 0) {
 			ms--;
 		}
-		
+
 		if (lblTimer.getText().length() == 4 || twoDigitSecond == 0) {// == 0 since: if 2 digit countdown: 15.0 -> 10.0 -> 09.9 -> 00.0
 			lblTimer.setText(oneDigitSecond + "." + ms + "s");
 		} else if (twoDigitSecond != 0) {
@@ -149,7 +149,7 @@ public class MainViewController implements Initializable {
 		}/* else if (twoDigitSecond == 0) {
 			lblTimer.setText(oneDigitSecond + "." + ms + "s");
 		}//this might be the same as initial if-check
-		*/
+		 */
 	}
 	public void timerManager(String string) {
 
@@ -157,7 +157,7 @@ public class MainViewController implements Initializable {
 			if (string.equals("start")) {
 				timeline.stop();
 				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s"); //is this nececssary?
-				
+
 				timeline.playFromStart();
 			} else if (string.equals("stop")) {
 				timeline.stop();
@@ -180,9 +180,9 @@ public class MainViewController implements Initializable {
 				}
 			}
 		}
-	
+
 	}
-	
+
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
 		if (this.gameOverCheckExe());
@@ -195,14 +195,12 @@ public class MainViewController implements Initializable {
 			lblResponse.setText("");
 			btnUserInput.setText("Enter");
 			//make method for this if calling many times?
-			
-			this.timerManager("stop"); //seems as if stop here doesn't stop the current active thread. 
-			// Does it have no effect because its invoking the method, creating a new timeline, rendering 'stop' useless?
+
+			this.timerManager("stop");
 			this.timerManager("start");
 		} else if (btnUserInput.getText().equals("Enter")) {		
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
 				lblResponse.setText("Incorrect. Try again!");
-				//btnUserInput.setDisable(true);
 				btnUserInput.setText("Next");
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
@@ -213,7 +211,7 @@ public class MainViewController implements Initializable {
 				this.scoreCounter(true);
 				this.rndLetterGenerator();
 				stringProperty.set("");
-				
+
 				this.timerManager("stop");
 				this.timerManager("start");
 			}
@@ -227,7 +225,7 @@ public class MainViewController implements Initializable {
 		}
 		lblProgressCounter.setText(
 				"Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/" + String.valueOf(natoAlphabet.getTotalCounter())
-		);
+				);
 	}
 	public boolean gameOverCheckExe() {
 		if (natoAlphabet.getMaxQuestions() == 0) {
@@ -250,24 +248,24 @@ public class MainViewController implements Initializable {
 			NatoAlphabet.setHighscore(natoAlphabet.getProgressCounter());
 		}
 		try {
-        	Stage stage = null;
-        	Parent root = null;
-       
-        	if (event.getSource()==btnRestart){
-        		stage = (Stage) btnRestart.getScene().getWindow();
-        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
-        	}
-        	Scene scene = new Scene(root);
-        	stage.setScene(scene);
-        	stage.show();
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
+			Stage stage = null;
+			Parent root = null;
+
+			if (event.getSource()==btnRestart){
+				stage = (Stage) btnRestart.getScene().getWindow();
+				root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+			}
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public void btnQuit_Click(ActionEvent event) {
 		timerManager("pause");
 		lblRandomLetter.setVisible(false);
-		
+
 		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Quit without saving progress?");
@@ -281,19 +279,19 @@ public class MainViewController implements Initializable {
 			if (result.get() == ButtonType.OK) {
 				try {
 					Stage stage = null;
-		        	Parent root = null;
-		       
-		        	if (event.getSource()==btnQuit){
-		        		stage = (Stage) btnRestart.getScene().getWindow();
-		        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
-		        	}
-		        	timerManager("stop");
-		        	Scene scene = new Scene(root);
-		        	stage.setScene(scene);
-		        	stage.show();
-		        } catch (Exception e) {
-		        	e.printStackTrace();
-		        }	
+					Parent root = null;
+
+					if (event.getSource()==btnQuit){
+						stage = (Stage) btnRestart.getScene().getWindow();
+						root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+					}
+					timerManager("stop");
+					Scene scene = new Scene(root);
+					stage.setScene(scene);
+					stage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}	
 			} else if (result.get() == ButtonType.CANCEL || result.get() == ButtonType.NO || result.get() == ButtonType.CLOSE) {
 				timerManager("wait1000");
 				lblRandomLetter.setVisible(true);
@@ -301,21 +299,24 @@ public class MainViewController implements Initializable {
 		} else if (natoAlphabet.getTimeLimit() == 0 || natoAlphabet.getMaxQuestions() == 0){
 			try {
 				Stage stage = null;
-	        	Parent root = null;
-	       
-	        	if (event.getSource()==btnQuit){
-	        		stage = (Stage) btnRestart.getScene().getWindow();
-	        		root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
-	        	}
-	        	timerManager("stop");
-	        	Scene scene = new Scene(root);
-	        	stage.setScene(scene);
-	        	stage.show();
-	        } catch (Exception e) {
-	        	e.printStackTrace();
-	        }	
+				Parent root = null;
+
+				if (event.getSource()==btnQuit){
+					stage = (Stage) btnRestart.getScene().getWindow();
+					root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+				}
+				timerManager("stop");
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
 		}
-        	
+
+	}
+	public void disregardCaseSensetivity() {
+		
 	}
 	public void setStyle() {
 		/*btnUserInput.setStyle(

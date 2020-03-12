@@ -2,18 +2,18 @@ package application;
 
 import java.util.Random;
 
-public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwand.com/sv/Bokstavering
+public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.wikiwand.com/sv/Bokstavering
 	private String[] natoTelephony = new String [] {
 			"Alfa", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", 
 			"Hotel", "India", "Juliett", "Kilo", "Lima", "Mike", "November", 
 			"Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform",
 			"Victor", "Whiskey", "X-ray", "Yankee", "Zulu",
-	};
+	}; //TODO: dictionary hashmap
 	private char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 	private static int progressCount = 0;
 	private int totalCounter = 0;
 	private static int timeLimit = 0;
-	private static int maxQuestions = 0; //change to 0 and do 0-check: if (maxquestions = 0){no time limit}
+	private static int maxQuestions = 0;
 	private static int highscore = 0;
 
 	public String[] getNatoTelephony() {
@@ -35,6 +35,7 @@ public class NatoAlphabet { //implement Swedish alternative? https://www.wikiwan
 	public char getRandomChar() {
 		int rnd = new Random().nextInt(alphabet.length);
 		return alphabet[rnd];
+		//TODO: fix "more random" (spotify shuffle)
 	}
 	public String findNatoTelephony(char c) {
 		for (int i = 0; i < natoTelephony.length; i++) { // 0 or -1?
