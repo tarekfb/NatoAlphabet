@@ -30,19 +30,10 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 		return getAlphabetArray()[rnd];
 		//TODO: fix "more random" (spotify shuffle)
 	}
-	public String findNatoTelephony(char c) {
-		for (int i = 0; i < getNatoTelephonyArray().length; i++) { // 0 or -1?
-			if (c == getNatoTelephonyArray()[i].charAt(0)) {
-				return getNatoTelephonyArray()[i];
-			}
-		}
-		return null;
-	}
-
 	public boolean equalCheck(String userInput, char rndChar) {
 		String currentLetter = String.valueOf(rndChar);
-
-		if (userInput.equals(natoTelephony.get(currentLetter))) {
+		
+		if (userInput.toLowerCase().equals(natoTelephony.get(currentLetter).toLowerCase())) {
 			return true;
 		}
 		
