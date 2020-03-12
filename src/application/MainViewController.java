@@ -67,6 +67,14 @@ public class MainViewController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		for (int i = 0; i < natoAlphabet.getNatoTelephonyArray().length; i++) {
+			natoAlphabet.getNatoTelephony().put(natoAlphabet.getAlphabet()[i], natoAlphabet.getNatoTelephonyArray()[i]);
+		}
+		//previously used String[] and char[] to compare the values
+		//instead of rewriting all the information as 26 lines of "natoTelehpony.put(A, Alfa)", using this forloop
+		
+		
 		this.setStyle();
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //this avoids npe at init
 		this.rndLetterGenerator();
