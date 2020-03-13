@@ -6,9 +6,7 @@ import java.util.Random;
 public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.wikiwand.com/sv/Bokstavering
 	
 	private HashMap<String, String> natoTelephony = new HashMap<String, String>();
-	
-	private HashMap<String, String> blabla;
-	
+		
 	private String[] alphabet = new String [] {
 			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", 
 			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
@@ -20,25 +18,6 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	private static int maxQuestions = 0;
 	private static int highscore = 0;
 
-	
-	public String getRandomTelephony() {
-		int rnd = new Random().nextInt(getNatoTelephonyArray().length);
-		return getNatoTelephonyArray()[rnd];
-	}
-	public char getRandomChar() {
-		int rnd = new Random().nextInt(getAlphabetArray().length);
-		return getAlphabetArray()[rnd];
-		//TODO: fix "more random" (spotify shuffle)
-	}
-	public boolean equalCheck(String userInput, char rndChar) {
-		String currentLetter = String.valueOf(rndChar);
-		
-		if (userInput.toLowerCase().equals(natoTelephony.get(currentLetter).toLowerCase())) {
-			return true;
-		}
-		
-		return false;
-	}
 	public int getProgressCounter() {
 		return progressCount;
 	}
@@ -84,10 +63,51 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 		this.natoTelephony = natoTelephony;
 	}
 	
+	public static int distance(String a, String b) {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        // i == 0
+        int [] costs = new int [b.length() + 1];
+        for (int j = 0; j < costs.length; j++)
+            costs[j] = j;
+        for (int i = 1; i <= a.length(); i++) {
+            // j == 0; nw = lev(i - 1, j)
+            costs[0] = i;
+            int nw = i - 1;
+            for (int j = 1; j <= b.length(); j++) {
+                int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
+                nw = costs[j];
+                costs[j] = cj;
+            }
+        }
+        return costs[b.length()];
+    }//levensteihn distance algorithm.
+	//I understand the general idea of the algorithm
+	//but would prefer to fully understand the implementation details
+	
+	public String getRandomTelephony() {
+		int rnd = new Random().nextInt(getNatoTelephonyArray().length);
+		return getNatoTelephonyArray()[rnd];
+	}
+	public char getRandomChar() {
+		int rnd = new Random().nextInt(getAlphabetArray().length);
+		return getAlphabetArray()[rnd];
+		//TODO: fix "more random" (spotify shuffle)
+	}
+	public boolean equalCheck(String userInput, char rndChar) {
+		String currentLetter = String.valueOf(rndChar);
+		if (distance(userInput, natoTelephony.get(currentLetter)) <= 1) return true; //only allow misspellings if 1 error(s)
+		return false;
+	}
 	
 	
-
-	//below is old data, but is being used for hashmap entries
+	/**********************************
+	* 
+	*below is old data
+	*is being used for hashmap entries
+	*
+	***********************************/
+	
 	private String[] natoTelephonyArray = new String [] {
 			"Alfa", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", 
 			"Hotel", "India", "Juliett", "Kilo", "Lima", "Mike", "November", 
