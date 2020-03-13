@@ -121,11 +121,14 @@ public class MainViewController implements Initializable {
 	
 	public void rndLetterGenerator() {
 		char currentChar = lblRandomLetter.getText().charAt(0);		
-	
+		
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
+
+		/*
 		do {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
 		} while (currentChar == lblRandomLetter.getText().charAt(0));
-		
+		*/
 		
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
 	

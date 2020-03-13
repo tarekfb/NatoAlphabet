@@ -109,41 +109,18 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	}//this shouldnt be needed, can probably remove
 	
 	public char getRandomChar(char c) {
-		int rnd = new Random().nextInt(getAlphabetArray().length);
-		char proposedChar;
+		char proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
 		
-		System.out.println(alphabetDistance('Z', 'Z'));
-		System.out.println(alphabetDistance('C', 'Z'));
-		System.out.println(alphabetDistance('Z', 'C'));
-		System.out.println(alphabetDistance('A', 'Z'));
-		System.out.println(alphabetDistance('Y', 'Z'));
-		System.out.println(alphabetDistance('A', 'B'));
-		System.out.println(alphabetDistance('Z', 'Y'));
-
-
-
-
-
-
-
-		return getAlphabetArray()[rnd];
-		
-		/*
+		//ensures the distance between new & old is more than 3
 		do {
-			proposedChar = getAlphabetArray()[rnd];
-		} while (alphabetDistance(c, proposedChar) > 5);
-		
-		return proposedChar;*/
-		
-		/*
-		do {
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
-			proposedChar = lblRandomLetter.getText().charAt(0);
-		} while (natoAlphabet.alphabetDistance(currentChar, proposedChar) <= 10);*/
-		
-		
-		//TODO: fix "more random" (spotify shuffle)
-	}
+			proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
+		} while (alphabetDistance(c, proposedChar) < 3);	
+
+		return proposedChar;
+	}//alternative method would be: in controller, save last ~4 digits and avoid those
+	//potentially more random
+	//because the number minimum distance provided can cause repition in current model
+	
 	public boolean equalCheck(String userInput, char rndChar) {
 		String currentLetter = String.valueOf(rndChar);
 		if (levDistance(userInput, natoTelephony.get(currentLetter)) <= 2) return true; //only allow misspellings if 2 error(s)
