@@ -76,7 +76,6 @@ public class MainViewController implements Initializable {
 		}
 		
 		this.setStyle();
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar('A'))); //this avoids npe at init
 		this.rndLetterGenerator();
 		btnRestart.setManaged(false);
 		natoAlphabet.setTotalCounter(0);

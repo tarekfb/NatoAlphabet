@@ -113,6 +113,18 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 		char proposedChar;
 		
 		System.out.println(alphabetDistance('Z', 'Z'));
+		System.out.println(alphabetDistance('C', 'Z'));
+		System.out.println(alphabetDistance('Z', 'C'));
+		System.out.println(alphabetDistance('A', 'Z'));
+		System.out.println(alphabetDistance('Y', 'Z'));
+		System.out.println(alphabetDistance('A', 'B'));
+		System.out.println(alphabetDistance('Z', 'Y'));
+
+
+
+
+
+
 
 		return getAlphabetArray()[rnd];
 		

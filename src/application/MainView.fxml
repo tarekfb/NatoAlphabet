@@ -67,7 +67,7 @@
             </Label>
             <Button fx:id="btnRestart" layoutX="195.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart" />
             <Button fx:id="btnQuit" layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnQuit_Click" text="Quit" />
-            <Label fx:id="lblRandomLetter" alignment="CENTER" contentDisplay="CENTER" layoutX="177.0" layoutY="14.0" prefHeight="82.0" prefWidth="88.0" textOverrun="CLIP">
+            <Label fx:id="lblRandomLetter" alignment="CENTER" contentDisplay="CENTER" layoutX="177.0" layoutY="14.0" prefHeight="82.0" prefWidth="88.0" text="A" textOverrun="CLIP">
                <font>
                   <Font size="58.0" />
                </font>
