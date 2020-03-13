@@ -67,8 +67,15 @@ public class MainViewController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		//previously used String[] and char[] to compare the values
+		//instead of rewriting all the information as 26 lines of "natoTelehpony.put(A, Alfa)", using this forloop
+		//should rewrite in future and remove old data
+		for (int i = 0; i < natoAlphabet.getNatoTelephonyArray().length; i++) {
+			natoAlphabet.getNatoTelephony().put(natoAlphabet.getAlphabet()[i], natoAlphabet.getNatoTelephonyArray()[i]);
+		}
+		
 		this.setStyle();
-		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //this avoids npe at init
 		this.rndLetterGenerator();
 		btnRestart.setManaged(false);
 		natoAlphabet.setTotalCounter(0);
@@ -111,15 +118,21 @@ public class MainViewController implements Initializable {
 		});
 		this.timerManager("start");
 	}
+	
 	public void rndLetterGenerator() {
-		char c = lblRandomLetter.getText().charAt(0);
+		char currentChar = lblRandomLetter.getText().charAt(0);		
+		
+		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
+
+		/*
 		do {
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
-		} while (c == lblRandomLetter.getText().charAt(0));
+			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
+		} while (currentChar == lblRandomLetter.getText().charAt(0));
+		*/
+		
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
+	
 	public void countDown() {
-
-
 		if (lblTimer.getText().length() == 4) {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
 			ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
