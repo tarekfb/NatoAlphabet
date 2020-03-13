@@ -11,7 +11,6 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", 
 			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
 	};
-
 	private static int progressCount = 0;
 	private int totalCounter = 0;
 	private static int timeLimit = 0;
@@ -62,8 +61,7 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	public void setNatoTelephony(HashMap<String, String> natoTelephony) {
 		this.natoTelephony = natoTelephony;
 	}
-	
-	public static int distance(String a, String b) {
+	public static int levDistance(String a, String b) {
         a = a.toLowerCase();
         b = b.toLowerCase();
         // i == 0
@@ -81,9 +79,15 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
             }
         }
         return costs[b.length()];
-    }//levensteihn distance algorithm.
+    }//Levensteihn distance algorithm.
 	//I understand the general idea of the algorithm
 	//but would prefer to fully understand the implementation details
+	
+	public int alphabetDistance(char c) {
+		String currentLetter = String.valueOf(c);
+		
+			
+	}
 	
 	public String getRandomTelephony() {
 		int rnd = new Random().nextInt(getNatoTelephonyArray().length);
@@ -96,7 +100,7 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	}
 	public boolean equalCheck(String userInput, char rndChar) {
 		String currentLetter = String.valueOf(rndChar);
-		if (distance(userInput, natoTelephony.get(currentLetter)) <= 1) return true; //only allow misspellings if 1 error(s)
+		if (levDistance(userInput, natoTelephony.get(currentLetter)) <= 2) return true; //only allow misspellings if 2 error(s)
 		return false;
 	}
 	
@@ -105,7 +109,7 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	* 
 	*below is old data
 	*is being used for hashmap entries
-	*
+	*TODO: remove and fix adding hashmap entries
 	***********************************/
 	
 	private String[] natoTelephonyArray = new String [] {

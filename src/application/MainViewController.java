@@ -119,15 +119,15 @@ public class MainViewController implements Initializable {
 		});
 		this.timerManager("start");
 	}
+	
 	public void rndLetterGenerator() {
 		char c = lblRandomLetter.getText().charAt(0);
 		do {
 			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
 		} while (c == lblRandomLetter.getText().charAt(0));
 	}//ensures coincidental labelling repetition using getRandomChar never occurs
+	
 	public void countDown() {
-
-
 		if (lblTimer.getText().length() == 4) {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
 			ms = Integer.valueOf(lblTimer.getText().substring(2, 3));
