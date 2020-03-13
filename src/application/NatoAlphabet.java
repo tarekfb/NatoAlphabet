@@ -84,19 +84,52 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	//but would prefer to fully understand the implementation details
 	
 	public int alphabetDistance(char currentChar, char proposedChar) {
+		int distance = 0;
+		String currentString = String.valueOf(currentChar);
+		String proposedString = String.valueOf(proposedChar);
+		
+		//need to give each char an index int, in order to compare
 		HashMap<String, Integer> indexMap = new HashMap<String, Integer>();
-		for (int index = 0; index < alphabet.length; index++) {
+		for (int index = 0; index < alphabet.length; index++)
 			indexMap.put(alphabet[index], index);
-		}//need to give each char an index int, in order to compare
+		
+		//calculating distance
+		distance = indexMap.get(currentString) - indexMap.get(proposedString);
+		
+		//only need to know steps between, regardless if positive or negative value
+		if (String.valueOf(distance).substring(0, 1).equals("-"))
+			distance = Integer.valueOf(String.valueOf(distance).substring(1));
+		
+		return distance;	
 	}
 	
 	public String getRandomTelephony() {
 		int rnd = new Random().nextInt(getNatoTelephonyArray().length);
 		return getNatoTelephonyArray()[rnd];
-	}
-	public char getRandomChar() {
+	}//this shouldnt be needed, can probably remove
+	
+	public char getRandomChar(char c) {
 		int rnd = new Random().nextInt(getAlphabetArray().length);
+		char proposedChar;
+		
+		System.out.println(alphabetDistance('Z', 'Z'));
+
 		return getAlphabetArray()[rnd];
+		
+		/*
+		do {
+			proposedChar = getAlphabetArray()[rnd];
+		} while (alphabetDistance(c, proposedChar) > 5);
+		
+		return proposedChar;*/
+		
+		/*
+		do {
+			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar()));
+			proposedChar = lblRandomLetter.getText().charAt(0);
+		} while (natoAlphabet.alphabetDistance(currentChar, proposedChar) <= 10);*/
+		
+		
 		//TODO: fix "more random" (spotify shuffle)
 	}
 	public boolean equalCheck(String userInput, char rndChar) {
