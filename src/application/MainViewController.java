@@ -75,14 +75,6 @@ public class MainViewController implements Initializable {
 		//instead of rewriting all the information as 26 lines of "natoTelehpony.put(A, Alfa)", using this forloop
 		//should rewrite in future and remove old data
 		
-		System.out.println(natoAlphabet.equalCheckTest("Alfa", 'A'));
-		System.out.println(natoAlphabet.equalCheckTest("alfa", 'A'));
-		System.out.println(natoAlphabet.equalCheckTest("blfa", 'A'));
-		System.out.println(natoAlphabet.equalCheckTest("bbfa", 'A'));
-		System.out.println(natoAlphabet.equalCheckTest("xray", 'X'));
-
-
-		
 		this.setStyle();
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar())); //this avoids npe at init
 		this.rndLetterGenerator();
