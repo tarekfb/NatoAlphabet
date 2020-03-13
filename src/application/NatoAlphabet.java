@@ -83,10 +83,11 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	//I understand the general idea of the algorithm
 	//but would prefer to fully understand the implementation details
 	
-	public int alphabetDistance(char c) {
-		String currentLetter = String.valueOf(c);
-		
-			
+	public int alphabetDistance(char currentChar, char proposedChar) {
+		HashMap<String, Integer> indexMap = new HashMap<String, Integer>();
+		for (int index = 0; index < alphabet.length; index++) {
+			indexMap.put(alphabet[index], index);
+		}//need to give each char an index int, in order to compare
 	}
 	
 	public String getRandomTelephony() {
