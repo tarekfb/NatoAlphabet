@@ -81,7 +81,7 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
         return costs[b.length()];
     }//Levensteihn distance algorithm.
 	//I understand the general idea of the algorithm
-	//but would prefer to fully understand the implementation details
+	//but would prefer to fully understand the implementation
 	
 	public int alphabetDistance(char currentChar, char proposedChar) {
 		int distance = 0;
@@ -131,7 +131,7 @@ public class NatoAlphabet { //TODO: implement Swedish alternative? https://www.w
 	/**********************************
 	* 
 	*below is old data
-	*is being used for hashmap entries
+	*currently being used for hashmap entries
 	*TODO: remove and fix adding hashmap entries
 	***********************************/
 	

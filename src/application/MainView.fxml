@@ -12,13 +12,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainViewController">
-   <top>
-      <Label fx:id="lblTitle" prefHeight="41.0" prefWidth="321.0" text="NATO Alphabet: The Game" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-   </top>
    <center>
       <AnchorPane prefWidth="445.0" BorderPane.alignment="CENTER">
          <children>
@@ -39,7 +32,7 @@
                   <TextField fx:id="txtUserInput" GridPane.columnIndex="1" />   
                </children>
             </GridPane>
-            <Label fx:id="lblResponse" alignment="CENTER" layoutX="146.0" layoutY="197.0" prefHeight="67.0" prefWidth="156.0" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="lblResponse" alignment="CENTER" layoutX="146.0" layoutY="217.0" prefHeight="67.0" prefWidth="156.0" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>
@@ -60,18 +53,19 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <Label fx:id="lblProgressCounter" layoutX="350.0" layoutY="271.0" text="Score: 0/0" wrapText="true">
+            <Label fx:id="lblProgressCounter" layoutX="350.0" layoutY="309.0" text="Score: 0/0" wrapText="true">
                <font>
                   <Font size="19.0" />
                </font>
             </Label>
-            <Button fx:id="btnRestart" layoutX="195.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart" />
-            <Button fx:id="btnQuit" layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#btnQuit_Click" text="Quit" />
+            <Button fx:id="btnRestart" layoutX="161.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart" />
+            <Button fx:id="btnQuit" layoutX="14.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnQuit_Click" text="Quit" />
             <Label fx:id="lblRandomLetter" alignment="CENTER" contentDisplay="CENTER" layoutX="177.0" layoutY="14.0" prefHeight="82.0" prefWidth="88.0" text="A" textOverrun="CLIP">
                <font>
                   <Font size="58.0" />
                </font>
             </Label>
+            <Button fx:id="btnResults" layoutX="237.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnResults_Click" text="Results" />
          </children>
       </AnchorPane>
    </center>
