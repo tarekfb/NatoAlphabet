@@ -87,8 +87,11 @@ public class StartViewController implements Initializable {
 				nfeCheck = true;
 				alert.setTitle("Invalid input");
 				alert.setHeaderText("Invalid input");
-				alert.setContentText("The fields can only take numerical values consisting of a single-digit number. Please enter a number.");
-
+				Label alertLabel = new Label("The fields can only take numerical values consisting of a single-digit number."
+						+ "\nPlease enter a number.");
+				alertLabel.setWrapText(true);
+				alert.getDialogPane().setContent(alertLabel);
+				
 				alert.showAndWait();
 			}
 			try {

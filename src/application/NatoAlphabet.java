@@ -36,7 +36,7 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 	}
 
 	public void setTimeLimit(int timeLimit) {
-		this.timeLimit = timeLimit;
+		NatoAlphabet.timeLimit = timeLimit;
 	}
 
 	public int getMaxQuestions() {
@@ -44,7 +44,7 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 	}
 
 	public void setMaxQuestions(int maxQuestions) {
-		this.maxQuestions = maxQuestions;
+		NatoAlphabet.maxQuestions = maxQuestions;
 	}
 
 	public static int getHighscore() {
