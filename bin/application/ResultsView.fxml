@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ResultsViewController">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btnRestart" defaultButton="true" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart" />
+            <TableView fx:id="tvResults" layoutX="176.0" layoutY="19.0" prefHeight="362.0" prefWidth="294.0">
+              <columns>
+                <TableColumn fx:id="colInput" prefWidth="75.0" text="Input" />
+                <TableColumn fx:id="colSolution" prefWidth="75.0" text="Solution" />
+                  <TableColumn fx:id="colEqualValue" prefWidth="75.0" text="Correct?" />
+                  <TableColumn fx:id="colSeconds" prefWidth="75.0" text="Seconds" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

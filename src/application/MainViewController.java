@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.locks.Condition;
 
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
@@ -31,6 +30,7 @@ import javafx.fxml.Initializable;
 public class MainViewController implements Initializable {
 
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	Result result = new Result();
 
 	@FXML
 	private Button btnUserInput;
@@ -41,43 +41,42 @@ public class MainViewController implements Initializable {
 	@FXML
 	private Button btnQuit;
 	@FXML
+	private Button btnResults;
+	@FXML
 	private TextField txtUserInput;
-	private StringProperty stringProperty; //used for ChangeListener
+	private StringProperty stringProperty; // used for ChangeListener
 	@FXML
 	private Label lblRandomLetter;
 	@FXML
 	private Label lblProgressCounter;
-	@FXML 
+	@FXML
 	private Label lblResponse;
 	@FXML
 	private Label lblTitle;
 	@FXML
 	private Label lblTimer;
 	Timeline timeline = new Timeline();
-	KeyFrame keyframe = new KeyFrame(
-			Duration.millis(100),
-			event -> {
-				this.countDown();
-			}
-			);
-	private int oneDigitSecond = 0; 
+	KeyFrame keyframe = new KeyFrame(Duration.millis(100), event -> {
+		this.countDown();
+	});
+	private int oneDigitSecond = 0;
 	private int twoDigitSecond = 0;
 	private int ms = 0;
 
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		//previously used String[] and char[] to compare the values
-		//instead of rewriting all the information as 26 lines of "natoTelehpony.put(A, Alfa)", using this forloop
-		//should rewrite in future and remove old data
+
+		// previously used String[] and char[] to compare the values
+		// instead of rewriting all the information as 26 lines of "natoTelehpony.put(A,
+		// Alfa)", using this forloop
+		// should rewrite in future and remove old data
 		for (int i = 0; i < natoAlphabet.getNatoTelephonyArray().length; i++) {
 			natoAlphabet.getNatoTelephony().put(natoAlphabet.getAlphabet()[i], natoAlphabet.getNatoTelephonyArray()[i]);
 		}
-		
-		this.setStyle();
-		this.rndLetterGenerator();
+
+ 		this.rndLetterGenerator();
 		btnRestart.setManaged(false);
+		btnResults.setManaged(false);
 		natoAlphabet.setTotalCounter(0);
 		natoAlphabet.setProgressCounter(0);
 
@@ -96,7 +95,7 @@ public class MainViewController implements Initializable {
 			lblTimer.setText(String.valueOf(timeline.getTotalDuration().toSeconds()) + "s");
 		}
 
-		stringProperty = new SimpleStringProperty(txtUserInput.getText()); //used for ChangeListener
+		stringProperty = new SimpleStringProperty(txtUserInput.getText()); // used for ChangeListener
 		stringProperty.addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
@@ -107,7 +106,7 @@ public class MainViewController implements Initializable {
 		txtUserInput.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> obs, String oldValue, String newValue) {
-				if (! newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
+				if (!newValue.equals(stringProperty.get())) { // textField's text was changed directly (i.e. by user)
 					lblResponse.setText("");
 					btnUserInput.setText("Enter");
 					btnUserInput.setDisable(false);
@@ -118,20 +117,20 @@ public class MainViewController implements Initializable {
 		});
 		this.timerManager("start");
 	}
-	
+
 	public void rndLetterGenerator() {
-		char currentChar = lblRandomLetter.getText().charAt(0);		
-		
+		char currentChar = lblRandomLetter.getText().charAt(0);
+
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
 
 		/*
-		do {
-			lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
-		} while (currentChar == lblRandomLetter.getText().charAt(0));
-		*/
-		
-	}//ensures coincidental labelling repetition using getRandomChar never occurs
-	
+		 * do {
+		 * lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar
+		 * ))); } while (currentChar == lblRandomLetter.getText().charAt(0));
+		 */
+
+	}// ensures coincidental labelling repetition using getRandomChar never occurs
+
 	public void countDown() {
 		if (lblTimer.getText().length() == 4) {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
@@ -142,34 +141,35 @@ public class MainViewController implements Initializable {
 			ms = Integer.valueOf(lblTimer.getText().substring(3, 4));
 		}
 
-		//TODO: to fix use breakpoints/debugger/step, in step out etc
+		// TODO: to fix use breakpoints/debugger/step, in step out etc
 		if (twoDigitSecond != 0 && oneDigitSecond == 0 && ms == 0) {
 			twoDigitSecond--;
 			oneDigitSecond = 9;
 			ms = 9;
-		}
-		else if (oneDigitSecond != 0 && ms == 0) {
+		} else if (oneDigitSecond != 0 && ms == 0) {
 			oneDigitSecond--;
 			ms = 9;
 		} else if (ms != 0) {
 			ms--;
 		}
 
-		if (lblTimer.getText().length() == 4 || twoDigitSecond == 0) {// == 0 since: if 2 digit countdown: 15.0 -> 10.0 -> 09.9 -> 00.0
+		if (lblTimer.getText().length() == 4 || twoDigitSecond == 0) {// == 0 since: if 2 digit countdown: 15.0 -> 10.0
+																		// -> 09.9 -> 00.0
 			lblTimer.setText(oneDigitSecond + "." + ms + "s");
 		} else if (twoDigitSecond != 0) {
 			lblTimer.setText(twoDigitSecond + oneDigitSecond + "." + ms + "s");
-		}/* else if (twoDigitSecond == 0) {
-			lblTimer.setText(oneDigitSecond + "." + ms + "s");
-		}//this might be the same as initial if-check
-		 */
+		} /*
+			 * else if (twoDigitSecond == 0) { lblTimer.setText(oneDigitSecond + "." + ms +
+			 * "s"); }//this might be the same as initial if-check
+			 */
 	}
+
 	public void timerManager(String string) {
 
-		if (natoAlphabet.getTimeLimit() != 0){
+		if (natoAlphabet.getTimeLimit() != 0) {
 			if (string.equals("start")) {
 				timeline.stop();
-				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s"); //is this nececssary?
+				lblTimer.setText(String.valueOf(natoAlphabet.getTimeLimit()) + ".0s"); // is this nececssary?
 
 				timeline.playFromStart();
 			} else if (string.equals("stop")) {
@@ -180,7 +180,7 @@ public class MainViewController implements Initializable {
 				timeline.play();
 			} else if (string.substring(0, 4).equals("wait")) {
 				try {
-					synchronized(timeline) {
+					synchronized (timeline) {
 						timeline.wait(Integer.valueOf(string.substring(4)));
 						this.timerManager("play");
 					}
@@ -199,6 +199,7 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
 		if (this.gameOverCheckExe());
+		
 		else if (btnUserInput.getText().equals("Next")) {
 			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
@@ -207,19 +208,24 @@ public class MainViewController implements Initializable {
 			stringProperty.set("");
 			lblResponse.setText("");
 			btnUserInput.setText("Enter");
-			//make method for this if calling many times?
+			// make method for this if calling many times?
 
 			this.timerManager("stop");
 			this.timerManager("start");
-		} else if (btnUserInput.getText().equals("Enter")) {		
-			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
+		} else if (btnUserInput.getText().equals("Enter")) {
+			
+			//if more than single digit timer, this breaks
+			//TODO: fix the casting (string --> double)
+			saveInput(txtUserInput.getText(), lblRandomLetter.getText(), Double.valueOf(lblTimer.getText().substring(0, 1) + lblTimer.getText().substring(2, 3)), natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0)));
+			
+			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
 				lblResponse.setText("Incorrect. Try again!");
 				btnUserInput.setText("Next");
 				stringProperty.set("");
 				txtUserInput.setEditable(false);
 				this.scoreCounter(false);
 				timerManager("stop");
-			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))){
+			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
 				lblResponse.setText("Correct!");
 				this.scoreCounter(true);
 				this.rndLetterGenerator();
@@ -231,24 +237,26 @@ public class MainViewController implements Initializable {
 		}
 		this.gameOverCheckExe();
 	}
-	public void scoreCounter(boolean b){
+
+	public void scoreCounter(boolean b) {
 		natoAlphabet.setTotalCounter(natoAlphabet.getTotalCounter() + 1);
 		if (b) {
 			natoAlphabet.setProgressCounter(natoAlphabet.getProgressCounter() + 1);
 		}
-		lblProgressCounter.setText(
-				"Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/" + String.valueOf(natoAlphabet.getTotalCounter())
-				);
+		lblProgressCounter.setText("Score: " + String.valueOf((natoAlphabet.getProgressCounter())) + "/"
+				+ String.valueOf(natoAlphabet.getTotalCounter()));
 	}
+
 	public boolean gameOverCheckExe() {
 		if (natoAlphabet.getMaxQuestions() == 0) {
 			return false;
 		}
-		if (natoAlphabet.getMaxQuestions() == natoAlphabet.getTotalCounter()){
+		if (natoAlphabet.getMaxQuestions() == natoAlphabet.getTotalCounter()) {
 			btnUserInput.setDisable(true);
 			String score = this.lblProgressCounter.getText();
 			lblResponse.setText("Game over!\n" + score);
 			btnRestart.setManaged(true);
+			btnResults.setManaged(true);
 			btnRestart.requestFocus();
 			this.timerManager("stop");
 
@@ -256,17 +264,19 @@ public class MainViewController implements Initializable {
 		}
 		return false;
 	}
+
 	public void btnRestart_Click(ActionEvent event) {
-		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
+		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0
+				&& natoAlphabet.getMaxQuestions() != 0) {
 			NatoAlphabet.setHighscore(natoAlphabet.getProgressCounter());
 		}
 		try {
 			Stage stage = null;
 			Parent root = null;
 
-			if (event.getSource()==btnRestart){
+			if (event.getSource() == btnRestart) {
 				stage = (Stage) btnRestart.getScene().getWindow();
-				root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+				root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
 			}
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -275,6 +285,7 @@ public class MainViewController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
 	public void btnQuit_Click(ActionEvent event) {
 		timerManager("pause");
 		lblRandomLetter.setVisible(false);
@@ -294,9 +305,9 @@ public class MainViewController implements Initializable {
 					Stage stage = null;
 					Parent root = null;
 
-					if (event.getSource()==btnQuit){
+					if (event.getSource() == btnQuit) {
 						stage = (Stage) btnRestart.getScene().getWindow();
-						root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+						root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
 					}
 					timerManager("stop");
 					Scene scene = new Scene(root);
@@ -304,19 +315,20 @@ public class MainViewController implements Initializable {
 					stage.show();
 				} catch (Exception e) {
 					e.printStackTrace();
-				}	
-			} else if (result.get() == ButtonType.CANCEL || result.get() == ButtonType.NO || result.get() == ButtonType.CLOSE) {
+				}
+			} else if (result.get() == ButtonType.CANCEL || result.get() == ButtonType.NO
+					|| result.get() == ButtonType.CLOSE) {
 				timerManager("wait1000");
 				lblRandomLetter.setVisible(true);
 			}
-		} else if (natoAlphabet.getTimeLimit() == 0 || natoAlphabet.getMaxQuestions() == 0){
+		} else if (natoAlphabet.getTimeLimit() == 0 || natoAlphabet.getMaxQuestions() == 0) {
 			try {
 				Stage stage = null;
 				Parent root = null;
 
-				if (event.getSource()==btnQuit){
+				if (event.getSource() == btnQuit) {
 					stage = (Stage) btnRestart.getScene().getWindow();
-					root = FXMLLoader.load(getClass().getResource("StartView.fxml"));           
+					root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
 				}
 				timerManager("stop");
 				Scene scene = new Scene(root);
@@ -324,21 +336,45 @@ public class MainViewController implements Initializable {
 				stage.show();
 			} catch (Exception e) {
 				e.printStackTrace();
-			}	
+			}
 		}
 
 	}
-	public void disregardCaseSensetivity() {
-		
+
+	@FXML
+	public void btnResults_Click(ActionEvent event) {
+		try {
+			Stage stage = null;
+			Parent root = null;
+
+			if (event.getSource() == btnResults) {
+				stage = (Stage) btnResults.getScene().getWindow();
+				root = FXMLLoader.load(getClass().getResource("ResultsView.fxml"));
+			}
+			timerManager("stop");
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	public void setStyle() {
-		/*btnUserInput.setStyle(
-			"-fx-base: #0000ff; -fx-font-weight: bold;");
-		lblTitle.setStyle(
-			"-fx-font: 24 arial; -fx-font-weight:"
-			+ "bold; -fx-text-fill: #000000;"
-			+ "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;"
-		);*/
+	
+	public void saveInput(String userInput, String generatedLetter, double seconds, boolean equalValue) {
+		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
+			
+			Result tmpResult = new Result();
+			tmpResult.setUserInput(userInput);
+			tmpResult.setSolution(natoAlphabet.getNatoTelephony().get(generatedLetter));
+			tmpResult.setSeconds(seconds); 
+			
+			if (equalValue)
+				tmpResult.setEqualValue("Yes");
+			else 
+				tmpResult.setEqualValue("No");
+	
+			result.getResultList().add(tmpResult);		
+		}
 	}
 
 }
