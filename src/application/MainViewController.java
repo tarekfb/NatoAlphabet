@@ -12,6 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.locks.Condition;
@@ -216,7 +217,12 @@ public class MainViewController implements Initializable {
 			
 			//if more than single digit timer, this breaks
 			//TODO: fix the casting (string --> double)
-			saveInput(txtUserInput.getText(), lblRandomLetter.getText(), Double.valueOf(lblTimer.getText().substring(0, 1) + lblTimer.getText().substring(2, 3)), natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0)));
+			saveInput(
+					txtUserInput.getText(),
+					lblRandomLetter.getText(),
+					(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
+					natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+					);
 			
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
 				lblResponse.setText("Incorrect. Try again!");
@@ -363,10 +369,12 @@ public class MainViewController implements Initializable {
 	public void saveInput(String userInput, String generatedLetter, double seconds, boolean equalValue) {
 		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
 			
+			DecimalFormat df = new DecimalFormat("0.0");
+			
 			Result tmpResult = new Result();
 			tmpResult.setUserInput(userInput);
 			tmpResult.setSolution(natoAlphabet.getNatoTelephony().get(generatedLetter));
-			tmpResult.setSeconds(seconds); 
+			tmpResult.setSeconds(Double.valueOf(df.format(seconds))); 
 			
 			if (equalValue)
 				tmpResult.setEqualValue("Yes");
