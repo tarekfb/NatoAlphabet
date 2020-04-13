@@ -30,6 +30,7 @@ import javafx.fxml.Initializable;
 public class MainViewController implements Initializable {
 
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	Result result = new Result();
 
 	@FXML
 	private Button btnUserInput;
@@ -213,9 +214,9 @@ public class MainViewController implements Initializable {
 			this.timerManager("start");
 		} else if (btnUserInput.getText().equals("Enter")) {
 			
-			saveInput(txtUserInput.getText(), lblRandomLetter.getText());
-			System.out.println(txtUserInput.getText() + lblRandomLetter.getText());
-
+			//if more than single digit timer, this breaks
+			//TODO: fix the casting (string --> double)
+			saveInput(txtUserInput.getText(), lblRandomLetter.getText(), Double.valueOf(lblTimer.getText().substring(0, 1) + lblTimer.getText().substring(2, 3)));
 			
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
 				lblResponse.setText("Incorrect. Try again!");
@@ -359,9 +360,19 @@ public class MainViewController implements Initializable {
 		}
 	}
 	
-	public void saveInput(String userInput, String generatedLetter) {
+	public void saveInput(String userInput, String generatedLetter, double seconds) {
 		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
-			natoAlphabet.getPastWords().put(natoAlphabet.getNatoTelephony().get(generatedLetter), userInput);
+			
+			
+			Result tmpResult = new Result();
+			tmpResult.setUserInput(userInput);
+			tmpResult.setSolution(natoAlphabet.getNatoTelephony().get(generatedLetter));
+			tmpResult.setSeconds(seconds);
+			
+			
+			result.getResultList().add(tmpResult);
+			
+			//natoAlphabet.getPastWords().put(natoAlphabet.getNatoTelephony().get(generatedLetter), userInput);
 		}
 	}
 
