@@ -14,13 +14,16 @@ import javafx.stage.Stage;
 
 public class ResultsViewController implements Initializable {
 	
+	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	
 	@FXML
 	private Button btnRestart;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		System.out.println(natoAlphabet.getPastWords());
 	}
+	
 	
 	public void btnRestart_Click(ActionEvent event) {
 		try {

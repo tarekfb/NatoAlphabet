@@ -73,8 +73,7 @@ public class MainViewController implements Initializable {
 			natoAlphabet.getNatoTelephony().put(natoAlphabet.getAlphabet()[i], natoAlphabet.getNatoTelephonyArray()[i]);
 		}
 
-		this.setStyle();
-		this.rndLetterGenerator();
+ 		this.rndLetterGenerator();
 		btnRestart.setManaged(false);
 		btnResults.setManaged(false);
 		natoAlphabet.setTotalCounter(0);
@@ -198,8 +197,8 @@ public class MainViewController implements Initializable {
 
 	@FXML
 	public void btnUserInput_Click(ActionEvent event) {
-		if (this.gameOverCheckExe())
-			;
+		if (this.gameOverCheckExe());
+		
 		else if (btnUserInput.getText().equals("Next")) {
 			this.rndLetterGenerator();
 			txtUserInput.setEditable(true);
@@ -213,6 +212,11 @@ public class MainViewController implements Initializable {
 			this.timerManager("stop");
 			this.timerManager("start");
 		} else if (btnUserInput.getText().equals("Enter")) {
+			
+			saveInput(txtUserInput.getText(), lblRandomLetter.getText());
+			System.out.println(txtUserInput.getText() + lblRandomLetter.getText());
+
+			
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
 				lblResponse.setText("Incorrect. Try again!");
 				btnUserInput.setText("Next");
@@ -354,14 +358,11 @@ public class MainViewController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
-	public void setStyle() {
-		/*
-		 * btnUserInput.setStyle( "-fx-base: #0000ff; -fx-font-weight: bold;");
-		 * lblTitle.setStyle( "-fx-font: 24 arial; -fx-font-weight:" +
-		 * "bold; -fx-text-fill: #000000;" +
-		 * "-letter-spacing: 5.5; -fx-background-color: #9cb8b3;" );
-		 */
+	
+	public void saveInput(String userInput, String generatedLetter) {
+		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
+			natoAlphabet.getPastWords().put(natoAlphabet.getNatoTelephony().get(generatedLetter), userInput);
+		}
 	}
 
 }
