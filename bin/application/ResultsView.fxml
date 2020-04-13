@@ -15,7 +15,7 @@
               <columns>
                 <TableColumn fx:id="colInput" prefWidth="75.0" text="Input" />
                 <TableColumn fx:id="colSolution" prefWidth="75.0" text="Solution" />
-                  <TableColumn fx:id="colCorrect" prefWidth="75.0" text="Correct?" />
+                  <TableColumn fx:id="colEqualValue" prefWidth="75.0" text="Correct?" />
                   <TableColumn fx:id="colSeconds" prefWidth="75.0" text="Seconds" />
               </columns>
             </TableView>

@@ -216,7 +216,7 @@ public class MainViewController implements Initializable {
 			
 			//if more than single digit timer, this breaks
 			//TODO: fix the casting (string --> double)
-			saveInput(txtUserInput.getText(), lblRandomLetter.getText(), Double.valueOf(lblTimer.getText().substring(0, 1) + lblTimer.getText().substring(2, 3)));
+			saveInput(txtUserInput.getText(), lblRandomLetter.getText(), Double.valueOf(lblTimer.getText().substring(0, 1) + lblTimer.getText().substring(2, 3)), natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0)));
 			
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
 				lblResponse.setText("Incorrect. Try again!");
@@ -360,19 +360,20 @@ public class MainViewController implements Initializable {
 		}
 	}
 	
-	public void saveInput(String userInput, String generatedLetter, double seconds) {
+	public void saveInput(String userInput, String generatedLetter, double seconds, boolean equalValue) {
 		if (natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) {
-			
 			
 			Result tmpResult = new Result();
 			tmpResult.setUserInput(userInput);
 			tmpResult.setSolution(natoAlphabet.getNatoTelephony().get(generatedLetter));
-			tmpResult.setSeconds(seconds);
+			tmpResult.setSeconds(seconds); 
 			
-			
-			result.getResultList().add(tmpResult);
-			
-			//natoAlphabet.getPastWords().put(natoAlphabet.getNatoTelephony().get(generatedLetter), userInput);
+			if (equalValue)
+				tmpResult.setEqualValue("Yes");
+			else 
+				tmpResult.setEqualValue("No");
+	
+			result.getResultList().add(tmpResult);		
 		}
 	}
 

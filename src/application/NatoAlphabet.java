@@ -168,14 +168,4 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 		this.natoTelephonyArray = natoTelephonyArray;
 	}
 	
-	public HashMap<String, String> getPastWords() {
-		return pastWords;
-	}
-
-	public void setPastWords(HashMap<String, String> pastWords) {
-		NatoAlphabet.pastWords = pastWords;
-	}
-
-	private static HashMap<String, String> pastWords = new HashMap<String, String>();
-	
 }

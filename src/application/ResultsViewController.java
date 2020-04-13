@@ -20,35 +20,32 @@ import javafx.stage.Stage;
 
 public class ResultsViewController implements Initializable {
 	
-	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	Result result = new Result();
 	
 	@FXML
 	private Button btnRestart;
 	@FXML
-	private TableView<String> tvResults;
+	private TableView<Result> tvResults;
 	@FXML
 	private TableColumn<Result, String> colInput;
 	@FXML
 	private TableColumn<Result, String> colSolution;
 	@FXML
-	private TableColumn<Result, Boolean> colEqualValue;
+	private TableColumn<Result, String> colEqualValue;
 	@FXML
 	private TableColumn<Result, Double> colSeconds;
-
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		/*System.out.println(natoAlphabet.getPastWords());
 		
-		ObservableList<String> inputList = FXCollections.observableArrayList();
-		ObservableList<String> solutionList = FXCollections.observableArrayList();
+		ObservableList<Result> resultList = FXCollections.observableArrayList(result.getResultList());		
 		
-		natoAlphabet.getPastWords().forEach((k, v) -> {
-			inputList.add(v);
-			solutionList.add(k);
-		});
+		colInput.setCellValueFactory(new PropertyValueFactory<Result, String>("userInput"));
+		colSolution.setCellValueFactory(new PropertyValueFactory<Result, String>("solution"));
+		colSeconds.setCellValueFactory(new PropertyValueFactory<Result, Double>("seconds"));
+		colEqualValue.setCellValueFactory(new PropertyValueFactory<Result, String>("equalValue"));
 		
-		 // colInput.setCellValueFactory(new PropertyValueFactory<String, String>("input"));
-		  //tvResults.setItems(arg0);*/
+		tvResults.setItems(resultList);
 	}
 	
 	public void btnRestart_Click(ActionEvent event) {

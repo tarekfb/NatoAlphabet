@@ -6,7 +6,7 @@ public class Result {
 	private String userInput;
 	private String solution;
 	private double seconds;
-	private boolean equalValue;
+	private String equalValue;
 	
 	private static ArrayList<Result> resultList = new ArrayList<Result>();
 
@@ -34,11 +34,11 @@ public class Result {
 		this.seconds = seconds;
 	}
 
-	public boolean isEqualValue() {
+	public String getEqualValue() {
 		return equalValue;
 	}
 
-	public void setEqualValue(boolean equalValue) {
+	public void setEqualValue(String equalValue) {
 		this.equalValue = equalValue;
 	}
 
@@ -49,6 +49,5 @@ public class Result {
 	public void setResultList(ArrayList<Result> resultList) {
 		Result.resultList = resultList;
 	}
-	
 	
 }
