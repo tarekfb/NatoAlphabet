@@ -121,15 +121,7 @@ public class MainViewController implements Initializable {
 
 	public void rndLetterGenerator() {
 		char currentChar = lblRandomLetter.getText().charAt(0);
-
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
-
-		/*
-		 * do {
-		 * lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar
-		 * ))); } while (currentChar == lblRandomLetter.getText().charAt(0));
-		 */
-
 	}// ensures coincidental labelling repetition using getRandomChar never occurs
 
 	public void countDown() {
@@ -383,6 +375,31 @@ public class MainViewController implements Initializable {
 	
 			result.getResultList().add(tmpResult);		
 		}
+	}
+	public void incorrect(String type) {
+		saveInput(
+				txtUserInput.getText(),
+				lblRandomLetter.getText(),
+				(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
+				natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+				);
+		
+		if (type.equals("time")) {
+			lblResponse.setText("Time ran out. Try again!");
+			btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+			this.scoreCounter(false);
+		}
+		else if (type.equals("input")) {
+			lblResponse.setText("Incorrect. Try again!");
+			btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+			this.scoreCounter(false);
+			timerManager("stop");
+		}
+		
 	}
 
 }
