@@ -85,10 +85,7 @@ public class MainViewController implements Initializable {
 			timeline.getKeyFrames().add(keyframe);
 			timeline.setCycleCount(natoAlphabet.getTimeLimit() * 10);
 			timeline.setOnFinished(event -> {
-				lblResponse.setText("Time ran out. Try again!");
-				btnUserInput.setText("Next");
-				stringProperty.set("");
-				txtUserInput.setEditable(false);
+				this.incorrect("time");
 			});
 		}
 
@@ -201,29 +198,25 @@ public class MainViewController implements Initializable {
 			stringProperty.set("");
 			lblResponse.setText("");
 			btnUserInput.setText("Enter");
-			// make method for this if calling many times?
+			//TODO: Change "incorrect" method to account for correct too, and add this
 
 			this.timerManager("stop");
 			this.timerManager("start");
 		} else if (btnUserInput.getText().equals("Enter")) {
 			
-			//if more than single digit timer, this breaks
-			//TODO: fix the casting (string --> double)
-			saveInput(
-					txtUserInput.getText(),
-					lblRandomLetter.getText(),
-					(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
-					natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
-					);
-			
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
-				lblResponse.setText("Incorrect. Try again!");
-				btnUserInput.setText("Next");
-				stringProperty.set("");
-				txtUserInput.setEditable(false);
-				this.scoreCounter(false);
-				timerManager("stop");
+				this.incorrect("input");
 			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
+
+				//if more than single digit timer, this breaks
+				//TODO: fix the casting (string --> double)
+				saveInput(
+						txtUserInput.getText(),
+						lblRandomLetter.getText(),
+						(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
+						natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+						);
+				
 				lblResponse.setText("Correct!");
 				this.scoreCounter(true);
 				this.rndLetterGenerator();
@@ -231,7 +224,7 @@ public class MainViewController implements Initializable {
 
 				this.timerManager("stop");
 				this.timerManager("start");
-			}
+			}//TODO: Change "incorrect" method to account for correct too, and add this
 		}
 		this.gameOverCheckExe();
 	}
