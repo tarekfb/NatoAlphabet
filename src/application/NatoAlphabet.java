@@ -1,5 +1,6 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -14,6 +15,8 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 	private static int timeLimit = 0;
 	private static int maxQuestions = 0;
 	private static int highscore = 0;
+	
+	private ArrayList<String> alphabetHistory = new ArrayList<String>();
 
 	public int getProgressCounter() {
 		return progressCount;
@@ -114,25 +117,33 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 		return distance;
 	}
 
-	public String getRandomTelephony() {
-		int rnd = new Random().nextInt(getNatoTelephonyArray().length);
-		return getNatoTelephonyArray()[rnd];
-	}// this shouldnt be needed, can probably remove
-
 	public char getRandomChar(char c) {
 		char proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
 
-		// ensures the distance between new & old is more than 3
-		do {
-			proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
-		} while (alphabetDistance(c, proposedChar) < 3);
+		if (maxQuestions == 0 || maxQuestions > 26) {//ensures the distance between new & old is more than 3
+			do {
+				proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
+			} while (alphabetDistance(c, proposedChar) < 3);
+		} else if (maxQuestions <= 26) {//ensures never repeats letter if (maxq <= 26)
+			boolean charHasOccured = false;
+			do {				
+				do {
+					proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
+				} while (alphabetDistance(c, proposedChar) < 2);
+				
+				charHasOccured = false;
+				proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
+
+				for (String tmpString : alphabetHistory) {
+					if (String.valueOf(proposedChar).equals(tmpString))
+						charHasOccured = true;
+				}
+			} while(charHasOccured == true);
+		}
 
 		return proposedChar;
-	}// alternative method would be: in controller, save last ~4 digits and avoid
-		// those
-		// potentially more random
-		// because the number minimum distance provided can cause repition in current
-		// model
+		
+	}//TODO: save all letters and avoid if <= 26
 
 	public boolean equalCheck(String userInput, char rndChar) {
 		String currentLetter = String.valueOf(rndChar);
@@ -166,6 +177,14 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 
 	public void setNatoTelephonyArray(String[] natoTelephonyArray) {
 		this.natoTelephonyArray = natoTelephonyArray;
+	}
+
+	public ArrayList<String> getAlphabetHistory() {
+		return alphabetHistory;
+	}
+
+	public void setAlphabetHistory(ArrayList<String> alphabetHistory) {
+		this.alphabetHistory = alphabetHistory;
 	}
 	
 }

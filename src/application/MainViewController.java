@@ -85,10 +85,7 @@ public class MainViewController implements Initializable {
 			timeline.getKeyFrames().add(keyframe);
 			timeline.setCycleCount(natoAlphabet.getTimeLimit() * 10);
 			timeline.setOnFinished(event -> {
-				lblResponse.setText("Time ran out. Try again!");
-				btnUserInput.setText("Next");
-				stringProperty.set("");
-				txtUserInput.setEditable(false);
+				this.userFail("time");
 			});
 		}
 
@@ -121,17 +118,13 @@ public class MainViewController implements Initializable {
 
 	public void rndLetterGenerator() {
 		char currentChar = lblRandomLetter.getText().charAt(0);
+		natoAlphabet.getAlphabetHistory().add(String.valueOf(currentChar));
 
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
-
-		/*
-		 * do {
-		 * lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar
-		 * ))); } while (currentChar == lblRandomLetter.getText().charAt(0));
-		 */
-
-	}// ensures coincidental labelling repetition using getRandomChar never occurs
-
+		
+	}// ensures a given distance between letters
+	//TODO: make it not repeat any telephony if (totalQuestions(questionLimit?)  <=  26)
+	
 	public void countDown() {
 		if (lblTimer.getText().length() == 4) {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
@@ -209,29 +202,25 @@ public class MainViewController implements Initializable {
 			stringProperty.set("");
 			lblResponse.setText("");
 			btnUserInput.setText("Enter");
-			// make method for this if calling many times?
+			//TODO: Change "userfail" method to account for correct too, and add this
 
 			this.timerManager("stop");
 			this.timerManager("start");
 		} else if (btnUserInput.getText().equals("Enter")) {
 			
-			//if more than single digit timer, this breaks
-			//TODO: fix the casting (string --> double)
-			saveInput(
-					txtUserInput.getText(),
-					lblRandomLetter.getText(),
-					(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
-					natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
-					);
-			
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
-				lblResponse.setText("Incorrect. Try again!");
-				btnUserInput.setText("Next");
-				stringProperty.set("");
-				txtUserInput.setEditable(false);
-				this.scoreCounter(false);
-				timerManager("stop");
+				this.userFail("input");
 			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
+
+				//if more than single digit timer, this breaks
+				//TODO: fix the casting (string --> double)
+				saveInput(
+						txtUserInput.getText(),
+						lblRandomLetter.getText(),
+						(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
+						natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+						);
+				
 				lblResponse.setText("Correct!");
 				this.scoreCounter(true);
 				this.rndLetterGenerator();
@@ -239,7 +228,7 @@ public class MainViewController implements Initializable {
 
 				this.timerManager("stop");
 				this.timerManager("start");
-			}
+			}//TODO: Change "userfail" method to account for correct too, and add this
 		}
 		this.gameOverCheckExe();
 	}
@@ -272,10 +261,13 @@ public class MainViewController implements Initializable {
 	}
 
 	public void btnRestart_Click(ActionEvent event) {
-		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0
-				&& natoAlphabet.getMaxQuestions() != 0) {
+		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) 
 			NatoAlphabet.setHighscore(natoAlphabet.getProgressCounter());
-		}
+		
+		//clears the tableview which holds scores, to avoid unwanted scores from previous rounds
+		result.getResultList().clear();
+		
+		
 		try {
 			Stage stage = null;
 			Parent root = null;
@@ -382,6 +374,41 @@ public class MainViewController implements Initializable {
 				tmpResult.setEqualValue("No");
 	
 			result.getResultList().add(tmpResult);		
+		}
+	}
+	
+	public void userFail(String type) {
+		try {
+			saveInput(
+					txtUserInput.getText(),
+					lblRandomLetter.getText(),
+					(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
+					natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+					);
+		}
+		catch (StringIndexOutOfBoundsException e) {
+			saveInput(
+					txtUserInput.getText(),
+					lblRandomLetter.getText(),
+					(Double.valueOf(natoAlphabet.getTimeLimit()) - 0),
+					natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+					);
+		}//if no time has been set, lblTimer has no value
+		
+		if (type.equals("time")) {
+			lblResponse.setText("Time ran out. Try again!");
+			btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+			this.scoreCounter(false);
+		}
+		else if (type.equals("input")) {
+			lblResponse.setText("Incorrect. Try again!");
+			btnUserInput.setText("Next");
+			stringProperty.set("");
+			txtUserInput.setEditable(false);
+			this.scoreCounter(false);
+			timerManager("stop");
 		}
 	}
 

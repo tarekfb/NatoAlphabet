@@ -128,23 +128,19 @@ public class ResultsViewController implements Initializable {
 		else if (accuratelyQuantified < 0.05) 
 			skill = "Leave. Now.";
 	
-		System.out.println(accuratelyQuantified);
-		System.out.println(correctAnswers);
-		System.out.println(natoAlphabet.getMaxQuestions());
-
-		System.out.println(correctAnswers / natoAlphabet.getMaxQuestions());
-
 		if (String.valueOf(accuratelyQuantified).substring(0, 1).equals("1"))
 			percentageSubString = " (100%)";
 		else if (String.valueOf(accuratelyQuantified).substring(2, 3).equals("0"))
 			percentageSubString = " (0%)";
-		else 
-			percentageSubString = " (" + String.valueOf(accuratelyQuantified).substring(2, 4) + "%)";
+		else {
+			try {//this catches values like 0.4 (no character at index 4 to make substring of)
+				percentageSubString = " (" + String.valueOf(accuratelyQuantified).substring(2, 4) + "%)";
+			}
+			catch (StringIndexOutOfBoundsException oob) {
+				percentageSubString = " (" + String.valueOf(accuratelyQuantified).substring(2, 3) + "0%)";
+			}
+		}
 		
-			
-		
-
-
 		return skill + percentageSubString;
 	}
 	
