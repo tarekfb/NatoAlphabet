@@ -62,7 +62,7 @@ public class StartViewController implements Initializable {
 			nfeCheck = true;
 			
 			Label alertLabel = new Label("The time limit field can only take numerical values consisting of a single-digit number. "
-					+ "\n Please enter a single-digit number.");
+					+ "\nPlease enter a single-digit number.");
 			alertLabel.setWrapText(true);
 			alert.setTitle("Invalid input");
 			alert.setHeaderText("Invalid input");

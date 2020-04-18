@@ -85,7 +85,7 @@ public class MainViewController implements Initializable {
 			timeline.getKeyFrames().add(keyframe);
 			timeline.setCycleCount(natoAlphabet.getTimeLimit() * 10);
 			timeline.setOnFinished(event -> {
-				this.incorrect("time");
+				this.userFail("time");
 			});
 		}
 
@@ -119,8 +119,9 @@ public class MainViewController implements Initializable {
 	public void rndLetterGenerator() {
 		char currentChar = lblRandomLetter.getText().charAt(0);
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
-	}// ensures coincidental labelling repetition using getRandomChar never occurs
-
+	}// ensures immediate labelling repetition using getRandomChar never occurs
+	//TODO: make it not repeat any telephony if (totalQuestions(questionLimit?)  <=  26)
+	
 	public void countDown() {
 		if (lblTimer.getText().length() == 4) {
 			oneDigitSecond = Integer.valueOf(lblTimer.getText().substring(0, 1));
@@ -205,7 +206,7 @@ public class MainViewController implements Initializable {
 		} else if (btnUserInput.getText().equals("Enter")) {
 			
 			if (!natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
-				this.incorrect("input");
+				this.userFail("input");
 			} else if (natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))) {
 
 				//if more than single digit timer, this breaks
@@ -257,10 +258,13 @@ public class MainViewController implements Initializable {
 	}
 
 	public void btnRestart_Click(ActionEvent event) {
-		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0
-				&& natoAlphabet.getMaxQuestions() != 0) {
+		if (NatoAlphabet.getHighscore() < natoAlphabet.getProgressCounter() && natoAlphabet.getTimeLimit() != 0 && natoAlphabet.getMaxQuestions() != 0) 
 			NatoAlphabet.setHighscore(natoAlphabet.getProgressCounter());
-		}
+		
+		//clears the tableview which holds scores, to avoid unwanted scores from previous rounds
+		result.getResultList().clear();
+		
+		
 		try {
 			Stage stage = null;
 			Parent root = null;
@@ -369,14 +373,18 @@ public class MainViewController implements Initializable {
 			result.getResultList().add(tmpResult);		
 		}
 	}
-	public void incorrect(String type) {
+	public void userFail(String type) {
+		
+		System.out.println("missl före");
+
 		saveInput(
 				txtUserInput.getText(),
 				lblRandomLetter.getText(),
 				(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
 				natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
 				);
-		
+		System.out.println("missl före");
+
 		if (type.equals("time")) {
 			lblResponse.setText("Time ran out. Try again!");
 			btnUserInput.setText("Next");
@@ -385,12 +393,17 @@ public class MainViewController implements Initializable {
 			this.scoreCounter(false);
 		}
 		else if (type.equals("input")) {
+			System.out.println("missl före");
+
 			lblResponse.setText("Incorrect. Try again!");
 			btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
 			this.scoreCounter(false);
 			timerManager("stop");
+			
+			System.out.println("missl före");
+
 		}
 		
 	}

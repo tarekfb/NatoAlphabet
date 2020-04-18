@@ -122,10 +122,10 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 	public char getRandomChar(char c) {
 		char proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
 
-		// ensures the distance between new & old is more than 3
+		// ensures the distance between new & old is more than 2
 		do {
 			proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
-		} while (alphabetDistance(c, proposedChar) < 3);
+		} while (alphabetDistance(c, proposedChar) < 2);
 
 		return proposedChar;
 	}// alternative method would be: in controller, save last ~4 digits and avoid

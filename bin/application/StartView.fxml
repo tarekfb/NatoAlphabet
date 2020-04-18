@@ -14,11 +14,6 @@
    <center>
       <AnchorPane prefHeight="310.0" prefWidth="920.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnStart" layoutX="191.0" layoutY="242.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="31.0" prefWidth="65.0" text="Start">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
             <Label fx:id="lblHighscore" layoutX="306.0" layoutY="268.0" text="HIGH SCORE: 0">
                <font>
                   <Font size="19.0" />
@@ -34,6 +29,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
+                  <TextField fx:id="txtTimeLimit" prefHeight="26.0" prefWidth="49.0" GridPane.columnIndex="1" />
                   <TextField fx:id="txtMaxQuestions" prefHeight="26.0" prefWidth="49.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Question limit:" GridPane.rowIndex="1">
                      <font>
@@ -45,10 +41,14 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtTimeLimit" prefHeight="26.0" prefWidth="49.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <Label fx:id="lblInfo" alignment="CENTER" contentDisplay="CENTER" layoutX="36.0" layoutY="14.0" text="Welcome back!" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="btnStart" defaultButton="true" layoutX="191.0" layoutY="242.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="31.0" prefWidth="65.0" text="Start">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </center>
