@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -67,7 +66,6 @@
                </font>
             </Label>
             <Button fx:id="btnResults" layoutX="237.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnResults_Click" text="Results" />
-            <ProgressBar layoutX="14.0" layoutY="284.0" prefWidth="200.0" progress="0.0" />
          </children>
       </AnchorPane>
    </center>

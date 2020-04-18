@@ -120,44 +120,29 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 	public char getRandomChar(char c) {
 		char proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
 
-		// ensures the distance between new & old is more than 2
-		do {
-			proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
-		} while (alphabetDistance(c, proposedChar) < 2);
-		
-		//ensures never repeats letter if (maxq <= 26) 
-		if (maxQuestions <= 26) {
-			boolean charHasOccured = false;
+		if (maxQuestions == 0 || maxQuestions > 26) {//ensures the distance between new & old is more than 3
 			do {
+				proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
+			} while (alphabetDistance(c, proposedChar) < 3);
+		} else if (maxQuestions <= 26) {//ensures never repeats letter if (maxq <= 26)
+			boolean charHasOccured = false;
+			do {				
+				do {
+					proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
+				} while (alphabetDistance(c, proposedChar) < 2);
+				
+				charHasOccured = false;
 				proposedChar = getAlphabetArray()[new Random().nextInt(getAlphabetArray().length)];
 
 				for (String tmpString : alphabetHistory) {
 					if (String.valueOf(proposedChar).equals(tmpString))
 						charHasOccured = true;
 				}
-			} while(charHasOccured == false);
-			
+			} while(charHasOccured == true);
 		}
 
 		return proposedChar;
 		
-		
-		/*//code below means it will avoid all previous letters, but will crash at 26
-		natoAlphabet.getAlphabetHistory().add(String.valueOf(currentChar));
-		boolean charHasOccured = false;
-		for (String tmpString : natoAlphabet.getAlphabetHistory()) {
-			if (String.valueOf(currentChar).equals(tmpString))
-				charHasOccured = true;
-		}
-		if (natoAlphabet.getMaxQuestions() <= 26) {
-			do {
-				lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
-				System.out.println("test");
-			} while(charHasOccured == false);
-		} else if (5 == 5) {
-			//natoAlphabet.getProgressCounter() <=
-		}
-		*/
 	}//TODO: save all letters and avoid if <= 26
 
 	public boolean equalCheck(String userInput, char rndChar) {
