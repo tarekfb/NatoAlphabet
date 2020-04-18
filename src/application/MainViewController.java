@@ -118,8 +118,11 @@ public class MainViewController implements Initializable {
 
 	public void rndLetterGenerator() {
 		char currentChar = lblRandomLetter.getText().charAt(0);
+		natoAlphabet.getAlphabetHistory().add(String.valueOf(currentChar));
+
 		lblRandomLetter.setText(String.valueOf(natoAlphabet.getRandomChar(currentChar)));
-	}// ensures immediate labelling repetition using getRandomChar never occurs
+		
+	}// ensures a given distance between letters
 	//TODO: make it not repeat any telephony if (totalQuestions(questionLimit?)  <=  26)
 	
 	public void countDown() {
@@ -199,7 +202,7 @@ public class MainViewController implements Initializable {
 			stringProperty.set("");
 			lblResponse.setText("");
 			btnUserInput.setText("Enter");
-			//TODO: Change "incorrect" method to account for correct too, and add this
+			//TODO: Change "userfail" method to account for correct too, and add this
 
 			this.timerManager("stop");
 			this.timerManager("start");
@@ -225,7 +228,7 @@ public class MainViewController implements Initializable {
 
 				this.timerManager("stop");
 				this.timerManager("start");
-			}//TODO: Change "incorrect" method to account for correct too, and add this
+			}//TODO: Change "userfail" method to account for correct too, and add this
 		}
 		this.gameOverCheckExe();
 	}
