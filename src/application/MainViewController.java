@@ -373,18 +373,25 @@ public class MainViewController implements Initializable {
 			result.getResultList().add(tmpResult);		
 		}
 	}
+	
 	public void userFail(String type) {
+		try {
+			saveInput(
+					txtUserInput.getText(),
+					lblRandomLetter.getText(),
+					(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
+					natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+					);
+		}
+		catch (StringIndexOutOfBoundsException e) {
+			saveInput(
+					txtUserInput.getText(),
+					lblRandomLetter.getText(),
+					(Double.valueOf(natoAlphabet.getTimeLimit()) - 0),
+					natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
+					);
+		}//if no time has been set, lblTimer has no value
 		
-		System.out.println("missl före");
-
-		saveInput(
-				txtUserInput.getText(),
-				lblRandomLetter.getText(),
-				(Double.valueOf(natoAlphabet.getTimeLimit()) - Double.valueOf(lblTimer.getText().substring(0, 3))),
-				natoAlphabet.equalCheck(txtUserInput.getText(), lblRandomLetter.getText().charAt(0))
-				);
-		System.out.println("missl före");
-
 		if (type.equals("time")) {
 			lblResponse.setText("Time ran out. Try again!");
 			btnUserInput.setText("Next");
@@ -393,19 +400,13 @@ public class MainViewController implements Initializable {
 			this.scoreCounter(false);
 		}
 		else if (type.equals("input")) {
-			System.out.println("missl före");
-
 			lblResponse.setText("Incorrect. Try again!");
 			btnUserInput.setText("Next");
 			stringProperty.set("");
 			txtUserInput.setEditable(false);
 			this.scoreCounter(false);
 			timerManager("stop");
-			
-			System.out.println("missl före");
-
 		}
-		
 	}
 
 }
