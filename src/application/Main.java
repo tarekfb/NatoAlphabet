@@ -19,11 +19,12 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(this.getClass().getResource("StartView.fxml"));
 			Scene scene = new Scene(root);
 
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			scene.getStylesheets().add(getClass().getResource("stylesheet.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
+	        root.setId("pane");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			primaryStage.setTitle("NatoAlphabet - The Game");
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
