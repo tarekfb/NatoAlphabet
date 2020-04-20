@@ -1,8 +1,25 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+
 #pane{
-	-fx-background-image: url("/stylesheets/working-dog-1781151.jpg");
+	-fx-background-image: url("/resources/camouflage-1541188_1280.jpg");
 	-fx-background-repeat: stretch;   
-	-fx-background-size: 900 506;
+	-fx-background-size: 1600 853;
 	-fx-background-position: center center;
 	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
+}
+#root{
+	-fx-color: #ff0000;
+	-fx-background-image: url("/resources/camouflage-1541188_1280.jpg");
+	
+}
+
+#lblTitle{
+	-fx-font-family: "Roboto";
+}
+
+#{
+	-fx-background-color: #000000;
+	-fx-color: #ffffff;
 }
 

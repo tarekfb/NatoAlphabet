@@ -1,5 +1,6 @@
 package application;
 
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -66,7 +67,6 @@ public class MainViewController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
 		// previously used String[] and char[] to compare the values
 		// instead of rewriting all the information as 26 lines of "natoTelehpony.put(A,
 		// Alfa)", using this forloop
@@ -269,16 +269,9 @@ public class MainViewController implements Initializable {
 		
 		
 		try {
-			Stage stage = null;
-			Parent root = null;
-
-			if (event.getSource() == btnRestart) {
-				stage = (Stage) btnRestart.getScene().getWindow();
-				root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
-			}
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
+			timerManager("stop");
+			Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
+			((Node) event.getSource()).getScene().setRoot(newPage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -300,17 +293,11 @@ public class MainViewController implements Initializable {
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
 				try {
-					Stage stage = null;
-					Parent root = null;
+					this.timerManager("stop");
+					Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
+					((Node) event.getSource()).getScene().setRoot(newPage);
+					newPage.setId("root");
 
-					if (event.getSource() == btnQuit) {
-						stage = (Stage) btnRestart.getScene().getWindow();
-						root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
-					}
-					timerManager("stop");
-					Scene scene = new Scene(root);
-					stage.setScene(scene);
-					stage.show();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -321,17 +308,9 @@ public class MainViewController implements Initializable {
 			}
 		} else if (natoAlphabet.getTimeLimit() == 0 || natoAlphabet.getMaxQuestions() == 0) {
 			try {
-				Stage stage = null;
-				Parent root = null;
-
-				if (event.getSource() == btnQuit) {
-					stage = (Stage) btnRestart.getScene().getWindow();
-					root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
-				}
 				timerManager("stop");
-				Scene scene = new Scene(root);
-				stage.setScene(scene);
-				stage.show();
+				Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
+				((Node) event.getSource()).getScene().setRoot(newPage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -342,17 +321,9 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void btnResults_Click(ActionEvent event) {
 		try {
-			Stage stage = null;
-			Parent root = null;
-
-			if (event.getSource() == btnResults) {
-				stage = (Stage) btnResults.getScene().getWindow();
-				root = FXMLLoader.load(getClass().getResource("ResultsView.fxml"));
-			}
 			timerManager("stop");
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
+			Parent newPage = FXMLLoader.load(getClass().getResource("ResultsView.fxml"));
+			((Node) event.getSource()).getScene().setRoot(newPage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

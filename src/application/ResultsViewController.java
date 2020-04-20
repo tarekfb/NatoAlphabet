@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -58,7 +59,6 @@ public class ResultsViewController implements Initializable {
 		tvResults.setItems(resultList);
 		
 		lblTime.setText(String.valueOf(natoAlphabet.getTimeLimit()));
-		
  		lblQuestionLimit.setText(String.valueOf(natoAlphabet.getMaxQuestions()));
 		
 		DecimalFormat df = new DecimalFormat("0.0");
@@ -69,17 +69,10 @@ public class ResultsViewController implements Initializable {
 	}
 	
 	public void btnRestart_Click(ActionEvent event) {
-		try {
-			Stage stage = null;
-			Parent root = null;
-
-			if (event.getSource() == btnRestart) {
-				stage = (Stage) btnRestart.getScene().getWindow();
-				root = FXMLLoader.load(getClass().getResource("StartView.fxml"));
-			}
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
-			stage.show();
+		try {			
+			Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
+			((Node) event.getSource()).getScene().setRoot(newPage);
+			newPage.setId("root");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,7 +88,6 @@ public class ResultsViewController implements Initializable {
 		
 		avgTime = sum / natoAlphabet.getMaxQuestions();
 		return avgTime;
-
 	}
 	
 	public String calcSkill() {

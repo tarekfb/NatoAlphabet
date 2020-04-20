@@ -1,5 +1,6 @@
 package application;
 
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -33,9 +34,15 @@ public class StartViewController implements Initializable {
 	private Label lblHighscore;
 	@FXML
 	private Label lblInfo;
+	@FXML
+	private Label lblMaxQuestions;
+	@FXML
+	private Label lblTimeLimit;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.stylesheet();
+		
 		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
 		lblHighscore.setText("HIGH SCORE: " + NatoAlphabet.getHighscore());
 		lblInfo.setText("Welcome back! This game helps you memorize the Nato Alphabet."
@@ -96,20 +103,19 @@ public class StartViewController implements Initializable {
 			}
 			try {
 				if (nfeCheck == false) {
-					Stage stage = null;
-					Parent root = null;
-					if (event.getSource()==btnStart){
-						stage = (Stage) btnStart.getScene().getWindow();
-						root = FXMLLoader.load(getClass().getResource("MainView.fxml"));           
-					}
-					Scene scene = new Scene(root);
-					stage.setScene(scene);
-					stage.show();
+					Parent newPage = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+					((Node) event.getSource()).getScene().setRoot(newPage);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	public void stylesheet() {
+		lblMaxQuestions.setId("label");
+		lblTimeLimit.setId("label");
+		lblHighscore.setId("label");
+		lblTitle.setId("lblTitle");
 	}
 
 }

@@ -24,6 +24,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			primaryStage.setTitle("NatoAlphabet - The Game");
+			primaryStage.setMaximized(true);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
