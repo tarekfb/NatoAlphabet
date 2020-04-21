@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -8,52 +9,64 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="351.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartViewController">
+<BorderPane id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.StartViewController">
    <center>
-      <AnchorPane prefHeight="310.0" prefWidth="920.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="310.0" prefWidth="619.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblHighscore" layoutX="306.0" layoutY="268.0" text="HIGH SCORE: 0">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Label>
-            <GridPane layoutX="105.0" layoutY="155.0" prefHeight="62.0" prefWidth="237.0" AnchorPane.leftAnchor="160.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="190.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="157.6000244140625" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.39996337890625" minWidth="10.0" prefWidth="80.79997558593749" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <VBox alignment="CENTER" focusTraversable="true" layoutX="408.0" layoutY="56.0" prefHeight="680.0" prefWidth="916.0" spacing="20.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="100.0">
                <children>
-                  <TextField fx:id="txtTimeLimit" prefHeight="26.0" prefWidth="49.0" GridPane.columnIndex="1" />
-                  <TextField fx:id="txtMaxQuestions" prefHeight="26.0" prefWidth="49.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="lblMaxQuestions" text="Question limit:" GridPane.rowIndex="1">
+                  <Label fx:id="lblInfo" prefHeight="182.0" prefWidth="492.0" text="Welcome back! This game helps you memorize the Nato-alphabet. Leave the fields blank for unlmited time and/or questions. High score is only kept track of if time and maximium score is entered. Press start if you're ready - the timer, if enabled, will start right away. Good luck!" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="50.0" />
+                     </VBox.margin>
                      <font>
-                        <Font size="15.0" />
+                        <Font size="19.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblTimeLimit" text="Time limit/question (s):">
+                  <GridPane fx:id="gpInput" alignment="CENTER" prefHeight="62.0" prefWidth="237.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="10.0" prefWidth="157.6000244140625" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.39996337890625" minWidth="10.0" prefWidth="80.79997558593749" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <TextField fx:id="txtTimeLimit" prefHeight="26.0" prefWidth="49.0" GridPane.columnIndex="1" />
+                        <TextField fx:id="txtMaxQuestions" prefHeight="26.0" prefWidth="49.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblMaxQuestions" text="Question limit:" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTimeLimit" text="Time limit/question (s):">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+                  <Button fx:id="btnStart" defaultButton="true" maxWidth="-Infinity" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="31.0" text="Start">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="lblHighscore" text="HIGH SCORE: 0">
+                     <font>
+                        <Font size="19.0" />
                      </font>
                   </Label>
                </children>
-            </GridPane>
-            <Label fx:id="lblInfo" alignment="CENTER" contentDisplay="CENTER" layoutX="36.0" layoutY="14.0" text="Welcome back!" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="252.00000000000003" AnchorPane.leftAnchor="160.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="40.0" />
-            <Button fx:id="btnStart" defaultButton="true" layoutX="191.0" layoutY="242.0" mnemonicParsing="false" onAction="#btnStart_Click" prefHeight="31.0" prefWidth="65.0" text="Start" AnchorPane.topAnchor="270.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
+            </VBox>
          </children>
       </AnchorPane>
    </center>
    <top>
-      <Label fx:id="lblTitle" prefHeight="41.0" prefWidth="321.0" text="NATO Alphabet: The Game" BorderPane.alignment="CENTER">
+      <Label fx:id="lblTitle" alignment="CENTER" prefHeight="41.0" prefWidth="321.0" text="NATO alphabet: The Game" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>

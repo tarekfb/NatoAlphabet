@@ -2,14 +2,13 @@ package application;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -38,20 +37,31 @@ public class StartViewController implements Initializable {
 	private Label lblMaxQuestions;
 	@FXML
 	private Label lblTimeLimit;
+	@FXML
+	private GridPane gpInput;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.stylesheet();
 		
-		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without limit")); //TO-DO
+		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without a maximum question amount."));
+		txtTimeLimit.setTooltip(new Tooltip("Leave blank to play without a time limit."));
 		lblHighscore.setText("HIGH SCORE: " + NatoAlphabet.getHighscore());
-		lblInfo.setText("Welcome back! This game helps you memorize the Nato Alphabet."
+		/*lblInfo.setText("Welcome back! This game helps you memorize the Nato Alphabet."
 				+ "\nLeave the fields blank for unlimited time and/or questions."
 				+ "\nHigh score is only kept track of if time and maximum score is entered."
 				+ "\nPress start if you're ready - the timer, if enabled, will start right away."
 				+ "\n"
 				+ "\nGood luck!"
-				);
+				);*/
+		
+		/*Welcome back! 
+
+This game helps you memorize the Nato-alphabet. 
+Leave the fields blank for unlmited time and/or questions.
+High score is only ept track of if time and maximium score is entered. 
+Press start if you're ready - the timer, if enabled, will start right away. 
+Good luck!*/
 
 		if (natoAlphabet.getTimeLimit() != 0) {
 			txtTimeLimit.setText(String.valueOf(natoAlphabet.getTimeLimit()));
@@ -116,6 +126,8 @@ public class StartViewController implements Initializable {
 		lblTimeLimit.setId("label");
 		lblHighscore.setId("label");
 		lblTitle.setId("lblTitle");
+		lblInfo.setId("label");;
+		//gpInput.setId("label");
 	}
 
 }

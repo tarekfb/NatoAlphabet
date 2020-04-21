@@ -23,7 +23,7 @@ public class NatoAlphabet { // TODO: implement Swedish alternative? https://www.
 	}
 
 	public void setProgressCounter(int progressCount) {
-		this.progressCount = progressCount;
+		NatoAlphabet.progressCount = progressCount;
 	}
 
 	public int getTotalCounter() {
