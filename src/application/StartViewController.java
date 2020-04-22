@@ -2,6 +2,7 @@ package application;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ import javafx.fxml.Initializable;
 public class StartViewController implements Initializable {
 
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	Main main = new Main();
 	//TimerManager timerClass = new TimerManager(); if timer works delete this
 
 	@FXML
@@ -43,6 +45,7 @@ public class StartViewController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.stylesheet();
+		System.out.println(Main.getPrimaryStage());
 		
 		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without a maximum question amount."));
 		txtTimeLimit.setTooltip(new Tooltip("Leave blank to play without a time limit."));
@@ -113,8 +116,13 @@ Good luck!*/
 			}
 			try {
 				if (nfeCheck == false) {
+					/*Parent newPage = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+					((Node) event.getSource()).getScene().setRoot(newPage);*/
+					
 					Parent newPage = FXMLLoader.load(getClass().getResource("MainView.fxml"));
-					((Node) event.getSource()).getScene().setRoot(newPage);
+					Scene newScene = new Scene(newPage, main.getScene().getWidth(), main.getScene().getHeight());
+					Main.getPrimaryStage().setScene(newScene);
+					
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -127,7 +135,6 @@ Good luck!*/
 		lblHighscore.setId("label");
 		lblTitle.setId("lblTitle");
 		lblInfo.setId("label");;
-		//gpInput.setId("label");
 	}
 
 }

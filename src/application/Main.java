@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 public class Main extends Application {
 	
 	private static Stage primaryStage;
+	private static Scene scene;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -19,7 +20,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(this.getClass().getResource("StartView.fxml"));
-			Scene scene = new Scene(root);
+			scene = new Scene(root);
 
 			scene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
 	        root.setId("pane");
@@ -36,6 +37,10 @@ public class Main extends Application {
 	}
 	public static Stage getPrimaryStage() {
 	    return primaryStage;
+	}
+	
+	public Scene getScene() {
+		return scene;
 	}
 	
 }

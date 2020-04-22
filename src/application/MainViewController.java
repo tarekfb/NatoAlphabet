@@ -53,6 +53,8 @@ public class MainViewController implements Initializable {
 	@FXML
 	private Label lblTitle;
 	@FXML
+	private Label lblTelephony;
+	@FXML
 	private Label lblTimer;
 	Timeline timeline = new Timeline();
 	KeyFrame keyframe = new KeyFrame(Duration.millis(100), event -> {
@@ -400,6 +402,17 @@ public class MainViewController implements Initializable {
 			this.scoreCounter(false);
 			timerManager("stop");
 		}
+	}
+	public void stylesheet() {
+		lblTelephony.setId("label");
+		lblTimer.setId("label");
+		txtUserInput.setId("label");
+		lblRandomLetter.setId("label");
+		lblProgressCounter.setId("label");
+		
+		btnQuit.setId("button");
+		btnRestart.setId("button");
+		btnResults.setId("button");
 	}
 
 }
