@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 
 public class ResultsViewController implements Initializable {
 	
@@ -48,6 +49,10 @@ public class ResultsViewController implements Initializable {
 	private Label lblAvgTime;
 	@FXML
 	private Label lblSkill;
+	@FXML
+	private GridPane gpStats1;
+	@FXML
+	private GridPane gpStats2;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -152,7 +157,9 @@ public class ResultsViewController implements Initializable {
 		lblTime.setId("label");
 		lblTime2.setId("label");
 		lblQuestionLimit2.setId("label");
-		tvResults.setId("tvResults");
+		tvResults.setId("tv");
+		gpStats1.setId("gridpane");
+		gpStats2.setId("gridpane");
 	}
 	
 }

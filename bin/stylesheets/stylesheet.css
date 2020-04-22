@@ -17,6 +17,10 @@
 	-fx-text-fill: #ffffff;	
 }
 
-#tvResults .table-column {
+#tv .table-column {
  /*  -fx-alignment: CENTER-CENTER;*/
+}
+
+#gridpane{
+		-fx-text-fill: #ffffff;	
 }
