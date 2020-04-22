@@ -121,6 +121,8 @@ Good luck!*/
 					
 					Parent newPage = FXMLLoader.load(getClass().getResource("MainView.fxml"));
 					Scene newScene = new Scene(newPage, main.getScene().getWidth(), main.getScene().getHeight());
+					newScene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
+
 					Main.getPrimaryStage().setScene(newScene);
 					
 				}

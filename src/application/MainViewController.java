@@ -66,6 +66,9 @@ public class MainViewController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.stylesheet();
+		
+		
 		// previously used String[] and char[] to compare the values
 		// instead of rewriting all the information as 26 lines of "natoTelehpony.put(A,
 		// Alfa)", using this forloop
@@ -274,7 +277,8 @@ public class MainViewController implements Initializable {
 			
 			this.timerManager("stop");
 			Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
-			Scene newScene = new Scene(newPage);
+			Scene newScene = new Scene(newPage, main.getScene().getWidth(), main.getScene().getHeight());
+			newScene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
 			Main.getPrimaryStage().setScene(newScene);
 			
 		} catch (Exception e) {
@@ -305,7 +309,8 @@ public class MainViewController implements Initializable {
 					
 					this.timerManager("stop");
 					Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
-					Scene newScene = new Scene(newPage);
+					Scene newScene = new Scene(newPage, main.getScene().getWidth(), main.getScene().getHeight());
+					newScene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
 					Main.getPrimaryStage().setScene(newScene);
 
 				} catch (Exception e) {
@@ -324,7 +329,8 @@ public class MainViewController implements Initializable {
 				
 				this.timerManager("stop");
 				Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
-				Scene newScene = new Scene(newPage);
+				Scene newScene = new Scene(newPage, main.getScene().getWidth(), main.getScene().getHeight());
+				newScene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
 				Main.getPrimaryStage().setScene(newScene);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -342,7 +348,8 @@ public class MainViewController implements Initializable {
 			
 			this.timerManager("stop");
 			Parent newPage = FXMLLoader.load(getClass().getResource("ResultsView.fxml"));
-			Scene newScene = new Scene(newPage);
+			Scene newScene = new Scene(newPage, main.getScene().getWidth(), main.getScene().getHeight());
+			newScene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
 			Main.getPrimaryStage().setScene(newScene);
 			
 		} catch (Exception e) {
@@ -406,9 +413,9 @@ public class MainViewController implements Initializable {
 	public void stylesheet() {
 		lblTelephony.setId("label");
 		lblTimer.setId("label");
-		txtUserInput.setId("label");
 		lblRandomLetter.setId("label");
 		lblProgressCounter.setId("label");
+		lblResponse.setId("label");
 		
 		btnQuit.setId("button");
 		btnRestart.setId("button");

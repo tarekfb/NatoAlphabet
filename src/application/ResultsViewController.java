@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -21,6 +22,7 @@ public class ResultsViewController implements Initializable {
 	
 	Result result = new Result();
 	NatoAlphabet natoAlphabet = new NatoAlphabet();
+	Main main = new Main();
 	
 	@FXML
 	private Button btnRestart;
@@ -39,12 +41,18 @@ public class ResultsViewController implements Initializable {
 	@FXML
 	private Label lblQuestionLimit;
 	@FXML
+	private Label lblTime2;
+	@FXML
+	private Label lblQuestionLimit2;
+	@FXML
 	private Label lblAvgTime;
 	@FXML
 	private Label lblSkill;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.stylesheet();
+		
 		ObservableList<Result> resultList = FXCollections.observableArrayList(result.getResultList());		
 		
 		colInput.setCellValueFactory(new PropertyValueFactory<Result, String>("userInput"));
@@ -66,9 +74,15 @@ public class ResultsViewController implements Initializable {
 	
 	public void btnRestart_Click(ActionEvent event) {
 		try {			
-			Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
+			/*Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
 			((Node) event.getSource()).getScene().setRoot(newPage);
-			newPage.setId("root");
+			newPage.setId("root");*/
+			
+			Parent newPage = FXMLLoader.load(getClass().getResource("StartView.fxml"));
+			Scene newScene = new Scene(newPage, main.getScene().getWidth(), main.getScene().getHeight());
+			newScene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
+			Main.getPrimaryStage().setScene(newScene);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,6 +144,15 @@ public class ResultsViewController implements Initializable {
 		}
 		
 		return skill + percentageSubString;
+	}
+	public void stylesheet() {
+		lblAvgTime.setId("label");
+		lblSkill.setId("label");
+		lblQuestionLimit.setId("label");
+		lblTime.setId("label");
+		lblTime2.setId("label");
+		lblQuestionLimit2.setId("label");
+		tvResults.setId("tvResults");
 	}
 	
 }

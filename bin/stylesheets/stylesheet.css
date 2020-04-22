@@ -1,9 +1,9 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-#pane{
+.root{
 	-fx-background-image: url("/resources/camouflage-1541188_1280.jpg");
-	-fx-background-repeat: stretch;   
-	-fx-background-size: 1600 853;
+	-fx-background-repeat: stretch;
 	-fx-background-position: center center;
+	-fx-background-size: 1600 853;
 	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
 	
 	/*-fx-background-color:  #145a32;*/
@@ -11,27 +11,12 @@
 
 #label{
 	-fx-text-fill: #ffffff;	
-
-/* 	-fx-background-color: #000000;
-	-fx-opacity: 1.0;
-	-fx-font-family: "Roboto";
-	
-	-fx-text-fill: -fx-text-inner-color;
-    -fx-highlight-fill: derive(-fx-control-inner-background,-20%);
-    -fx-highlight-text-fill: -fx-text-inner-color;
-    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);
-    -fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
-        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
-    -fx-background-insets: 0, 1;
-    -fx-background-radius: 3, 2;
-    -fx-cursor: text;
-    -fx-padding: 0.333333em 0.583em 0.333333em 0.583em; /* 4 7 4 7 */
 }
 
 #lblTitle{
 	-fx-text-fill: #ffffff;	
 }
 
-label{
-	-fx-text-fill: #ff0000;
+#tvResults .table-column {
+ /*  -fx-alignment: CENTER-CENTER;*/
 }

@@ -16,15 +16,15 @@
    <center>
       <VBox alignment="CENTER" focusTraversable="true" prefHeight="351.2" prefWidth="892.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblRandomLetter" alignment="CENTER" contentDisplay="CENTER" prefHeight="82.0" prefWidth="88.0" text="A" textOverrun="CLIP">
+            <Label fx:id="lblRandomLetter" alignment="CENTER" contentDisplay="CENTER" prefHeight="122.0" prefWidth="130.0" stylesheets="@../stylesheets/stylesheet.css" text="A" textOverrun="CLIP">
                <font>
-                  <Font size="58.0" />
+                  <Font size="83.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="50.0" />
+                  <Insets bottom="100.0" />
                </VBox.margin>
             </Label>
-            <GridPane prefWidth="237.0">
+            <GridPane maxWidth="253.6">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -35,7 +35,7 @@
                <children>
                   <Label fx:id="lblTelephony" text="Telephony:">
                      <font>
-                        <Font size="14.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtUserInput" GridPane.columnIndex="1" />   
@@ -46,7 +46,7 @@
             </GridPane>
             <Button fx:id="btnUserInput" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#btnUserInput_Click" prefHeight="26.0" prefWidth="73.0" text="Enter">
               <font>
-                  <Font size="15.0" />
+                  <Font size="18.0" />
                </font>
                <padding>
                   <Insets right="5.0" />
@@ -54,7 +54,7 @@
             </Button>
             <Label fx:id="lblResponse" alignment="CENTER" prefHeight="67.0" prefWidth="156.0" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font size="15.0" />
+                  <Font size="18.0" />
                </font>
                <padding>
                   <Insets left="5.0" />
@@ -62,14 +62,26 @@
             </Label>
             <HBox alignment="CENTER" focusTraversable="true" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                <children>
-                  <Button fx:id="btnQuit" mnemonicParsing="false" onAction="#btnQuit_Click" text="Quit" />
-                  <Button fx:id="btnRestart" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart" />
-                  <Button fx:id="btnResults" mnemonicParsing="false" onAction="#btnResults_Click" text="Results" />
+                  <Button fx:id="btnQuit" cancelButton="true" mnemonicParsing="false" onAction="#btnQuit_Click" text="Quit">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnRestart" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnResults" mnemonicParsing="false" onAction="#btnResults_Click" text="Results">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
                </children>
             </HBox>
             <Label fx:id="lblProgressCounter" text="Score: 0/0" wrapText="true">
                <font>
-                  <Font size="19.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
             <Label fx:id="lblTimer" alignment="CENTER" prefHeight="51.0" prefWidth="67.0" textAlignment="CENTER" wrapText="true">
