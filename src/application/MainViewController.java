@@ -411,15 +411,7 @@ public class MainViewController implements Initializable {
 		}
 	}
 	public void stylesheet() {
-		lblTelephony.setId("label");
-		lblTimer.setId("label");
-		lblRandomLetter.setId("label");
-		lblProgressCounter.setId("label");
-		lblResponse.setId("label");
-		
-		btnQuit.setId("button");
-		btnRestart.setId("button");
-		btnResults.setId("button");
+	
 	}
 
 }

@@ -13,14 +13,11 @@
 	-fx-text-fill: #ffffff;	
 }
 
-#lblTitle{
-	-fx-text-fill: #ffffff;	
-}
-
 #tv .table-column {
  /*  -fx-alignment: CENTER-CENTER;*/
 }
 
-#gridpane{
+Label{
 		-fx-text-fill: #ffffff;	
 }
+

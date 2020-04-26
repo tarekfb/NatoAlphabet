@@ -28,6 +28,8 @@ public class Main extends Application {
 			primaryStage.show();
 			primaryStage.setTitle("NatoAlphabet - The Game");
 			primaryStage.setMaximized(true);
+			//primaryStage.setWidth(800);
+			//primaryStage.setHeight(800);
 			
 			Main.primaryStage = primaryStage;
 			
@@ -44,20 +46,3 @@ public class Main extends Application {
 	}
 	
 }
-/*@Override
-	public void start(Stage primaryStage) {
-		try {
-			Parent root = FXMLLoader.load(this.getClass().getResource("StartView.fxml"));
-			Scene scene = new Scene(root);
-
-			scene.getStylesheets().add(getClass().getResource("/stylesheets/stylesheet.css").toExternalForm());
-	        root.setId("pane");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-			primaryStage.setTitle("NatoAlphabet - The Game");
-			primaryStage.setMaximized(true);
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}*/

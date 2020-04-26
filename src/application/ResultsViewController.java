@@ -151,15 +151,7 @@ public class ResultsViewController implements Initializable {
 		return skill + percentageSubString;
 	}
 	public void stylesheet() {
-		lblAvgTime.setId("label");
-		lblSkill.setId("label");
-		lblQuestionLimit.setId("label");
-		lblTime.setId("label");
-		lblTime2.setId("label");
-		lblQuestionLimit2.setId("label");
 		tvResults.setId("tv");
-		gpStats1.setId("gridpane");
-		gpStats2.setId("gridpane");
 	}
 	
 }

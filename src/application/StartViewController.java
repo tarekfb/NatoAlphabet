@@ -45,7 +45,6 @@ public class StartViewController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.stylesheet();
-		System.out.println(Main.getPrimaryStage());
 		
 		txtMaxQuestions.setTooltip(new Tooltip("Leave blank to play without a maximum question amount."));
 		txtTimeLimit.setTooltip(new Tooltip("Leave blank to play without a time limit."));
@@ -87,6 +86,7 @@ Good luck!*/
 			alert.setTitle("Invalid input");
 			alert.setHeaderText("Invalid input");
 			alert.getDialogPane().setContent(alertLabel);
+			txtTimeLimit.requestFocus();
 
 			alert.showAndWait();
 		} else {
@@ -132,11 +132,7 @@ Good luck!*/
 		}
 	}
 	public void stylesheet() {
-		lblMaxQuestions.setId("label");
-		lblTimeLimit.setId("label");
-		lblHighscore.setId("label");
-		lblTitle.setId("lblTitle");
-		lblInfo.setId("label");;
+	
 	}
 
 }

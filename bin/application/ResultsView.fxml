@@ -16,7 +16,7 @@
    <left>
       <VBox alignment="CENTER" prefHeight="676.0" prefWidth="454.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Settings">
+            <Label fx:id="lblTitleSettings" text="Settings">
                <font>
                   <Font size="25.0" />
                </font>
@@ -48,7 +48,7 @@
                   <Insets left="60.0" right="60.0" />
                </VBox.margin>
             </GridPane>
-            <Label text="Recent stats:">
+            <Label fx:id="lblTitleStats" text="Recent stats:">
                <font>
                   <Font size="25.0" />
                </font>
@@ -63,7 +63,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Average timer/question:">
+                  <Label fx:id="lblAvgTime2" text="Average timer/question:">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -82,6 +82,9 @@
             </GridPane>
             <Button fx:id="btnRestart" defaultButton="true" mnemonicParsing="false" onAction="#btnRestart_Click" text="Restart" />
          </children>
+         <padding>
+            <Insets left="200.0" />
+         </padding>
       </VBox>
    </left>
    <right>
@@ -94,6 +97,9 @@
                   <TableColumn fx:id="colEqualValue" prefWidth="75.0" text="Correct?" />
                   <TableColumn fx:id="colSeconds" prefWidth="75.0" text="Seconds" />
               </columns>
+               <VBox.margin>
+                  <Insets right="200.0" />
+               </VBox.margin>
             </TableView>
          </children>
       </VBox>
